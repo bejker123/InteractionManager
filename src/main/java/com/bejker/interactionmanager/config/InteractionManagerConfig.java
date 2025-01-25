@@ -4,12 +4,11 @@ import com.bejker.interactionmanager.InteractionManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.item.ShovelItem;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -18,9 +17,11 @@ import java.nio.file.Path;
 import java.util.Locale;
 
 public class InteractionManagerConfig {
-    private static InteractionManagerConfig instance = new InteractionManagerConfig();
+    private static final InteractionManagerConfig instance = new InteractionManagerConfig();
     private static Path config_path;
-    public boolean ALLOW_SHOVEL_USE_ON_BLOCK = false;
+    public boolean ALLOW_SHOVEL_CREATE_PATHS = false;
+    public boolean ALLOW_AXE_STRIP_BLOCKS = false;
+
     public static InteractionManagerConfig getInstance() {
         return instance;
     }
@@ -50,7 +51,11 @@ public class InteractionManagerConfig {
                 }
                 String field_name = field.getName().toLowerCase(Locale.ROOT);
                 if(field.getType() == boolean.class){
-                    field.set(this,json.getAsJsonPrimitive(field_name).getAsBoolean());
+                    JsonPrimitive value = json.getAsJsonPrimitive(field_name);
+                    if(value == null){
+                        continue;
+                    }
+                    field.set(this,value.getAsBoolean());
                 }
             }
 

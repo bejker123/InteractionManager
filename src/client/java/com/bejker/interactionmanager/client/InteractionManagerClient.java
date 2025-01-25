@@ -5,6 +5,8 @@ import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.util.ActionResult;
@@ -22,20 +24,27 @@ public class InteractionManagerClient implements ClientModInitializer {
 
     public static void onInteractBlock(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
         ItemStack stack = player.getStackInHand(hand);
-        if(!InteractionManagerConfig.getInstance().ALLOW_SHOVEL_USE_ON_BLOCK
-                &&stack.getItem() instanceof ShovelItem){
-            disallowShovelInteractBlock(hitResult,cir);
-        }
-    }
-
-    private static void disallowShovelInteractBlock(BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
-        if(MinecraftClient.getInstance().world == null){
+        ClientWorld world = MinecraftClient.getInstance().world;
+        if(world == null){
             return;
         }
-        Block block = MinecraftClient.getInstance().world.getBlockState(hitResult.getBlockPos()).getBlock();
-       if(ShovelItem.PATH_STATES.get(block) != null){
-           cir.setReturnValue(ActionResult.PASS);
-       }
+        Block block = world.getBlockState(hitResult.getBlockPos()).getBlock();
+
+        if(!InteractionManagerConfig.getInstance().ALLOW_SHOVEL_CREATE_PATHS
+                &&stack.getItem() instanceof ShovelItem){
+            if(ShovelItem.PATH_STATES.get(block) != null){
+                cir.setReturnValue(ActionResult.PASS);
+            }
+            return;
+        }
+
+        if(!InteractionManagerConfig.getInstance().ALLOW_AXE_STRIP_BLOCKS
+                &&stack.getItem() instanceof AxeItem){
+            if(AxeItem.STRIPPED_BLOCKS.get(block) != null){
+                cir.setReturnValue(ActionResult.PASS);
+            }
+            return;
+        }
     }
 
     @Override
