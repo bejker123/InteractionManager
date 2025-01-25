@@ -40,7 +40,7 @@ public class InteractionManagerOptionsScreen extends Screen {
 
         adder.add(ButtonWidget.builder(getBooleanText("Axe Strips",InteractionManagerConfig.getInstance().ALLOW_AXE_STRIP_BLOCKS),(button)->{
             InteractionManagerConfig.getInstance().ALLOW_AXE_STRIP_BLOCKS = !InteractionManagerConfig.getInstance().ALLOW_AXE_STRIP_BLOCKS;
-            button.setMessage(getBooleanText("Shovel Path",InteractionManagerConfig.getInstance().ALLOW_AXE_STRIP_BLOCKS));
+            button.setMessage(getBooleanText("Axe Strips",InteractionManagerConfig.getInstance().ALLOW_AXE_STRIP_BLOCKS));
         }).build());
 
         this.layout.addHeader(this.title, MinecraftClient.getInstance().textRenderer);
