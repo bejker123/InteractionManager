@@ -19,8 +19,8 @@ import java.util.Locale;
 public class InteractionManagerConfig {
     private static final InteractionManagerConfig instance = new InteractionManagerConfig();
     private static Path config_path;
-    public boolean ALLOW_SHOVEL_CREATE_PATHS = false;
-    public boolean ALLOW_AXE_STRIP_BLOCKS = false;
+    public boolean ALLOW_SHOVEL_CREATE_PATHS = true;
+    public boolean ALLOW_AXE_STRIP_BLOCKS = true;
 
     public static InteractionManagerConfig getInstance() {
         return instance;

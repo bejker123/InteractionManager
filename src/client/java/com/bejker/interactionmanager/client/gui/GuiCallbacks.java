@@ -17,10 +17,10 @@ public class GuiCallbacks {
     }
 
     public static void optionsScreenOnInitWidgets(Screen screen, GridWidget gridWidget){
-        for (int i = 0; i < gridWidget.children.size(); i++) {
-           ButtonWidget button = (ButtonWidget) gridWidget.children.get(i);
-           CLIENT_LOGGER.info("{}",button.getMessage());
-        }
+        //for (int i = 0; i < gridWidget.children.size(); i++) {
+        //   ButtonWidget button = (ButtonWidget) gridWidget.children.get(i);
+        //   CLIENT_LOGGER.info("{}",button.getMessage());
+        //}
         MinecraftClient client = MinecraftClient.getInstance();
         gridWidget.add(
                 ButtonWidget.builder(Text.literal("Interactions"),
