@@ -67,13 +67,13 @@ public class BooleanOption implements IOptionConvertable{
     @Override
     public SimpleOption<?> asOption() {
        if(enabled_text == null||disabled_text == null){
-           return SimpleOption.ofBoolean(translation_key,getDefaultValue(),(value) -> ConfigStorage.setBoolean(key,value));
+           return SimpleOption.ofBoolean(translation_key,getValue(),(value) -> ConfigStorage.setBoolean(key,value));
        }
         return new SimpleOption<>(translation_key,
                 SimpleOption.emptyTooltip(),
                 (text,value) -> value ? enabled_text : disabled_text,
                 SimpleOption.BOOLEAN,
-                getDefaultValue(),
+                getValue(),
                 new_value -> ConfigStorage.setBoolean(key,new_value));
     }
 }
