@@ -31,13 +31,6 @@ public class InteractionManagerConfig {
     public static final BooleanOption ALLOW_USE_FIREWORK_ON_BLOCK = new BooleanOption("allow_use_firework_on_block");
     public static final BooleanOption ALLOW_ATTACKING_HOSTILE_ENTITIES = new BooleanOption("allow_attacking_hostile_entities");
     public static final BooleanOption ALLOW_ATTACKING_PASSIVE_ENTITIES = new BooleanOption("allow_attacking_passive_entities");
-    public static final EnumOption<DebugInfo> DISPLAY_DEBUG_INFO = new EnumOption<DebugInfo>("display_debug_info",DebugInfo.ERROR);
-
-    public enum DebugInfo{
-        INFO,
-        WARN,
-        ERROR
-    }
 
     private static void setupConfigFile(){
         if(config_path != null){

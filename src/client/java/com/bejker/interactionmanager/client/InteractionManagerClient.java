@@ -65,10 +65,6 @@ public class InteractionManagerClient implements ClientModInitializer {
         if(player == null || target == null){
             return;
         }
-        if(InteractionManagerConfig.DISPLAY_DEBUG_INFO.getValue() == InteractionManagerConfig.DebugInfo.INFO){
-
-            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.literal(String.format("Player %s, attacked entity %s",player,target)));
-        }
         boolean is_hostile = (target instanceof HostileEntity) || Monster.class.isAssignableFrom(target.getClass());
         if(!InteractionManagerConfig.ALLOW_ATTACKING_HOSTILE_ENTITIES.getValue()&&
                 is_hostile){
