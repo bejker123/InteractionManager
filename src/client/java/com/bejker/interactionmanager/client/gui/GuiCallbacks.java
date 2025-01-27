@@ -12,10 +12,6 @@ import java.util.List;
 import static com.bejker.interactionmanager.client.InteractionManagerClient.CLIENT_LOGGER;
 
 public class GuiCallbacks {
-    public static void gameMenuOnInitWidgets(Screen screen, GridWidget gridWidget){
-
-    }
-
     public static void optionsScreenOnInitWidgets(Screen screen, GridWidget gridWidget){
         //for (int i = 0; i < gridWidget.children.size(); i++) {
         //   ButtonWidget button = (ButtonWidget) gridWidget.children.get(i);
