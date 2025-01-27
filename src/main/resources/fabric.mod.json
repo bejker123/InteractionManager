@@ -5,7 +5,10 @@
   "name": "InteractionManager",
   "description": "Client side mod giving the option to toggle log stripping and creating paths.",
   "authors": ["bejker123"],
-  "contact": {},
+  "contact": {
+    "sources": "https://github.com/bejker123/InteractionManager",
+    "issues": "https://github.com/bejker123/InteractionManager/issues"
+  },
   "license": "MIT",
   "icon": "assets/interactionmanager/icon.png",
   "environment": "client",
