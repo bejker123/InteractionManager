@@ -1,5 +1,7 @@
 package com.bejker.interactionmanager.client.gui;
 
+import com.bejker.interactionmanager.InteractionManager;
+import com.bejker.interactionmanager.client.InteractionManagerClient;
 import com.bejker.interactionmanager.config.InteractionManagerConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -7,7 +9,9 @@ import net.minecraft.client.gui.screen.option.OptionsScreen;
 import net.minecraft.client.gui.widget.*;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
+import org.spongepowered.asm.mixin.struct.MemberRef;
 
+import java.lang.reflect.Field;
 import java.util.function.Supplier;
 
 public class InteractionManagerOptionsScreen extends Screen {
@@ -33,15 +37,22 @@ public class InteractionManagerOptionsScreen extends Screen {
         gridWidget.getMainPositioner().marginX(4).marginBottom(4).alignHorizontalCenter().alignVerticalCenter();
         GridWidget.Adder adder = gridWidget.createAdder(2);
 
-        adder.add(ButtonWidget.builder(getBooleanText("Shovel Paths",InteractionManagerConfig.getInstance().ALLOW_SHOVEL_CREATE_PATHS),(button)->{
-            InteractionManagerConfig.getInstance().ALLOW_SHOVEL_CREATE_PATHS = !InteractionManagerConfig.getInstance().ALLOW_SHOVEL_CREATE_PATHS;
-            button.setMessage(getBooleanText("Shovel Paths",InteractionManagerConfig.getInstance().ALLOW_SHOVEL_CREATE_PATHS));
-        }).build());
+        try {
+            adder.add(
+                    this.createButton("Shovel Paths","ALLOW_SHOVEL_CREATE_PATHS")
+            );
 
-        adder.add(ButtonWidget.builder(getBooleanText("Axe Strips",InteractionManagerConfig.getInstance().ALLOW_AXE_STRIP_BLOCKS),(button)->{
-            InteractionManagerConfig.getInstance().ALLOW_AXE_STRIP_BLOCKS = !InteractionManagerConfig.getInstance().ALLOW_AXE_STRIP_BLOCKS;
-            button.setMessage(getBooleanText("Axe Strips",InteractionManagerConfig.getInstance().ALLOW_AXE_STRIP_BLOCKS));
-        }).build());
+            adder.add(
+                    this.createButton("Axe Strips","ALLOW_AXE_STRIP_BLOCKS")
+            );
+
+            adder.add(
+                    this.createButton("Fireworks Work On Blocks","ALLOW_USE_FIREWORK_ON_BLOCK")
+            );
+
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            e.printStackTrace();
+        }
 
         this.layout.addHeader(this.title, MinecraftClient.getInstance().textRenderer);
         this.layout.addBody(gridWidget);
@@ -57,12 +68,18 @@ public class InteractionManagerOptionsScreen extends Screen {
         this.layout.refreshPositions();
     }
 
-    private ButtonWidget createGoToScreenButton(Text text, Supplier<Screen> screenSupplier){
-        return ButtonWidget.builder(text, (button) -> {
-            this.client.setScreen((Screen)screenSupplier.get());
-        }).width(98).build();
+    private ButtonWidget createButton(String name, String field_name) throws IllegalAccessException, NoSuchFieldException {
+        Field field = InteractionManagerConfig.class.getDeclaredField(field_name);
+        return ButtonWidget.builder(getBooleanText(name, field.getBoolean(InteractionManagerConfig.getInstance())),(button)->{
+            try {
+                boolean new_value = !field.getBoolean(InteractionManagerConfig.getInstance());
+                field.setBoolean(InteractionManagerConfig.getInstance(),new_value);
+                button.setMessage(getBooleanText(name,new_value));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }).build();
     }
-
     @Override
     public void close() {
         this.client.setScreen(this.parent);

@@ -7,6 +7,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.AxeItem;
+import net.minecraft.item.FireworkRocketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.util.ActionResult;
@@ -43,6 +44,12 @@ public class InteractionManagerClient implements ClientModInitializer {
             if(AxeItem.STRIPPED_BLOCKS.get(block) != null){
                 cir.setReturnValue(ActionResult.PASS);
             }
+            return;
+        }
+
+        if(!InteractionManagerConfig.getInstance().ALLOW_USE_FIREWORK_ON_BLOCK
+                &&stack.getItem() instanceof FireworkRocketItem){
+                cir.setReturnValue(ActionResult.PASS);
             return;
         }
     }

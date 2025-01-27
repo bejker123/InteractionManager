@@ -19,8 +19,12 @@ import java.util.Locale;
 public class InteractionManagerConfig {
     private static final InteractionManagerConfig instance = new InteractionManagerConfig();
     private static Path config_path;
+
+    //TODO: reformat into actual game options, implemented by mojang
     public boolean ALLOW_SHOVEL_CREATE_PATHS = true;
     public boolean ALLOW_AXE_STRIP_BLOCKS = true;
+
+    public boolean ALLOW_USE_FIREWORK_ON_BLOCK = true;
 
     public static InteractionManagerConfig getInstance() {
         return instance;
