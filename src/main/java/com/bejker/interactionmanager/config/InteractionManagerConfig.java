@@ -26,6 +26,10 @@ public class InteractionManagerConfig {
 
     public boolean ALLOW_USE_FIREWORK_ON_BLOCK = true;
 
+    public boolean ALLOW_ATTACKING_HOSTILE_ENTITIES = true;
+
+    public boolean ALLOW_ATTACKING_PASSIVE_ENTITIES = true;
+
     public static InteractionManagerConfig getInstance() {
         return instance;
     }

@@ -1,22 +1,17 @@
 package com.bejker.interactionmanager.client.gui;
 
-import com.bejker.interactionmanager.InteractionManager;
-import com.bejker.interactionmanager.client.InteractionManagerClient;
 import com.bejker.interactionmanager.config.InteractionManagerConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.option.OptionsScreen;
 import net.minecraft.client.gui.widget.*;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
-import org.spongepowered.asm.mixin.struct.MemberRef;
 
 import java.lang.reflect.Field;
-import java.util.function.Supplier;
 
 public class InteractionManagerOptionsScreen extends Screen {
     private final Screen parent;
-    private final ThreePartsLayoutWidget layout = new ThreePartsLayoutWidget(this, 61, 33);
+    private final ThreePartsLayoutWidget layout = new ThreePartsLayoutWidget(this, 21, 33);
     public InteractionManagerOptionsScreen(Text title,Screen parent) {
         super(title);
         this.parent = parent;
@@ -48,6 +43,14 @@ public class InteractionManagerOptionsScreen extends Screen {
 
             adder.add(
                     this.createButton("Fireworks Work On Blocks","ALLOW_USE_FIREWORK_ON_BLOCK")
+            );
+
+            adder.add(
+                    this.createButton("Attack Hostile Mobs","ALLOW_ATTACKING_HOSTILE_ENTITIES")
+            );
+
+            adder.add(
+                    this.createButton("Attack Passive Mobs","ALLOW_ATTACKING_PASSIVE_ENTITIES")
             );
 
         } catch (IllegalAccessException | NoSuchFieldException e) {
