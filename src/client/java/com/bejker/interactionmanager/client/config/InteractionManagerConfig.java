@@ -1,11 +1,14 @@
-package com.bejker.interactionmanager.config;
+package com.bejker.interactionmanager.client.config;
 
 import com.bejker.interactionmanager.InteractionManager;
+import com.bejker.interactionmanager.client.config.option.BooleanOption;
+import com.bejker.interactionmanager.client.config.option.IOptionConvertable;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.option.SimpleOption;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -14,28 +17,16 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class InteractionManagerConfig {
-    private static final InteractionManagerConfig instance = new InteractionManagerConfig();
     private static Path config_path;
-
-    //TODO: reformat into actual game options, implemented by mojang
-    public boolean ALLOW_SHOVEL_CREATE_PATHS = true;
-    public boolean ALLOW_AXE_STRIP_BLOCKS = true;
-
-    public boolean ALLOW_USE_FIREWORK_ON_BLOCK = true;
-
-    public boolean ALLOW_ATTACKING_HOSTILE_ENTITIES = true;
-
-    public boolean ALLOW_ATTACKING_PASSIVE_ENTITIES = true;
-
-    public static InteractionManagerConfig getInstance() {
-        return instance;
-    }
-
-    private InteractionManagerConfig(){
-    }
+    public static final BooleanOption ALLOW_SHOVEL_CREATE_PATHS = new BooleanOption("allow_shovel_create_paths");
+    public static final BooleanOption ALLOW_AXE_STRIP_BLOCKS = new BooleanOption("allow_axe_strip_blocks");
+    public static final BooleanOption ALLOW_USE_FIREWORK_ON_BLOCK = new BooleanOption("allow_use_firework_on_block");
+    public static final BooleanOption ALLOW_ATTACKING_HOSTILE_ENTITIES = new BooleanOption("allow_attacking_hostile_entities");
+    public static final BooleanOption ALLOW_ATTACKING_PASSIVE_ENTITIES = new BooleanOption("allow_attacking_passive_entities");
 
     private static void setupConfigFile(){
         if(config_path != null){
@@ -43,7 +34,23 @@ public class InteractionManagerConfig {
         }
         config_path = FabricLoader.getInstance().getConfigDir().resolve(InteractionManager.MOD_ID + ".json");
     }
-    public void loadConfig(){
+
+    public static SimpleOption<?>[] asOptions() {
+        ArrayList<SimpleOption<?>> options = new ArrayList<>();
+        for (Field field : InteractionManagerConfig.class.getDeclaredFields()) {
+            if (Modifier.isStatic(field.getModifiers()) && Modifier.isFinal(field.getModifiers()) &&
+                    IOptionConvertable.class.isAssignableFrom(field.getType())) {
+                try {
+                    options.add(((IOptionConvertable) field.get(null)).asOption());
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return options.stream().toArray(SimpleOption[]::new);
+    }
+
+    public static void loadConfig(){
         setupConfigFile();
 
         if (!Files.exists(config_path)) {
@@ -54,16 +61,14 @@ public class InteractionManagerConfig {
             BufferedReader reader = Files.newBufferedReader(config_path);
             JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
             for(Field field: InteractionManagerConfig.class.getDeclaredFields()){
-                if(Modifier.isStatic(field.getModifiers())){
-                    continue;
-                }
                 String field_name = field.getName().toLowerCase(Locale.ROOT);
-                if(field.getType() == boolean.class){
+                if (BooleanOption.class.isAssignableFrom(field.getType())) {
+                    BooleanOption option = (BooleanOption) field.get(null) ;
                     JsonPrimitive value = json.getAsJsonPrimitive(field_name);
                     if(value == null){
                         continue;
                     }
-                    field.set(this,value.getAsBoolean());
+                    option.setValue(value.getAsBoolean());
                 }
             }
 
@@ -73,18 +78,16 @@ public class InteractionManagerConfig {
         }
     }
 
-    public void saveConfig() {
+    public static void saveConfig() {
         setupConfigFile();
         JsonObject config = new JsonObject();
 
         try {
             for (Field field : InteractionManagerConfig.class.getDeclaredFields()) {
-                if (Modifier.isStatic(field.getModifiers())) {
-                    continue;
-                }
                 String field_name = field.getName().toLowerCase(Locale.ROOT);
-                if (field.getType() == boolean.class) {
-                    config.addProperty(field_name, field.getBoolean(this));
+                if (BooleanOption.class.isAssignableFrom(field.getType())) {
+                    BooleanOption option = (BooleanOption) field.get(null) ;
+                    config.addProperty(field_name, option.getValue());
                 }
             }
         } catch (IllegalAccessException e) {

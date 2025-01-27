@@ -1,7 +1,6 @@
 package com.bejker.interactionmanager.client.mixin;
 
 import com.bejker.interactionmanager.client.InteractionManagerClient;
-import com.bejker.interactionmanager.config.InteractionManagerConfig;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.entity.Entity;

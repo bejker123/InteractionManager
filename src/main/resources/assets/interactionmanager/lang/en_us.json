@@ -1,0 +1,12 @@
+{
+  "button.interactionmanager.interactions_screen": "Interactions",
+
+  "option.interactionmanager.on": "ON",
+  "option.interactionmanager.off": "OFF",
+
+  "option.interactionmanager.allow_shovel_create_paths": "Shovel Paths",
+  "option.interactionmanager.allow_axe_strip_blocks":"Axe Strips",
+  "option.interactionmanager.allow_use_firework_on_block": "Use Fireworks On Blocks",
+  "option.interactionmanager.allow_attacking_hostile_entities": "Attack Hostile Mobs",
+  "option.interactionmanager.allow_attacking_passive_entities": "Attack Passive Mobs"
+}

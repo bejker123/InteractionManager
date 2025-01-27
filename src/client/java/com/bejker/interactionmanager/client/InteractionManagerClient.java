@@ -1,6 +1,6 @@
 package com.bejker.interactionmanager.client;
 
-import com.bejker.interactionmanager.config.InteractionManagerConfig;
+import com.bejker.interactionmanager.client.config.InteractionManagerConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
@@ -36,7 +36,7 @@ public class InteractionManagerClient implements ClientModInitializer {
         }
         Block block = world.getBlockState(hitResult.getBlockPos()).getBlock();
 
-        if(!InteractionManagerConfig.getInstance().ALLOW_SHOVEL_CREATE_PATHS
+        if(!InteractionManagerConfig.ALLOW_SHOVEL_CREATE_PATHS.getValue()
                 &&stack.getItem() instanceof ShovelItem){
             if(ShovelItem.PATH_STATES.get(block) != null){
                 cir.setReturnValue(ActionResult.PASS);
@@ -44,7 +44,7 @@ public class InteractionManagerClient implements ClientModInitializer {
             return;
         }
 
-        if(!InteractionManagerConfig.getInstance().ALLOW_AXE_STRIP_BLOCKS
+        if(!InteractionManagerConfig.ALLOW_AXE_STRIP_BLOCKS.getValue()
                 &&stack.getItem() instanceof AxeItem){
             if(AxeItem.STRIPPED_BLOCKS.get(block) != null){
                 cir.setReturnValue(ActionResult.PASS);
@@ -52,7 +52,7 @@ public class InteractionManagerClient implements ClientModInitializer {
             return;
         }
 
-        if(!InteractionManagerConfig.getInstance().ALLOW_USE_FIREWORK_ON_BLOCK
+        if(!InteractionManagerConfig.ALLOW_USE_FIREWORK_ON_BLOCK.getValue()
                 &&stack.getItem() instanceof FireworkRocketItem){
                 cir.setReturnValue(ActionResult.PASS);
             return;
@@ -64,12 +64,12 @@ public class InteractionManagerClient implements ClientModInitializer {
             return;
         }
         boolean is_hostile = (target instanceof HostileEntity) || Monster.class.isAssignableFrom(target.getClass());
-        if(!InteractionManagerConfig.getInstance().ALLOW_ATTACKING_HOSTILE_ENTITIES&&
+        if(!InteractionManagerConfig.ALLOW_ATTACKING_HOSTILE_ENTITIES.getValue()&&
                 is_hostile){
            ci.cancel();
            return;
         }
-        if(!InteractionManagerConfig.getInstance().ALLOW_ATTACKING_PASSIVE_ENTITIES&&
+        if(!InteractionManagerConfig.ALLOW_ATTACKING_PASSIVE_ENTITIES.getValue()&&
                 !is_hostile){
             ci.cancel();
             return;
@@ -78,6 +78,6 @@ public class InteractionManagerClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        InteractionManagerConfig.getInstance().loadConfig();
+        InteractionManagerConfig.loadConfig();
     }
 }
