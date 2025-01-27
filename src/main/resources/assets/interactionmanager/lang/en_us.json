@@ -15,5 +15,11 @@
   "option.interactionmanager.allow_attacking_passive_entities": "Attack Passive Mobs",
   "option.interactionmanager.allow_attacking_passive_entities.tooltip": "Toggle the ability to attack and damage passive mobs",
   "option.interactionmanager.allow_attacking_villagers": "Attack Villagers",
-  "option.interactionmanager.allow_attacking_villagers.tooltip": "Toggle the ability to attack and damage villagers.\nIf Attack Passive Mobs is OFF this will have no effect."
+  "option.interactionmanager.allow_attacking_villagers.tooltip": "Toggle the ability to attack and damage villagers.\nIf Attack Passive Mobs is OFF this will have no effect.",
+  "option.interactionmanager.pet_attack_mode": "Attack Pets",
+  "option.interactionmanager.pet_attack_mode.all": "All",
+  "option.interactionmanager.pet_attack_mode.only_other": "Only Not Yours",
+  "option.interactionmanager.pet_attack_mode.not_tamed": "Only Not Tamed",
+  "option.interactionmanager.pet_attack_mode.none": "None",
+  "option.interactionmanager.pet_attack_mode.tooltip": "All - you can attack all pets\nOnly Not Yours - You can attack not tamed pets and other players' pets\nNot Tamed - You can only attack not tamed pets\nNone - You can't attack any tamable mobs\nIf Attack Passive Mobs is OFF this will have no effect"
 }

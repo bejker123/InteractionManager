@@ -9,6 +9,8 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.Monster;
+import net.minecraft.entity.passive.CatEntity;
+import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
@@ -75,6 +77,20 @@ public class InteractionManagerClient implements ClientModInitializer {
         if(!InteractionManagerConfig.ALLOW_ATTACKING_PASSIVE_ENTITIES.getValue()&&
                 !is_hostile){
             ci.cancel();
+            return;
+        }
+        if(target instanceof TameableEntity pet){
+            InteractionManagerConfig.PetAttackMode petAttackMode = InteractionManagerConfig.PET_ATTACK_MODE.getValue();
+            if(petAttackMode == InteractionManagerConfig.PetAttackMode.NONE){
+                ci.cancel();
+            }
+            boolean is_owner = pet.isOwner(player);
+            if(is_owner && petAttackMode == InteractionManagerConfig.PetAttackMode.ONLY_OTHER){
+                ci.cancel();
+            }
+            if(pet.isTamed() && petAttackMode == InteractionManagerConfig.PetAttackMode.NOT_TAMED){
+                ci.cancel();
+            }
             return;
         }
         if(!InteractionManagerConfig.ALLOW_ATTACKING_VILLAGERS.getValue() && target instanceof VillagerEntity){

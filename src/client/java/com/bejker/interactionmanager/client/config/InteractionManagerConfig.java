@@ -34,6 +34,15 @@ public class InteractionManagerConfig {
 
     public static final BooleanOption ALLOW_ATTACKING_VILLAGERS = new BooleanOption("allow_attacking_villagers");
 
+    public static final EnumOption<PetAttackMode> PET_ATTACK_MODE = new EnumOption<PetAttackMode>("pet_attack_mode",PetAttackMode.ALL);
+
+    public enum PetAttackMode{
+        ALL,
+        ONLY_OTHER,
+        NOT_TAMED,
+        NONE
+    }
+
     private static void setupConfigFile(){
         if(config_path != null){
             return;
