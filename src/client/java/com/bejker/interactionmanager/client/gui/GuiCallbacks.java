@@ -7,19 +7,14 @@ import net.minecraft.client.gui.widget.GridWidget;
 import net.minecraft.text.Text;
 
 public class GuiCallbacks {
-    public static void optionsScreenOnInitWidgets(Screen screen, GridWidget gridWidget){
-        //for (int i = 0; i < gridWidget.children.size(); i++) {
-        //   ButtonWidget button = (ButtonWidget) gridWidget.children.get(i);
-        //   CLIENT_LOGGER.info("{}",button.getMessage());
-        //}
+    public static void optionsScreenOnInitWidgets(GridWidget.Adder adder){
         MinecraftClient client = MinecraftClient.getInstance();
-        gridWidget.add(
+        adder.add(
                 ButtonWidget.builder(Text.literal("Interactions"),
                 (interactions_button) -> {
                     client.setScreen(new OptionsScreen(Text.of("Interactions"), client.currentScreen));
                 })
-                .build()
-                ,6,0);
+                .build());
     }
 }
 

@@ -20,10 +20,10 @@ public class OptionsScreenMixin extends Screen {
     }
 
    @Inject(method = "init",at= @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/ThreePartsLayoutWidget;forEachChild(Ljava/util/function/Consumer;)V"),locals = LocalCapture.CAPTURE_FAILSOFT)
-    protected void onInit(CallbackInfo ci,DirectionalLayoutWidget dli,DirectionalLayoutWidget dli2,GridWidget gridWidget) {
+    protected void onInit(CallbackInfo ci,DirectionalLayoutWidget dli,DirectionalLayoutWidget dli2,GridWidget gridWidget,GridWidget.Adder adder) {
         if(gridWidget == null){
             return;
         }
-       GuiCallbacks.optionsScreenOnInitWidgets(this,gridWidget);
+       GuiCallbacks.optionsScreenOnInitWidgets(adder);
     }
 }
