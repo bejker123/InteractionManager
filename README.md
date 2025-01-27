@@ -6,6 +6,9 @@
 - Fireworks working on blocks
 - Attacking hostile mobs
 - Attacking passive mobs
+- Attacking Villagers
+
+#### Also choose which pets you can attack.
 
 These options can be changed in the game menu (see the gallery).
 
