@@ -1,8 +1,8 @@
 # Interaction Manager
 
-![Screenshot of the Interactions Menu, showing the available options.](https://raw.githubusercontent.com/bejker123/InteractionManager/refs/heads/master/res/interactions_menu_screenshot.png)
+![Screenshot of the Interactions Menu, showing the available options.](res/interactions_menu_screenshot.png)
 
-Interaction manager is a client side mod allowing you to toggle certain block and mob interactions.
+Interaction Manager is a client side mod allowing you to toggle certain block and mob interactions. 
 
 ### Simply Enable or Disable
 - Shovels creating paths
@@ -14,7 +14,14 @@ Interaction manager is a client side mod allowing you to toggle certain block an
 
 It also gives you the option to stop the player from attacking your pets, others' pets or all tamable mobs.
 
-These options can be changed in the game menu (see the gallery).
+These options are easily accessible in the in game 'Interactions' menu. As shown above.
+To access them go to Options>Interactions
+<details>
+<summary>Show Image</summary>
+
+![Screenshot of the in game options menu, showing the 'Interactions' button.](res/interactions_button.png)
+
+</details>
 
 ### Suggestions and Issues
 If you have any **suggestions** or run into some **issues** please create a new ticket on the **[Issue Tracker](https://github.com/bejker123/InteractionManager/issues)**.
