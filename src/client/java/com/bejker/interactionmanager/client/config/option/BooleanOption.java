@@ -33,11 +33,11 @@ public class BooleanOption implements IOptionConvertable{
         this(key, defaultValue, "true", "false");
     }
 
-    //Default value set to false
+    //Default value set to true
     public BooleanOption(String key) {
         this.key = key;
         this.translation_key = Util.translationKeyOf(TRANSLATION_KEY_TYPE,key);
-        this.default_value = false;
+        this.default_value = true;
         this.enabled_text = OPTION_ON_TEXT;
         this.disabled_text = OPTION_OFF_TEXT;
         this.tooltip_key = Util.getTooltipTranslationKey(TRANSLATION_KEY_TYPE,key);
