@@ -1,5 +1,6 @@
 package com.bejker.interactionmanager.client.config.option;
 
+import com.bejker.interactionmanager.util.Util;
 import net.minecraft.client.option.SimpleOption;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;

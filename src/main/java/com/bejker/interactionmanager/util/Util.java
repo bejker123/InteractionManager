@@ -1,4 +1,4 @@
-package com.bejker.interactionmanager.client.config.option;
+package com.bejker.interactionmanager.util;
 
 import com.bejker.interactionmanager.InteractionManager;
 
