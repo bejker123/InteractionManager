@@ -13,5 +13,7 @@
   "option.interactionmanager.allow_attacking_hostile_entities": "Attack Hostile Mobs",
   "option.interactionmanager.allow_attacking_hostile_entities.tooltip": "Toggle the ability to attack and damage hostile mobs",
   "option.interactionmanager.allow_attacking_passive_entities": "Attack Passive Mobs",
-  "option.interactionmanager.allow_attacking_passive_entities.tooltip": "Toggle the ability to attack and damage passive mobs"
+  "option.interactionmanager.allow_attacking_passive_entities.tooltip": "Toggle the ability to attack and damage passive mobs",
+  "option.interactionmanager.allow_attacking_villagers": "Attack Villagers",
+  "option.interactionmanager.allow_attacking_villagers.tooltip": "Toggle the ability to attack and damage villagers.\nIf Attack Passive Mobs is OFF this will have no effect."
 }

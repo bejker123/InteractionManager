@@ -9,6 +9,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.Monster;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.FireworkRocketItem;
@@ -75,6 +76,9 @@ public class InteractionManagerClient implements ClientModInitializer {
                 !is_hostile){
             ci.cancel();
             return;
+        }
+        if(!InteractionManagerConfig.ALLOW_ATTACKING_VILLAGERS.getValue() && target instanceof VillagerEntity){
+            ci.cancel();
         }
     }
 
