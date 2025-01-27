@@ -10,7 +10,7 @@ public class GuiCallbacks {
     public static void optionsScreenOnInitWidgets(GridWidget.Adder adder){
         MinecraftClient client = MinecraftClient.getInstance();
         adder.add(
-                ButtonWidget.builder(Text.translatable("button.interactionmanager.interactions_screen"),
+                ButtonWidget.builder(Text.translatable("screen.interactionmanager.interactions"),
                 (interactions_button) -> {
                     client.setScreen(new OptionsScreen(client.currentScreen));
                 })

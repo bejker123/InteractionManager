@@ -2,6 +2,8 @@ package com.bejker.interactionmanager.client.config;
 
 import com.bejker.interactionmanager.InteractionManager;
 import com.bejker.interactionmanager.client.config.option.BooleanOption;
+import com.bejker.interactionmanager.client.config.option.ConfigStorage;
+import com.bejker.interactionmanager.client.config.option.EnumOption;
 import com.bejker.interactionmanager.client.config.option.IOptionConvertable;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -15,6 +17,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -27,6 +31,13 @@ public class InteractionManagerConfig {
     public static final BooleanOption ALLOW_USE_FIREWORK_ON_BLOCK = new BooleanOption("allow_use_firework_on_block");
     public static final BooleanOption ALLOW_ATTACKING_HOSTILE_ENTITIES = new BooleanOption("allow_attacking_hostile_entities");
     public static final BooleanOption ALLOW_ATTACKING_PASSIVE_ENTITIES = new BooleanOption("allow_attacking_passive_entities");
+    public static final EnumOption<DebugInfo> DISPLAY_DEBUG_INFO = new EnumOption<DebugInfo>("display_debug_info",DebugInfo.ERROR);
+
+    public enum DebugInfo{
+        INFO,
+        WARN,
+        ERROR
+    }
 
     private static void setupConfigFile(){
         if(config_path != null){
@@ -69,6 +80,25 @@ public class InteractionManagerConfig {
                         continue;
                     }
                     option.setValue(value.getAsBoolean());
+                } else if (EnumOption.class.isAssignableFrom(field.getType()) && field.getGenericType() instanceof ParameterizedType) {
+                    JsonPrimitive jsonPrimitive = json.getAsJsonPrimitive(field.getName()
+                            .toLowerCase(Locale.ROOT));
+                    if (jsonPrimitive != null && jsonPrimitive.isString()) {
+                        Type generic = ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
+                        if (generic instanceof Class<?>) {
+                            EnumOption<?> option = (EnumOption<?>) field.get(null);
+                            Enum<?> found = null;
+                            for (Enum<?> value : ((Class<Enum<?>>) generic).getEnumConstants()) {
+                                if (value.name().toLowerCase(Locale.ROOT).equals(jsonPrimitive.getAsString())) {
+                                    found = value;
+                                    break;
+                                }
+                            }
+                            if (found != null) {
+                                ConfigStorage.setEnumRaw(option.getKey(), found);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -88,6 +118,16 @@ public class InteractionManagerConfig {
                 if (BooleanOption.class.isAssignableFrom(field.getType())) {
                     BooleanOption option = (BooleanOption) field.get(null) ;
                     config.addProperty(field_name, option.getValue());
+                }else if (EnumOption.class.isAssignableFrom(field.getType()) && field.getGenericType() instanceof ParameterizedType) {
+                    Type generic = ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
+                    if (generic instanceof Class<?>) {
+                        EnumOption<?> option = (EnumOption<?>) field.get(null);
+                        config.addProperty(field.getName().toLowerCase(Locale.ROOT),
+                                ConfigStorage.getEnumRaw(option.getKey(), (Class<Enum<?>>) generic)
+                                        .name()
+                                        .toLowerCase(Locale.ROOT)
+                        );
+                    }
                 }
             }
         } catch (IllegalAccessException e) {

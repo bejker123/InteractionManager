@@ -24,7 +24,7 @@ public class BooleanOption implements IOptionConvertable{
        this.default_value = default_value;
        this.enabled_text = Text.translatable(this.translation_key + "." + enabled_key);
        this.disabled_text = Text.translatable(this.translation_key + "." + disabled_key);
-       this.tooltip_key = getTooltipTranslationKey(key);
+       this.tooltip_key = Util.getTooltipTranslationKey(TRANSLATION_KEY_TYPE,key);
 
        ConfigStorage.setBoolean(key,default_value);
    }
@@ -40,14 +40,11 @@ public class BooleanOption implements IOptionConvertable{
         this.default_value = false;
         this.enabled_text = OPTION_ON_TEXT;
         this.disabled_text = OPTION_OFF_TEXT;
-        this.tooltip_key = getTooltipTranslationKey(key);
+        this.tooltip_key = Util.getTooltipTranslationKey(TRANSLATION_KEY_TYPE,key);
 
         ConfigStorage.setBoolean(key,default_value);
     }
 
-    private static String getTooltipTranslationKey(String key){
-        return Util.translationKeyOf(TRANSLATION_KEY_TYPE,key) + ".tooltip";
-    }
     public String getKey(){
        return key;
     }

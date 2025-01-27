@@ -9,7 +9,7 @@ import net.minecraft.text.Text;
 
 public class OptionsScreen extends GameOptionsScreen {
     public OptionsScreen(Screen parent) {
-        super(parent,MinecraftClient.getInstance().options,Text.translatable("interactionmanager.options"));
+        super(parent,MinecraftClient.getInstance().options,Text.translatable("screen.interactionmanager.interactions"));
     }
 
 

@@ -14,6 +14,8 @@ import net.minecraft.item.AxeItem;
 import net.minecraft.item.FireworkRocketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShovelItem;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -62,6 +64,10 @@ public class InteractionManagerClient implements ClientModInitializer {
     public static void onAttackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {
         if(player == null || target == null){
             return;
+        }
+        if(InteractionManagerConfig.DISPLAY_DEBUG_INFO.getValue() == InteractionManagerConfig.DebugInfo.INFO){
+
+            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.literal(String.format("Player %s, attacked entity %s",player,target)));
         }
         boolean is_hostile = (target instanceof HostileEntity) || Monster.class.isAssignableFrom(target.getClass());
         if(!InteractionManagerConfig.ALLOW_ATTACKING_HOSTILE_ENTITIES.getValue()&&
