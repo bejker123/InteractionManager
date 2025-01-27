@@ -4,6 +4,8 @@ import com.bejker.interactionmanager.util.Util;
 import net.minecraft.client.option.SimpleOption;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
+import net.minecraft.text.Texts;
+import org.apache.http.util.TextUtils;
 
 public class BooleanOption implements IOptionConvertable{
     private final String key;
@@ -11,15 +13,18 @@ public class BooleanOption implements IOptionConvertable{
     private final boolean default_value;
     private final Text enabled_text;
     private final Text disabled_text;
+    private final String tooltip_key;
     private static final Text OPTION_ON_TEXT = Text.translatable("option.interactionmanager.on");
     private static final Text OPTION_OFF_TEXT = Text.translatable("option.interactionmanager.off");
+    private static final String TRANSLATION_KEY_TYPE = "option";
 
    public BooleanOption(String key,boolean default_value,String enabled_key,String disabled_key) {
        this.key = key;
-       this.translation_key = Util.translationKeyOf("option",key);
+       this.translation_key = Util.translationKeyOf(TRANSLATION_KEY_TYPE,key);
        this.default_value = default_value;
        this.enabled_text = Text.translatable(this.translation_key + "." + enabled_key);
        this.disabled_text = Text.translatable(this.translation_key + "." + disabled_key);
+       this.tooltip_key = getTooltipTranslationKey(key);
 
        ConfigStorage.setBoolean(key,default_value);
    }
@@ -31,14 +36,18 @@ public class BooleanOption implements IOptionConvertable{
     //Default value set to false
     public BooleanOption(String key) {
         this.key = key;
-        this.translation_key = Util.translationKeyOf("option",key);
+        this.translation_key = Util.translationKeyOf(TRANSLATION_KEY_TYPE,key);
         this.default_value = false;
         this.enabled_text = OPTION_ON_TEXT;
         this.disabled_text = OPTION_OFF_TEXT;
+        this.tooltip_key = getTooltipTranslationKey(key);
 
         ConfigStorage.setBoolean(key,default_value);
     }
 
+    private static String getTooltipTranslationKey(String key){
+        return Util.translationKeyOf(TRANSLATION_KEY_TYPE,key) + ".tooltip";
+    }
     public String getKey(){
        return key;
     }
@@ -70,7 +79,8 @@ public class BooleanOption implements IOptionConvertable{
            return SimpleOption.ofBoolean(translation_key,getValue(),(value) -> ConfigStorage.setBoolean(key,value));
        }
         return new SimpleOption<>(translation_key,
-                SimpleOption.emptyTooltip(),
+                Texts.hasTranslation(Text.translatable(tooltip_key)) ?
+                        SimpleOption.constantTooltip(Text.translatable(tooltip_key)) : SimpleOption.emptyTooltip(),
                 (text,value) -> value ? enabled_text : disabled_text,
                 SimpleOption.BOOLEAN,
                 getValue(),

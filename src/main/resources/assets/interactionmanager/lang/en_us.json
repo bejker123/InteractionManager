@@ -5,8 +5,13 @@
   "option.interactionmanager.off": "OFF",
 
   "option.interactionmanager.allow_shovel_create_paths": "Shovel Paths",
+  "option.interactionmanager.allow_shovel_create_paths.tooltip": "Toggle shovels creating paths when used on dirt-like blocks",
   "option.interactionmanager.allow_axe_strip_blocks":"Axe Strips",
+  "option.interactionmanager.allow_axe_strip_blocks.tooltip": "Toggle axes stripping blocks, such as logs",
   "option.interactionmanager.allow_use_firework_on_block": "Use Fireworks On Blocks",
+  "option.interactionmanager.allow_use_firework_on_block.tooltip": "Toggle setting off fireworks when used on blocks",
   "option.interactionmanager.allow_attacking_hostile_entities": "Attack Hostile Mobs",
-  "option.interactionmanager.allow_attacking_passive_entities": "Attack Passive Mobs"
+  "option.interactionmanager.allow_attacking_hostile_entities.tooltip": "Toggle the ability to attack and damage hostile mobs",
+  "option.interactionmanager.allow_attacking_passive_entities": "Attack Passive Mobs",
+  "option.interactionmanager.allow_attacking_passive_entities.tooltip": "Toggle the ability to attack and damage passive mobs"
 }
