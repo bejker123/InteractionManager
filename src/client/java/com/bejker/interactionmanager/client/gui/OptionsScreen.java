@@ -9,10 +9,10 @@ import net.minecraft.text.Text;
 
 import java.lang.reflect.Field;
 
-public class InteractionManagerOptionsScreen extends Screen {
+public class OptionsScreen extends Screen {
     private final Screen parent;
     private final ThreePartsLayoutWidget layout = new ThreePartsLayoutWidget(this, 21, 33);
-    public InteractionManagerOptionsScreen(Text title,Screen parent) {
+    public OptionsScreen(Text title, Screen parent) {
         super(title);
         this.parent = parent;
     }
