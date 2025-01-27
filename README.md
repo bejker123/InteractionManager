@@ -1,14 +1,18 @@
 # Interaction Manager
-## Easily toggle which interactions you prefer!
-### Simply enable or disable interactions such as:
+
+![Screenshot of the Interactions Menu, showing the available options.](https://raw.githubusercontent.com/bejker123/InteractionManager/refs/heads/master/res/interactions_menu_screenshot.png)
+
+Interaction manager is a client side mod allowing you to toggle certain block and mob interactions.
+
+### Simply Enable or Disable
 - Shovels creating paths
 - Axes stripping blocks
 - Fireworks working on blocks
 - Attacking hostile mobs
 - Attacking passive mobs
-- Attacking Villagers
+- Attacking villagers 
 
-#### Also choose which pets you can attack.
+It also gives you the option to stop the player from attacking your pets, others' pets or all tamable mobs.
 
 These options can be changed in the game menu (see the gallery).
 
