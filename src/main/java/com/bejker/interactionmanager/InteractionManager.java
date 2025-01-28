@@ -1,6 +1,5 @@
 package com.bejker.interactionmanager;
 
-import com.bejker.interactionmanager.config.InteractionManagerConfig;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
