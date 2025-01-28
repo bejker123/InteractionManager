@@ -2,7 +2,6 @@ package com.bejker.interactionmanager.client.config;
 
 import com.bejker.interactionmanager.InteractionManager;
 import com.bejker.interactionmanager.client.config.option.*;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
@@ -171,7 +170,7 @@ public class InteractionManagerConfig {
             e.printStackTrace();
         }
 
-        String string = new Gson().toJson(config);
+        String string = InteractionManager.GSON.toJson(config);
 
         try {
             BufferedWriter writer = Files.newBufferedWriter(config_path);
