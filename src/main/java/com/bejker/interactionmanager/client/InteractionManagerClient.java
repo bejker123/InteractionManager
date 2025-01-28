@@ -24,20 +24,16 @@ import org.slf4j.LoggerFactory;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Objects;
+import java.util.UUID;
+
 import static com.bejker.interactionmanager.InteractionManager.MOD_ID;
 
 public class InteractionManagerClient implements ClientModInitializer {
 
     public static Logger CLIENT_LOGGER = LoggerFactory.getLogger(MOD_ID+":client");
 
-    public static void onInteractBlock(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
-        ItemStack stack = player.getStackInHand(hand);
-        ClientWorld world = MinecraftClient.getInstance().world;
-        if(world == null){
-            return;
-        }
-        Block block = world.getBlockState(hitResult.getBlockPos()).getBlock();
-
+    public static void onInteractBlock(ItemStack stack, Block block, CallbackInfoReturnable<ActionResult> cir) {
         if(!InteractionManagerConfig.ALLOW_SHOVEL_CREATE_PATHS.getValue()
                 &&stack.getItem() instanceof ShovelItem){
             if(ShovelItem.PATH_STATES.get(block) != null){
@@ -57,14 +53,10 @@ public class InteractionManagerClient implements ClientModInitializer {
         if(!InteractionManagerConfig.ALLOW_USE_FIREWORK_ON_BLOCK.getValue()
                 &&stack.getItem() instanceof FireworkRocketItem){
                 cir.setReturnValue(ActionResult.PASS);
-            return;
         }
     }
 
-    public static void onAttackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {
-        if(player == null || target == null){
-            return;
-        }
+    public static void onAttackEntity(UUID player_uuid, Entity target, CallbackInfo ci) {
         boolean is_hostile = (target instanceof HostileEntity) || Monster.class.isAssignableFrom(target.getClass());
         if(!InteractionManagerConfig.ALLOW_ATTACKING_HOSTILE_ENTITIES.getValue()&&
                 is_hostile){
@@ -81,7 +73,7 @@ public class InteractionManagerClient implements ClientModInitializer {
             if(petAttackMode == InteractionManagerConfig.PetAttackMode.NONE){
                 ci.cancel();
             }
-            boolean is_owner = pet.isOwner(player);
+            boolean is_owner = Objects.equals(pet.getOwnerUuid(), player_uuid);
             if(is_owner && petAttackMode == InteractionManagerConfig.PetAttackMode.ONLY_OTHER){
                 ci.cancel();
             }
