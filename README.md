@@ -14,8 +14,11 @@ Interaction Manager is a client side mod allowing you to toggle certain block an
 
 It also gives you the option to stop the player from attacking your pets, others' pets or all tamable mobs.
 
-These options are easily accessible in the in game 'Interactions' menu. As shown above.
-To access them go to Options>Interactions
+If Mod Menu isn't installed these options are easily accessible in the in game 'Interactions' menu. As shown above.
+To access them go to `Options`>`Interactions`
+
+If Mod Menu is installed by default the `Interactions` button is hidden. And the settings can be changed using Mod Menu.
+To show the `Interacions` button if Mod Menu is installed see the [Config Section](#config).
 <details>
 <summary>Show Image</summary>
 
@@ -29,14 +32,16 @@ To access them go to Options>Interactions
 
 #### If you don't intend to change more advanced options feel free to skip this section.
 **Options related to player behaviour (block and mob interactions) are accessible in the in game options menu.**
-The config file path is `config/interactionmanager.json`.
+
+The configuration file allows for more fine-tuning and isn't necessary to edit.
+It's located in `config/interactionmanager.json`.
 It's stored in JSON, which is easy to read and modify.
 
 ### Options only available in the config file
 1. `should_add_interactions_button` - The mod settings can be opened using Mod Menu, as such this option controls if the button should be added.
-   - `always` - Always add the 'Interactions' button to the in game options menu.
-   - *default* `only_if_mod_menu_is_not_installed` - Add the 'Interactions' button only if Mod Menu isn't installed.
-   - `never` - Don't add the 'Interactions' button.
+   - `always` - Always show the `Interactions` button.
+   - *default* `only_if_mod_menu_is_not_installed` - Hide the `Interactions` button if mod menu is installed.
+   - `never` - Hide the `Interactions` button.
 
 </details>
 
