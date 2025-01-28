@@ -48,6 +48,11 @@ public class OptionsScreen extends GameOptionsScreen {
         this.renderBackground(context, mouseX, mouseY, delta);
 
         this.restore_defaults.active = !InteractionManagerConfig.areOptionValuesSetToDefault();
+        if(this.restore_defaults.active){
+           this.restore_defaults.setTooltip(Tooltip.of(Text.translatable("button.interactionmanager.restore_defaults.active.tooltip")));
+        }else{
+            this.restore_defaults.setTooltip(null);
+        }
 
         for (Drawable drawable : this.drawables) {
             drawable.render(context, mouseX, mouseY, delta);
