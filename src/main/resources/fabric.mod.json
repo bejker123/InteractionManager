@@ -21,7 +21,6 @@
     ]
   },
   "mixins": [
-    "interactionmanager.mixins.json",
     {
       "config": "interactionmanager.client.mixins.json",
       "environment": "client"

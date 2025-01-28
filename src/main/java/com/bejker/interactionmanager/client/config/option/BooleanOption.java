@@ -5,7 +5,6 @@ import net.minecraft.client.option.SimpleOption;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.minecraft.text.Texts;
-import org.apache.http.util.TextUtils;
 
 public class BooleanOption implements IOptionConvertable{
     private final String key;
