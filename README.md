@@ -14,10 +14,10 @@ Interaction Manager is a client side mod allowing you to toggle certain block an
 
 It also gives you the option to stop the player from attacking your pets, others' pets or all tamable mobs.
 
-If Mod Menu isn't installed these options are easily accessible in the in game 'Interactions' menu. As shown above.
+These options are easily found in the in game `Interactions` menu.
 To access them go to `Options`>`Interactions`
 
-If Mod Menu is installed by default the `Interactions` button is hidden. And the settings can be changed using Mod Menu.
+If Mod Menu is installed, by default the `Interactions` button is hidden. And the settings can be accessed using Mod Menu.
 To show the `Interacions` button if Mod Menu is installed see the [Config Section](#config).
 <details>
 <summary>Show Image</summary>
