@@ -4,6 +4,8 @@
   "option.interactionmanager.on": "ON",
   "option.interactionmanager.off": "OFF",
 
+  "button.interactionmanager.restore_defaults": "Restore Defaults",
+
   "option.interactionmanager.allow_shovel_create_paths": "Shovel Paths",
   "option.interactionmanager.allow_shovel_create_paths.tooltip": "Toggle shovels creating paths when used on dirt-like blocks",
   "option.interactionmanager.allow_axe_strip_blocks":"Axe Strips",

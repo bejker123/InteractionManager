@@ -1,5 +1,8 @@
 package com.bejker.interactionmanager.client.config.option;
 
+import com.bejker.interactionmanager.client.config.InteractionManagerConfig;
+
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,4 +45,5 @@ public class ConfigStorage {
         setEnum(key, newValue);
         return newValue;
     }
+
 }

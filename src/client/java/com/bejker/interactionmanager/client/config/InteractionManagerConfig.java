@@ -36,6 +36,7 @@ public class InteractionManagerConfig {
 
     public static final EnumOption<PetAttackMode> PET_ATTACK_MODE = new EnumOption<PetAttackMode>("pet_attack_mode",PetAttackMode.ALL);
 
+
     public enum PetAttackMode{
         ALL,
         ONLY_OTHER,
@@ -148,6 +149,45 @@ public class InteractionManagerConfig {
             System.err.println("Couldn't load Interaction Manager config, using defaults.");
             e.printStackTrace();
         }
+    }
+
+    public static void restoreDefaults() {
+        try{
+            for (Field field : InteractionManagerConfig.class.getDeclaredFields()){
+                if(BooleanOption.class.isAssignableFrom(field.getType())){
+                    BooleanOption option = (BooleanOption) field.get(null);
+                    ConfigStorage.setBoolean(option.getKey(),option.getDefaultValue());
+                }else if(EnumOption.class.isAssignableFrom(field.getType())){
+                    EnumOption<?> option = (EnumOption<?>) field.get(null);
+                    ConfigStorage.setEnumRaw(option.getKey(),option.getDefaultValue());
+                }
+            }
+        }catch(IllegalAccessException e){
+            System.err.println("Couldn't restore Interaction Manager config to defaults.");
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean areOptionValuesSetToDefault() {
+        try{
+            for (Field field : InteractionManagerConfig.class.getDeclaredFields()){
+                if(BooleanOption.class.isAssignableFrom(field.getType())){
+                    BooleanOption option = (BooleanOption) field.get(null);
+                    if(option.getValue() != option.getDefaultValue()){
+                        return false;
+                    }
+                }else if(EnumOption.class.isAssignableFrom(field.getType())){
+                    EnumOption<?> option = (EnumOption<?>) field.get(null);
+                    if(option.getValue() != option.getDefaultValue()){
+                        return false;
+                    }
+                }
+            }
+        }catch(IllegalAccessException e){
+            System.err.println("Couldn't check if Interaction Manager config is set to defaults.");
+            e.printStackTrace();
+        }
+        return true;
     }
 
 }
