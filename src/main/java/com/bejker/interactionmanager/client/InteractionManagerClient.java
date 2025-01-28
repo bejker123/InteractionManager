@@ -98,5 +98,6 @@ public class InteractionManagerClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         InteractionManagerConfig.loadConfig();
+        InteractionManagerConfig.initRuntimeOptions();
     }
 }

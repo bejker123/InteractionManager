@@ -18,6 +18,7 @@ public class OptionsScreen extends GameOptionsScreen {
 
     public OptionsScreen(Screen parent) {
         super(parent,MinecraftClient.getInstance().options,Text.translatable("screen.interactionmanager.interactions"));
+        InteractionManagerConfig.loadConfig();
     }
 
     @Override

@@ -18,6 +18,9 @@
     ],
     "main": [
       "com.bejker.interactionmanager.InteractionManager"
+    ],
+    "modmenu": [
+      "com.bejker.interactionmanager.client.comp.modmenu.ModMenuApiImpl"
     ]
   },
   "mixins": [

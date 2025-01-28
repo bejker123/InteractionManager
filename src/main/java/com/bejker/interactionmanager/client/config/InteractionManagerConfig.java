@@ -1,10 +1,7 @@
 package com.bejker.interactionmanager.client.config;
 
 import com.bejker.interactionmanager.InteractionManager;
-import com.bejker.interactionmanager.client.config.option.BooleanOption;
-import com.bejker.interactionmanager.client.config.option.ConfigStorage;
-import com.bejker.interactionmanager.client.config.option.EnumOption;
-import com.bejker.interactionmanager.client.config.option.IOptionConvertable;
+import com.bejker.interactionmanager.client.config.option.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -22,7 +19,10 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+
+import static com.bejker.interactionmanager.client.InteractionManagerClient.CLIENT_LOGGER;
 
 public class InteractionManagerConfig {
     private static Path config_path;
@@ -31,17 +31,27 @@ public class InteractionManagerConfig {
     public static final BooleanOption ALLOW_USE_FIREWORK_ON_BLOCK = new BooleanOption("allow_use_firework_on_block");
     public static final BooleanOption ALLOW_ATTACKING_HOSTILE_ENTITIES = new BooleanOption("allow_attacking_hostile_entities");
     public static final BooleanOption ALLOW_ATTACKING_PASSIVE_ENTITIES = new BooleanOption("allow_attacking_passive_entities");
-
     public static final BooleanOption ALLOW_ATTACKING_VILLAGERS = new BooleanOption("allow_attacking_villagers");
 
     public static final EnumOption<PetAttackMode> PET_ATTACK_MODE = new EnumOption<PetAttackMode>("pet_attack_mode",PetAttackMode.ALL);
 
+    @IRuntimeInternalOnlyOption
+    public static final BooleanOption IS_MODMENU_INSTALLED = new BooleanOption("mod_menu_installed",false);
+
+    @IFileOnlyOption
+    public static final EnumOption<ShouldAddInteractionsButton> SHOULD_ADD_INTERACTIONS_BUTTON  = new EnumOption<ShouldAddInteractionsButton>("should_add_interactions_button",ShouldAddInteractionsButton.ALWAYS);
 
     public enum PetAttackMode{
         ALL,
         ONLY_OTHER,
         NOT_TAMED,
         NONE
+    }
+
+    public enum ShouldAddInteractionsButton{
+        ALWAYS,
+        ONLY_IF_MOD_MENU_IS_NOT_INSTALLED,
+        NEVER
     }
 
     private static void setupConfigFile(){
@@ -54,6 +64,12 @@ public class InteractionManagerConfig {
     public static SimpleOption<?>[] asOptions() {
         ArrayList<SimpleOption<?>> options = new ArrayList<>();
         for (Field field : InteractionManagerConfig.class.getDeclaredFields()) {
+            if(field.isAnnotationPresent(IRuntimeInternalOnlyOption.class)){
+                continue;
+            }
+            if(field.isAnnotationPresent(IFileOnlyOption.class)){
+                continue;
+            }
             if (Modifier.isStatic(field.getModifiers()) && Modifier.isFinal(field.getModifiers()) &&
                     IOptionConvertable.class.isAssignableFrom(field.getType())) {
                 try {
@@ -76,7 +92,11 @@ public class InteractionManagerConfig {
         try{
             BufferedReader reader = Files.newBufferedReader(config_path);
             JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
+            boolean found_invalid = false;
             for(Field field: InteractionManagerConfig.class.getDeclaredFields()){
+                if(field.isAnnotationPresent(IRuntimeInternalOnlyOption.class)){
+                    continue;
+                }
                 String field_name = field.getName().toLowerCase(Locale.ROOT);
                 if (BooleanOption.class.isAssignableFrom(field.getType())) {
                     BooleanOption option = (BooleanOption) field.get(null) ;
@@ -93,18 +113,27 @@ public class InteractionManagerConfig {
                         if (generic instanceof Class<?>) {
                             EnumOption<?> option = (EnumOption<?>) field.get(null);
                             Enum<?> found = null;
+                            List<String> valid_values = new ArrayList<>();
                             for (Enum<?> value : ((Class<Enum<?>>) generic).getEnumConstants()) {
-                                if (value.name().toLowerCase(Locale.ROOT).equals(jsonPrimitive.getAsString())) {
+                                String value_name = value.name().toLowerCase(Locale.ROOT);
+                                valid_values.add("\""+value_name+"\"");
+                                if (value_name.equals(jsonPrimitive.getAsString())) {
                                     found = value;
                                     break;
                                 }
                             }
                             if (found != null) {
                                 ConfigStorage.setEnumRaw(option.getKey(), found);
+                            } else{
+                                CLIENT_LOGGER.error("Invalid option in Interaction Manager config; Path: \"{}\": \"{}\":\"{}\"; Restoring saved: \"{}\"; Valid values: {}",config_path ,option.getKey(),jsonPrimitive.getAsString(),option.getValue().name().toLowerCase(Locale.ROOT),valid_values);
+                                found_invalid = true;
                             }
                         }
                     }
                 }
+            }
+            if(found_invalid){
+                saveConfig();
             }
 
         }catch (IOException | IllegalAccessException e){
@@ -119,6 +148,9 @@ public class InteractionManagerConfig {
 
         try {
             for (Field field : InteractionManagerConfig.class.getDeclaredFields()) {
+                if(field.isAnnotationPresent(IRuntimeInternalOnlyOption.class)){
+                    continue;
+                }
                 String field_name = field.getName().toLowerCase(Locale.ROOT);
                 if (BooleanOption.class.isAssignableFrom(field.getType())) {
                     BooleanOption option = (BooleanOption) field.get(null) ;
@@ -154,6 +186,9 @@ public class InteractionManagerConfig {
     public static void restoreDefaults() {
         try{
             for (Field field : InteractionManagerConfig.class.getDeclaredFields()){
+                if(field.isAnnotationPresent(IRuntimeInternalOnlyOption.class) || field.isAnnotationPresent(IFileOnlyOption.class)){
+                    continue;
+                }
                 if(BooleanOption.class.isAssignableFrom(field.getType())){
                     BooleanOption option = (BooleanOption) field.get(null);
                     ConfigStorage.setBoolean(option.getKey(),option.getDefaultValue());
@@ -171,6 +206,9 @@ public class InteractionManagerConfig {
     public static boolean areOptionValuesSetToDefault() {
         try{
             for (Field field : InteractionManagerConfig.class.getDeclaredFields()){
+                if(field.isAnnotationPresent(IRuntimeInternalOnlyOption.class) || field.isAnnotationPresent(IFileOnlyOption.class)){
+                    continue;
+                }
                 if(BooleanOption.class.isAssignableFrom(field.getType())){
                     BooleanOption option = (BooleanOption) field.get(null);
                     if(option.getValue() != option.getDefaultValue()){
@@ -188,6 +226,10 @@ public class InteractionManagerConfig {
             e.printStackTrace();
         }
         return true;
+    }
+
+    public static void initRuntimeOptions(){
+        IS_MODMENU_INSTALLED.setValue(FabricLoader.getInstance().getModContainer("modmenu").isPresent());
     }
 
 }
