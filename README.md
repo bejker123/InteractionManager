@@ -3,6 +3,7 @@
 ![Screenshot of the Interactions Menu, showing the available options.](res/interactions_menu_screenshot.png)
 
 Interaction Manager is a client side mod allowing you to toggle certain block and mob interactions. By default, vanilla behaviour is preserved.
+This mod aims to streamline the player experience, as some may find many vanilla features annoying or unnecessary.
 
 ### Simply Enable or Disable
 - Shovels creating paths
@@ -49,6 +50,3 @@ It's stored in JSON, which is easy to read and modify.
 
 ### Suggestions and Issues
 If you have any **suggestions** or run into some **issues** please create a new ticket on the **[Issue Tracker](https://github.com/bejker123/InteractionManager/issues)**.
-
-### Open source
-This mod's code is **free to view and modify**, publicly available on **[GitHub](https://github.com/bejker123/InteractionManager)**.
