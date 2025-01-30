@@ -1,11 +1,8 @@
 # Change Log
 
-## Not Released
-### Added
-- Confirmation before restoring defaults
-
 ## 1.0.0
 ### Added
+- Confirmation before restoring defaults
 - Compatibility with Mod Menu
 - 'Restore Defaults' button
 - Managing attacking pets
