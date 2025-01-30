@@ -27,6 +27,9 @@
 ### Removed
 - Debug code
 
+### Docs Change
+- Starting from this version all future versions follow semver.
+
 ## 0.1.0
 ### Initial Version
 ### Added
