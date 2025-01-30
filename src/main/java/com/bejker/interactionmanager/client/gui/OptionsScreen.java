@@ -41,6 +41,9 @@ public class OptionsScreen extends GameOptionsScreen {
     @Override
     protected void initFooter() {
         this.restore_defaults = ButtonWidget.builder(Text.translatable("button.interactionmanager.restore_defaults"), button -> {
+            if(client == null){
+                return;
+            }
             client.setScreen(new ConfirmScreen((restore)->{
                 if(restore){
                     InteractionManagerConfig.restoreDefaults();
