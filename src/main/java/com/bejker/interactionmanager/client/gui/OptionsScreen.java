@@ -11,6 +11,7 @@ import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
 import net.minecraft.client.gui.widget.OptionListWidget;
+import net.minecraft.client.gui.widget.ThreePartsLayoutWidget;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 
@@ -19,8 +20,9 @@ import static com.bejker.interactionmanager.client.InteractionManagerClient.CLIE
 public class OptionsScreen extends GameOptionsScreen {
     private ButtonWidget restore_defaults;
 
+    private static final Text TITLE_TEXT = Text.translatable("screen.interactionmanager.interactions");
     public OptionsScreen(Screen parent) {
-        super(parent,MinecraftClient.getInstance().options,Text.translatable("screen.interactionmanager.interactions"));
+        super(parent,MinecraftClient.getInstance().options,TITLE_TEXT);
         InteractionManagerConfig.loadConfig();
     }
 
