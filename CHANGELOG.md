@@ -1,5 +1,8 @@
 # Change Log
 
+## Not Released
+### Added
+- Confirmation before restoring defaults
 ## 0.3.1
 ### Changed
 - 'Interactions' button is now by default hidden if Mod Menu is installed
