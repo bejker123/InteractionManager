@@ -3,7 +3,7 @@ package com.bejker.interactionmanager.client.config.option;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ConfigStorage {
+public class OptionStorage {
     private static final Map<String,Boolean> BOOLEAN_OPTIONS = new HashMap<>();
     private static final Map<String,Enum<?>> ENUM_OPTIONS = new HashMap<>();
 

@@ -25,7 +25,7 @@ public class BooleanOption implements IOptionConvertable{
        this.disabled_text = Text.translatable(this.translation_key + "." + disabled_key);
        this.tooltip_key = Util.getTooltipTranslationKey(TRANSLATION_KEY_TYPE,key);
 
-       ConfigStorage.setBoolean(key,default_value);
+       OptionStorage.setBoolean(key,default_value);
    }
 
     public BooleanOption(String key, boolean defaultValue) {
@@ -41,22 +41,22 @@ public class BooleanOption implements IOptionConvertable{
         this.disabled_text = OPTION_OFF_TEXT;
         this.tooltip_key = Util.getTooltipTranslationKey(TRANSLATION_KEY_TYPE,key);
 
-        ConfigStorage.setBoolean(key,default_value);
+        OptionStorage.setBoolean(key,default_value);
     }
 
     public String getKey(){
        return key;
     }
     public boolean getValue(){
-       return ConfigStorage.getBoolean(key);
+       return OptionStorage.getBoolean(key);
     }
 
     public void setValue(boolean value){
-        ConfigStorage.setBoolean(key,value);
+        OptionStorage.setBoolean(key,value);
     }
 
     public void toggleValue(){
-        ConfigStorage.toggleBoolean(key);
+        OptionStorage.toggleBoolean(key);
     }
 
     public boolean getDefaultValue(){
@@ -72,7 +72,7 @@ public class BooleanOption implements IOptionConvertable{
     @Override
     public SimpleOption<?> asOption() {
        if(enabled_text == null||disabled_text == null){
-           return SimpleOption.ofBoolean(translation_key,getValue(),(value) -> ConfigStorage.setBoolean(key,value));
+           return SimpleOption.ofBoolean(translation_key,getValue(),(value) -> OptionStorage.setBoolean(key,value));
        }
         return new SimpleOption<>(translation_key,
                 Texts.hasTranslation(Text.translatable(tooltip_key)) ?
@@ -80,6 +80,6 @@ public class BooleanOption implements IOptionConvertable{
                 (text,value) -> value ? enabled_text : disabled_text,
                 SimpleOption.BOOLEAN,
                 getValue(),
-                new_value -> ConfigStorage.setBoolean(key,new_value));
+                new_value -> OptionStorage.setBoolean(key,new_value));
     }
 }

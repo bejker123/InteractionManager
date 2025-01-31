@@ -1,30 +1,17 @@
 package com.bejker.interactionmanager.client;
 
-import com.bejker.interactionmanager.client.config.InteractionManagerConfig;
+import com.bejker.interactionmanager.client.config.Config;
 import net.minecraft.Bootstrap;
-import net.minecraft.GameVersion;
 import net.minecraft.SharedConstants;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.WolfEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Uuids;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.UUID;
 
 public class InteractionManagerClientTest {
     @BeforeAll
@@ -50,7 +37,7 @@ public class InteractionManagerClientTest {
         testOnInteractBlock(Items.DIAMOND_SHOVEL.getDefaultStack(),block,false);
         testOnInteractBlock(Items.NETHERITE_SHOVEL.getDefaultStack(),block,false);
 
-        InteractionManagerConfig.ALLOW_SHOVEL_CREATE_PATHS.setValue(false);
+        Config.ALLOW_SHOVEL_CREATE_PATHS.setValue(false);
 
         testOnInteractBlock(Items.WOODEN_SHOVEL.getDefaultStack(),block,true);
         testOnInteractBlock(Items.STONE_SHOVEL.getDefaultStack(),block,true);
@@ -69,7 +56,7 @@ public class InteractionManagerClientTest {
         testOnInteractBlock(Items.DIAMOND_AXE.getDefaultStack(),block,false);
         testOnInteractBlock(Items.NETHERITE_AXE.getDefaultStack(),block,false);
 
-        InteractionManagerConfig.ALLOW_AXE_STRIP_BLOCKS.setValue(false);
+        Config.ALLOW_AXE_STRIP_BLOCKS.setValue(false);
 
         testOnInteractBlock(Items.WOODEN_AXE.getDefaultStack(),block,true);
         testOnInteractBlock(Items.STONE_AXE.getDefaultStack(),block,true);
@@ -89,7 +76,7 @@ public class InteractionManagerClientTest {
     //    WolfEntity entity = new WolfEntity(EntityType.WOLF,null);
     //    testOnAttackEntity(uuid,entity,false);
 
-    //    InteractionManagerConfig.PET_ATTACK_MODE.setValue(InteractionManagerConfig.PetAttackMode.ONLY_OTHER);
+    //    Config.PET_ATTACK_MODE.setValue(Config.PetAttackMode.ONLY_OTHER);
 
     //    entity.setOwnerUuid(uuid);
 

@@ -7,5 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
+// Options annotated with this won't be saved or displayed in the in game config screen.
 public @interface IRuntimeInternalOnlyOption {
 }

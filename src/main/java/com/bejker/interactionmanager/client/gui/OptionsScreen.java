@@ -1,6 +1,7 @@
 package com.bejker.interactionmanager.client.gui;
 
-import com.bejker.interactionmanager.client.config.InteractionManagerConfig;
+import com.bejker.interactionmanager.client.config.Config;
+import com.bejker.interactionmanager.client.config.ConfigManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;
@@ -10,12 +11,8 @@ import net.minecraft.client.gui.screen.option.GameOptionsScreen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
-import net.minecraft.client.gui.widget.OptionListWidget;
-import net.minecraft.client.gui.widget.ThreePartsLayoutWidget;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
-
-import static com.bejker.interactionmanager.client.InteractionManagerClient.CLIENT_LOGGER;
 
 public class OptionsScreen extends GameOptionsScreen {
     private ButtonWidget restore_defaults;
@@ -23,19 +20,19 @@ public class OptionsScreen extends GameOptionsScreen {
     private static final Text TITLE_TEXT = Text.translatable("screen.interactionmanager.interactions");
     public OptionsScreen(Screen parent) {
         super(parent,MinecraftClient.getInstance().options,TITLE_TEXT);
-        InteractionManagerConfig.loadConfig();
+        ConfigManager.loadConfig();
     }
 
     @Override
     protected void addOptions() {
         if(this.body != null){
-            this.body.addAll(InteractionManagerConfig.asOptions());
+            this.body.addAll(Config.asOptions());
         }
     }
 
     @Override
     public void removed() {
-        InteractionManagerConfig.saveConfig();
+        ConfigManager.saveConfig();
     }
 
     @Override
@@ -46,12 +43,14 @@ public class OptionsScreen extends GameOptionsScreen {
             }
             client.setScreen(new ConfirmScreen((restore)->{
                 if(restore){
-                    InteractionManagerConfig.restoreDefaults();
+                    ConfigManager.restoreDefaults();
                 }
                 //This trickery is done to reload button texts.
                 client.setScreen(this);
-                this.close();
-                client.setScreen(new OptionsScreen(client.currentScreen));
+                if(restore){
+                    this.close();
+                    client.setScreen(new OptionsScreen(client.currentScreen));
+                }
             }, Text.translatable("screen.interactionmanager.restore_defaults"),
                     Text.translatable("confirm.interactionmanager.restore_defaults")));
         }).build();
@@ -63,7 +62,7 @@ public class OptionsScreen extends GameOptionsScreen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.renderBackground(context, mouseX, mouseY, delta);
 
-        this.restore_defaults.active = !InteractionManagerConfig.areOptionValuesSetToDefault();
+        this.restore_defaults.active = !ConfigManager.areOptionValuesSetToDefault();
         if(this.restore_defaults.active){
            this.restore_defaults.setTooltip(Tooltip.of(Text.translatable("button.interactionmanager.restore_defaults.active.tooltip")));
         }else{

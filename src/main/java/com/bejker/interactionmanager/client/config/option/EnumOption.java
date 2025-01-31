@@ -32,15 +32,15 @@ public class EnumOption<E extends Enum<E>> implements IOptionConvertable{
         return key;
     }
     public E getValue(){
-        return ConfigStorage.getEnum(key,enum_class);
+        return OptionStorage.getEnum(key,enum_class);
     }
 
     public void setValue(E value){
-        ConfigStorage.setEnum(key,value);
+        OptionStorage.setEnum(key,value);
     }
 
     public void cycleValue(int amount){
-        ConfigStorage.cycleEnumValue(key,enum_class,amount);
+        OptionStorage.cycleEnumValue(key,enum_class,amount);
     }
 
     public void nextValue(){
@@ -70,7 +70,7 @@ public class EnumOption<E extends Enum<E>> implements IOptionConvertable{
                                     .orElse(null), newValue -> newValue.name().toLowerCase())
                     ),
                     getValue(),
-                    new_value -> ConfigStorage.setEnum(key,new_value)
+                    new_value -> OptionStorage.setEnum(key,new_value)
                 );
     }
 

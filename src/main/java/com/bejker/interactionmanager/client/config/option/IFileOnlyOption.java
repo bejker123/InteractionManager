@@ -6,5 +6,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
+// Config option annotated with this won't be displayed in the in game config screen
 public @interface IFileOnlyOption {
 }
