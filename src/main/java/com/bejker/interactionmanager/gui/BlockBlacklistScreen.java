@@ -49,9 +49,9 @@ public class BlockBlacklistScreen extends GameOptionsScreen {
     protected void initBody() {
         this.addDrawableChild(search);
         blockList = layout.addBody(new BlockListWidget(this, this.client));
+        this.refreshWidgetPositions();
     }
 
-    @Override
     protected void refreshWidgetPositions() {
         this.layout.refreshPositions();
         this.blockList.position(this.width, this.layout);
