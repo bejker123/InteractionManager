@@ -1,5 +1,6 @@
 {
   "screen.interactionmanager.interactions": "Interactions",
+  "screen.interactionmanager.block_blacklist": "Block Blacklist",
 
   "option.interactionmanager.on": "ON",
   "option.interactionmanager.off": "OFF",
@@ -26,5 +27,8 @@
   "option.interactionmanager.pet_attack_mode.only_other": "Only Not Yours",
   "option.interactionmanager.pet_attack_mode.not_tamed": "Only Not Tamed",
   "option.interactionmanager.pet_attack_mode.none": "None",
-  "option.interactionmanager.pet_attack_mode.tooltip": "All - you can attack all pets\nOnly Not Yours - You can attack not tamed pets and other players' pets\nNot Tamed - You can only attack not tamed pets\nNone - You can't attack any tamable mobs\nIf Attack Passive Mobs is OFF this will have no effect"
+  "option.interactionmanager.pet_attack_mode.tooltip": "All - you can attack all pets\nOnly Not Yours - You can attack not tamed pets and other players' pets\nNot Tamed - You can only attack not tamed pets\nNone - You can't attack any tamable mobs\nIf Attack Passive Mobs is OFF this will have no effect",
+
+  "option.interactionmanager.allow_breaking_blocks": "Break Blocks",
+  "option.interactionmanager.allow_breaking_blocks.tooltip": "Toggle the ability to break blocks"
 }

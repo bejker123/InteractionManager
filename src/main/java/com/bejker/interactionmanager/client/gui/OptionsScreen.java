@@ -10,9 +10,15 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class OptionsScreen extends GameOptionsScreen {
     private ButtonWidget restore_defaults;
@@ -26,7 +32,15 @@ public class OptionsScreen extends GameOptionsScreen {
     @Override
     protected void addOptions() {
         if(this.body != null){
-            this.body.addAll(Config.asOptions());
+            List<ClickableWidget> option_widgets = Arrays.stream(Config.asOptions()).map((x) -> x.createWidget(gameOptions)).toList();
+            ArrayList<ClickableWidget> widgets = new ArrayList<>(option_widgets);
+
+            widgets.add(ButtonWidget.builder(Text.translatable("button.interactionmanager.block_blacklist"),(button)->{
+                client.setScreen(new BlockBlacklistScreen(this));
+            })
+              .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.block_blacklist.tooltip")))
+              .build());
+            this.body.addAll(widgets);
         }
     }
 

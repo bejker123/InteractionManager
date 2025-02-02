@@ -82,6 +82,13 @@ public class InteractionManagerClient implements ClientModInitializer {
         }
     }
 
+    public static void restrictBlockBreaking(Block block, CallbackInfoReturnable<Boolean> cir) {
+        if(!Config.ALLOW_BREAKING_BLOCKS.getValue()){
+            cir.setReturnValue(true);
+        }
+    }
+
+
     @Override
     public void onInitializeClient() {
         ConfigManager.loadConfig();

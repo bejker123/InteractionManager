@@ -1,6 +1,7 @@
 package com.bejker.interactionmanager.client.config;
 
 import com.bejker.interactionmanager.client.config.option.*;
+import net.minecraft.block.Block;
 import net.minecraft.client.option.SimpleOption;
 
 import java.lang.reflect.Field;
@@ -25,6 +26,11 @@ public class Config {
 
     @IFileOnlyOption
     public static final EnumOption<ShouldAddInteractionsButton> SHOULD_ADD_INTERACTIONS_BUTTON  = new EnumOption<ShouldAddInteractionsButton>("should_add_interactions_button",ShouldAddInteractionsButton.ONLY_IF_MOD_MENU_IS_NOT_INSTALLED);
+
+    @IFileOnlyOption
+    public static final BooleanOption ALLOW_BREAKING_BLOCKS = new BooleanOption("allow_breaking_blocks");
+
+    public static final ArrayList<Block> BLACKLISTED_BLOCKS = new ArrayList<>();
 
     public enum PetAttackMode{
         ALL,
