@@ -2,6 +2,10 @@
 
 ## 1.0.0
 ### Added
+- Block blacklist
+- Toggling breaking blocks
+## 1.0.0
+### Added
 - Confirmation before restoring defaults
 - Compatibility with Mod Menu
 - 'Restore Defaults' button
