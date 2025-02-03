@@ -2,11 +2,13 @@ package com.bejker.interactionmanager.client.config;
 
 import com.bejker.interactionmanager.InteractionManager;
 import com.bejker.interactionmanager.client.config.option.*;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
+import com.bejker.interactionmanager.client.search.SearchUtil;
+import com.google.gson.*;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,9 +18,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import static com.bejker.interactionmanager.client.InteractionManagerClient.CLIENT_LOGGER;
 
@@ -76,6 +76,15 @@ public class ConfigManager {
                             }
                         }
                     }
+                }else if(Set.class.isAssignableFrom(field.getType())){
+                    if(field.getName().equals("BLACKLISTED_BLOCKS")){
+                        JsonArray jsonArray = json.getAsJsonArray(field.getName()
+                                .toLowerCase(Locale.ROOT));
+                        for(JsonElement element : jsonArray) {
+                            Block block = Registries.BLOCK.get(Identifier.of(element.getAsString()));
+                            Config.BLACKLISTED_BLOCKS.add(block);
+                        }
+                    }
                 }
             }
             if(found_invalid){
@@ -110,6 +119,14 @@ public class ConfigManager {
                                         .name()
                                         .toLowerCase(Locale.ROOT)
                         );
+                    }
+                }else if(Set.class.isAssignableFrom(field.getType())){
+                    if(field.getName().equals("BLACKLISTED_BLOCKS")){
+                        JsonArray array = new JsonArray();
+                        for(var block : Config.BLACKLISTED_BLOCKS){
+                            array.add(Registries.BLOCK.getId(block).toString());
+                        }
+                        config.add(field_name,array);
                     }
                 }
             }
