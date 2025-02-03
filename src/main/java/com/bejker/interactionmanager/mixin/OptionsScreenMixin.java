@@ -1,6 +1,6 @@
-package com.bejker.interactionmanager.client.mixin;
+package com.bejker.interactionmanager.mixin;
 
-import com.bejker.interactionmanager.client.gui.GuiCallbacks;
+import com.bejker.interactionmanager.gui.GuiCallbacks;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.OptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;

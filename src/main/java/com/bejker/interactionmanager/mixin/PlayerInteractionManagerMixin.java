@@ -1,26 +1,17 @@
-package com.bejker.interactionmanager.client.mixin;
+package com.bejker.interactionmanager.mixin;
 
-import com.bejker.interactionmanager.client.InteractionManagerClient;
+import com.bejker.interactionmanager.InteractionManager;
+import com.bejker.interactionmanager.InteractionManagerClient;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
-import net.minecraft.client.network.SequencedPacketCreator;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.listener.PacketListener;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.GameMode;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -44,11 +35,11 @@ public abstract class PlayerInteractionManagerMixin {
         ItemStack stack = player.getStackInHand(hand);
         Block block = client.world.getBlockState(hitResult.getBlockPos()).getBlock();
 
-        InteractionManagerClient.onInteractBlock(stack,block,cir);
+        InteractionManager.onInteractBlock(stack,block,cir);
     }
     @Inject(method = "attackEntity",at=@At("HEAD"),cancellable = true)
     public void onAttackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {
-        InteractionManagerClient.onAttackEntity(player.getUuid(),target,ci);
+        InteractionManager.onAttackEntity(player.getUuid(),target,ci);
     }
 
 }

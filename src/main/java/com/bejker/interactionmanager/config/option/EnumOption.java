@@ -1,4 +1,4 @@
-package com.bejker.interactionmanager.client.config.option;
+package com.bejker.interactionmanager.config.option;
 
 import com.bejker.interactionmanager.util.Util;
 import com.mojang.serialization.Codec;

@@ -14,13 +14,13 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "com.bejker.interactionmanager.client.InteractionManagerClient"
+      "com.bejker.interactionmanager.InteractionManagerClient"
     ],
     "main": [
       "com.bejker.interactionmanager.InteractionManager"
     ],
     "modmenu": [
-      "com.bejker.interactionmanager.client.comp.modmenu.ModMenuApiImpl"
+      "com.bejker.interactionmanager.comp.modmenu.ModMenuApiImpl"
     ]
   },
   "mixins": [

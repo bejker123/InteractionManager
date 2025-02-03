@@ -1,4 +1,4 @@
-package com.bejker.interactionmanager.client.search;
+package com.bejker.interactionmanager.search;
 
 /**
  * Copyright 2012 Alessandro Bahgat Shehata

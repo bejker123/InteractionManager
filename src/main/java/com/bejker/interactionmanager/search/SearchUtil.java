@@ -1,6 +1,5 @@
-package com.bejker.interactionmanager.client.search;
+package com.bejker.interactionmanager.search;
 
-import com.bejker.interactionmanager.client.InteractionManagerClient;
 import net.minecraft.block.Block;
 import net.minecraft.registry.Registries;
 

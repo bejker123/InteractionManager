@@ -1,6 +1,6 @@
-package com.bejker.interactionmanager.client.config;
+package com.bejker.interactionmanager.config;
 
-import com.bejker.interactionmanager.client.config.option.*;
+import com.bejker.interactionmanager.config.option.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.option.SimpleOption;
 

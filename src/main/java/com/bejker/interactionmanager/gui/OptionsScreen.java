@@ -1,7 +1,7 @@
-package com.bejker.interactionmanager.client.gui;
+package com.bejker.interactionmanager.gui;
 
-import com.bejker.interactionmanager.client.config.Config;
-import com.bejker.interactionmanager.client.config.ConfigManager;
+import com.bejker.interactionmanager.config.Config;
+import com.bejker.interactionmanager.config.ConfigManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Drawable;

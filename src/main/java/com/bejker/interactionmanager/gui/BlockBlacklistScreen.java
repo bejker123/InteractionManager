@@ -1,6 +1,6 @@
-package com.bejker.interactionmanager.client.gui;
+package com.bejker.interactionmanager.gui;
 
-import com.bejker.interactionmanager.client.gui.widget.BlockListWidget;
+import com.bejker.interactionmanager.gui.widget.BlockListWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;

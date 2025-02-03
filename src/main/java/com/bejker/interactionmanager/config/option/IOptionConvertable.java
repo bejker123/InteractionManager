@@ -1,4 +1,4 @@
-package com.bejker.interactionmanager.client.config.option;
+package com.bejker.interactionmanager.config.option;
 
 import net.minecraft.client.option.SimpleOption;
 

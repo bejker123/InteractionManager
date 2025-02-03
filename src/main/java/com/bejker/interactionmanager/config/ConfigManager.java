@@ -1,12 +1,10 @@
-package com.bejker.interactionmanager.client.config;
+package com.bejker.interactionmanager.config;
 
 import com.bejker.interactionmanager.InteractionManager;
-import com.bejker.interactionmanager.client.config.option.*;
-import com.bejker.interactionmanager.client.search.SearchUtil;
+import com.bejker.interactionmanager.config.option.*;
 import com.google.gson.*;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 
@@ -20,7 +18,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-import static com.bejker.interactionmanager.client.InteractionManagerClient.CLIENT_LOGGER;
+import static com.bejker.interactionmanager.InteractionManager.CLIENT_LOGGER;
+
 
 // Use this class to save, load, and init runtime config
 // To access and set config options use Config.
