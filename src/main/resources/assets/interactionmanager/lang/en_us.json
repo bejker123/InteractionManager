@@ -6,13 +6,13 @@
   "option.interactionmanager.off": "OFF",
 
   "button.interactionmanager.block_blacklist": "Block Blacklist",
-  "button.interactionmanager.block_blacklist.tooltip": "Manage block blacklist, toggle block breaking",
+  "button.interactionmanager.block_blacklist.tooltip": "Manage block blacklist\nBlacklisted block can't be broken.",
   "category.interactionmanager.blacklisted": "Blacklisted",
 
   "button.interactionmanager.restore_defaults": "Restore Defaults",
   "button.interactionmanager.restore_defaults.active.tooltip": "Restore vanilla minecraft behaviour",
   "screen.interactionmanager.restore_defaults": "Are you sure you'd like to restore default options?",
-  "confirm.interactionmanager.restore_defaults": "The current options will not be saved!",
+  "confirm.interactionmanager.restore_defaults": "The current options will not be saved!\nYour current block blacklist won't be cleared.",
 
   "option.interactionmanager.allow_shovel_create_paths": "Shovel Paths",
   "option.interactionmanager.allow_shovel_create_paths.tooltip": "Toggle shovels creating paths when used on dirt-like blocks",
