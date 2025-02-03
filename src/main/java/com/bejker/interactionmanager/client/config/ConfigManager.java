@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.block.Blocks;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

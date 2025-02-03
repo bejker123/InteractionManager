@@ -7,6 +7,8 @@ import net.minecraft.client.option.SimpleOption;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 // Use this class to access and set config options.
 // For saving and loading config use ConfigManager
@@ -27,10 +29,9 @@ public class Config {
     @IFileOnlyOption
     public static final EnumOption<ShouldAddInteractionsButton> SHOULD_ADD_INTERACTIONS_BUTTON  = new EnumOption<ShouldAddInteractionsButton>("should_add_interactions_button",ShouldAddInteractionsButton.ONLY_IF_MOD_MENU_IS_NOT_INSTALLED);
 
-    @IFileOnlyOption
     public static final BooleanOption ALLOW_BREAKING_BLOCKS = new BooleanOption("allow_breaking_blocks");
 
-    public static final ArrayList<Block> BLACKLISTED_BLOCKS = new ArrayList<>();
+    public static final Set<Block> BLACKLISTED_BLOCKS = new HashSet<>();
 
     public enum PetAttackMode{
         ALL,
@@ -63,7 +64,7 @@ public class Config {
                 }
             }
         }
-        return options.stream().toArray(SimpleOption[]::new);
+        return options.toArray(SimpleOption[]::new);
     }
 
 }

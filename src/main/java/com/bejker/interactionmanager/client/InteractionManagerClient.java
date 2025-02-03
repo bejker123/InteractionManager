@@ -2,6 +2,8 @@ package com.bejker.interactionmanager.client;
 
 import com.bejker.interactionmanager.client.config.Config;
 import com.bejker.interactionmanager.client.config.ConfigManager;
+import com.bejker.interactionmanager.client.gui.widget.BlockListWidget;
+import com.bejker.interactionmanager.client.search.SearchUtil;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -86,12 +88,15 @@ public class InteractionManagerClient implements ClientModInitializer {
         if(!Config.ALLOW_BREAKING_BLOCKS.getValue()){
             cir.setReturnValue(true);
         }
+        if(Config.BLACKLISTED_BLOCKS.contains(block)){
+            cir.setReturnValue(true);
+        }
     }
-
 
     @Override
     public void onInitializeClient() {
         ConfigManager.loadConfig();
         ConfigManager.initRuntimeOptions();
+        SearchUtil.init();
     }
 }

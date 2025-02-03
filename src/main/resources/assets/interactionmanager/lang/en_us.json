@@ -5,6 +5,10 @@
   "option.interactionmanager.on": "ON",
   "option.interactionmanager.off": "OFF",
 
+  "button.interactionmanager.block_blacklist": "Block Blacklist",
+  "button.interactionmanager.block_blacklist.tooltip": "Manage block blacklist, toggle block breaking",
+  "category.interactionmanager.blacklisted": "Blacklisted",
+
   "button.interactionmanager.restore_defaults": "Restore Defaults",
   "button.interactionmanager.restore_defaults.active.tooltip": "Restore vanilla minecraft behaviour",
   "screen.interactionmanager.restore_defaults": "Are you sure you'd like to restore default options?",
