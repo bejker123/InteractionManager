@@ -1,6 +1,7 @@
-package com.bejker.interactionmanager.client;
+package com.bejker.interactionmanager;
 
-import com.bejker.interactionmanager.client.config.Config;
+import com.bejker.interactionmanager.InteractionManager;
+import com.bejker.interactionmanager.config.Config;
 import net.minecraft.Bootstrap;
 import net.minecraft.SharedConstants;
 import net.minecraft.block.Block;
@@ -23,7 +24,7 @@ public class InteractionManagerClientTest {
 
     void testOnInteractBlock(ItemStack stack, Block block,boolean is_cancelled){
         CallbackInfoReturnable<ActionResult> cir = new CallbackInfoReturnable<>("result",true,null);
-        InteractionManagerClient.onInteractBlock(stack, block,cir);
+        InteractionManager.onInteractBlock(stack, block,cir);
         Assertions.assertEquals(cir.isCancelled(), is_cancelled);
     }
 
