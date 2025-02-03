@@ -13,8 +13,10 @@ By default, vanilla behaviour is preserved.
 - Attacking hostile mobs
 - Attacking passive mobs
 - Attacking villagers 
+- Breaking blocks
 
 It also gives you the option to stop the player from attacking your pets, others' pets or all tamable mobs.
+You can blacklist blocks, so that you can't break them.
 
 These options are easily found in the in game `Interactions` menu.
 To access them go to `Options`>`Interactions`
