@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.1.2
+### Fixed
+- Game crash when loading an older config
 ## 1.1.1
 ### Fixed
 - Block breaking prevention not working properly on the server
