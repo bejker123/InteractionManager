@@ -79,6 +79,9 @@ public class ConfigManager {
                     if(field.getName().equals("BLACKLISTED_BLOCKS")){
                         JsonArray jsonArray = json.getAsJsonArray(field.getName()
                                 .toLowerCase(Locale.ROOT));
+                        if(jsonArray == null||jsonArray.isEmpty()){
+                            continue;
+                        }
                         for(JsonElement element : jsonArray) {
                             Block block = Registries.BLOCK.get(Identifier.of(element.getAsString()));
                             Config.BLACKLISTED_BLOCKS.add(block);
