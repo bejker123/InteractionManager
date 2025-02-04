@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.1.1
+### Fixed
+- Block breaking prevention not working properly on the server
 ## 1.1.0
 ### Added
 - Block blacklist
