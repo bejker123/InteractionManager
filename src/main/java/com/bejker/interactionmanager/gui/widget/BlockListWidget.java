@@ -24,19 +24,12 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
     private final BlockBlacklistScreen parent;
     private String last_search = "";
 
-    private final List<SearchBlockEntry> searchBlockEntries = new ArrayList<>();
     public BlockListWidget(BlockBlacklistScreen parent,MinecraftClient client) {
 	    //(MinecraftClient client, int width, int height, int y, int itemHeight)
         super(client, parent.width, parent.layout.getContentHeight(), parent.layout.getHeaderHeight(), 23);
         this.parent = parent;
 
         this.updateEntries();
-    }
-
-    @Override
-    protected void clearEntries() {
-        super.clearEntries();
-        searchBlockEntries.clear();
     }
 
     private void updateEntries() {
@@ -67,35 +60,17 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
         int itemHeight = this.itemHeight - 9 - 1;
         int entryCount = this.getEntryCount();
 
-        int i = 0;
-        for (; i < searchBlockEntries.size(); i++) {
-            int rowTop = this.getRowTop(i);
-            int rowBottom = this.getRowBottom(i);
-            if (rowBottom >= this.getY() && rowTop <= this.getBottom()) {
-                SearchBlockEntry entry = searchBlockEntries.get(i);
-                boolean isHovered = Objects.equals(this.getHoveredEntry(),entry);
-                entry.drawBorder(context,i,rowTop,rowLeft,rowWidth,itemHeight,mouseX,mouseY,isHovered,delta);
-                entry.render(context,i,rowTop,rowLeft,rowWidth,itemHeight,mouseX,mouseY,isHovered,delta);
-            }
-        }
-
         //Render regular entries
-        for (; i < entryCount + searchBlockEntries.size(); i++) {
+        for (int i = 0; i < entryCount; i++) {
             int rowTop = this.getRowTop(i);
             int rowBottom = this.getRowBottom(i);
             if (rowBottom >= this.getY() && rowTop <= this.getBottom()) {
-                this.renderEntry(context, mouseX, mouseY, delta, i - searchBlockEntries.size(), rowLeft, rowTop, rowWidth, itemHeight);
+                this.renderEntry(context, mouseX, mouseY, delta, i, rowLeft, rowTop, rowWidth, itemHeight);
             }
         }
     }
 
     public Optional<Element> hoveredElement(double mouseX, double mouseY) {
-        for (Element element : this.searchBlockEntries) {
-            if (element.isMouseOver(mouseX, mouseY)) {
-                return Optional.of(element);
-            }
-        }
-
         for (Element element : this.children()) {
             if (element.isMouseOver(mouseX, mouseY)) {
                 return Optional.of(element);
