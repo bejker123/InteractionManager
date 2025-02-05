@@ -39,11 +39,20 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
            .distinct()
            .filter((x) -> !Config.BLACKLISTED_BLOCKS.contains(x))
            .map(SearchBlockEntry::new)
-           .toList().forEach(this::addEntry);
+           .forEach(this::addEntry);
        }
        this.addEntry(new CategoryEntry(Text.translatable("category.interactionmanager.blacklisted")));
        for (Block i : Config.BLACKLISTED_BLOCKS){
           this.addEntry(new BlockEntry(i));
+       }
+
+       //It should be impossible, but better add this check now then debug this in the future,
+       //when it could be possible
+       if(this.getEntryCount() == 0){
+           return;
+       }
+       if(this.getScrollY() > this.getRowBottom(this.getEntryCount() - 1)){
+           this.setScrollY(this.getRowBottom(this.getEntryCount() - 1));
        }
     }
 
