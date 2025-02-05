@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.0
+### Added
+- Entity blacklist
+- Searching by block id (e.g. minecraft:stone)
+### Changed
+- Block blacklist button, and entity blacklist button are visually disabled if they are disabled
 ## 1.2.0
 ### Added 
 - A button to toggle the block blacklist

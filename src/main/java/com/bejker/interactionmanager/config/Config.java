@@ -3,6 +3,7 @@ package com.bejker.interactionmanager.config;
 import com.bejker.interactionmanager.config.option.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.option.SimpleOption;
+import net.minecraft.entity.EntityType;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -36,6 +37,10 @@ public class Config {
     public static final BooleanOption ENABLE_BLOCK_BLACKLIST = new BooleanOption("enable_block_blacklist",true,"enabled","disabled");
 
     public static final Set<Block> BLACKLISTED_BLOCKS = new HashSet<>();
+
+    public static final Set<EntityType<?>> BLACKLISTED_ENTITIES = new HashSet<>();
+
+    public static final BooleanOption ENABLE_ENTITY_BLACKLIST = new BooleanOption("enable_entity_blacklist",true,"enabled","disabled");
 
     public enum PetAttackMode{
         ALL,

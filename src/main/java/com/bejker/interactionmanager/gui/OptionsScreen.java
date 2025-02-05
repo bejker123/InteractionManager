@@ -22,6 +22,8 @@ import java.util.List;
 
 public class OptionsScreen extends GameOptionsScreen {
     private ButtonWidget restore_defaults;
+    private ButtonWidget block_blacklist;
+    private ButtonWidget entity_blacklist;
 
     private static final Text TITLE_TEXT = Text.translatable("screen.interactionmanager.interactions");
     public OptionsScreen(Screen parent) {
@@ -35,11 +37,21 @@ public class OptionsScreen extends GameOptionsScreen {
             List<ClickableWidget> option_widgets = Arrays.stream(Config.asOptions()).map((x) -> x.createWidget(gameOptions)).toList();
             ArrayList<ClickableWidget> widgets = new ArrayList<>(option_widgets);
 
-            widgets.add(ButtonWidget.builder(Text.translatable("button.interactionmanager.block_blacklist"),(button)->{
+            block_blacklist = ButtonWidget.builder(Text.translatable("button.interactionmanager.block_blacklist"),(button)->{
                 client.setScreen(new BlockBlacklistScreen(this));
             })
               .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.block_blacklist.tooltip")))
-              .build());
+              .build();
+            widgets.add(block_blacklist);
+
+            entity_blacklist = ButtonWidget.builder(Text.translatable("button.interactionmanager.entity_blacklist"),(button)->{
+                client.setScreen(new EntityBlacklistScreen(this));
+            })
+            .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.entity_blacklist.tooltip")))
+            .build();
+
+            widgets.add(entity_blacklist);
+
             this.body.addAll(widgets);
         }
     }
@@ -82,6 +94,10 @@ public class OptionsScreen extends GameOptionsScreen {
         }else{
             this.restore_defaults.setTooltip(null);
         }
+
+        this.block_blacklist.active = Config.ENABLE_BLOCK_BLACKLIST.getValue();
+
+        this.entity_blacklist.active = Config.ENABLE_ENTITY_BLACKLIST.getValue();
 
         for (Drawable drawable : this.drawables) {
             drawable.render(context, mouseX, mouseY, delta);

@@ -1,13 +1,18 @@
 {
   "screen.interactionmanager.interactions": "Interactions",
   "screen.interactionmanager.block_blacklist": "Block Blacklist",
+  "screen.interactionmanager.entity_blacklist": "Entity Blacklist",
 
   "option.interactionmanager.on": "ON",
   "option.interactionmanager.off": "OFF",
 
   "button.interactionmanager.block_blacklist": "Block Blacklist",
-  "button.interactionmanager.block_blacklist.tooltip": "Manage block blacklist\nBlacklisted block can't be broken.",
-  "category.interactionmanager.blacklisted": "Blacklisted Blocks",
+  "button.interactionmanager.block_blacklist.tooltip": "Manage block blacklist\nBlacklisted blocks can't be broken.",
+  "category.interactionmanager.blacklisted_blocks": "Blacklisted Blocks",
+
+  "button.interactionmanager.entity_blacklist": "Entity Blacklist",
+  "button.interactionmanager.entity_blacklist.tooltip": "Manage entity blacklist\nBlacklisted entities can't be attacked.",
+  "category.interactionmanager.blacklisted_entities": "Blacklisted Entities",
 
   "button.interactionmanager.restore_defaults": "Restore Defaults",
   "button.interactionmanager.restore_defaults.active.tooltip": "Restore vanilla minecraft behaviour",
@@ -39,5 +44,10 @@
   "option.interactionmanager.enable_block_blacklist": "Block Blacklist",
   "option.interactionmanager.enable_block_blacklist.enabled":"Enabled",
   "option.interactionmanager.enable_block_blacklist.disabled": "Disabled",
-  "option.interactionmanager.enable_block_blacklist.tooltip": "Enabled - You can't break blacklisted blocks\nDisabled - You can break blacklisted blocks, unless the 'Break Blocks' option is OFF"
+  "option.interactionmanager.enable_block_blacklist.tooltip": "Enabled - You can't break blacklisted blocks\nDisabled - You can break blacklisted blocks, unless the 'Break Blocks' option is OFF",
+
+  "option.interactionmanager.enable_entity_blacklist": "Entity Blacklist",
+  "option.interactionmanager.enable_entity_blacklist.enabled":"Enabled",
+  "option.interactionmanager.enable_entity_blacklist.disabled": "Disabled",
+  "option.interactionmanager.enable_entity_blacklist.tooltip": "Enabled - You can't attack blacklisted entities\nDisabled - You can attack blacklisted entities, unless "
 }
