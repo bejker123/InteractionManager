@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.2.0
+### Added 
+- A button to toggle the block blacklist
+### Fixed
+- Game crash when searching, and the language is set to one using non-english characters
 ## 1.1.2
 ### Fixed
 - Game crash when loading an older config
