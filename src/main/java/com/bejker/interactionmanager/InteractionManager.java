@@ -94,7 +94,7 @@ public class InteractionManager implements ModInitializer {
         if(!Config.ALLOW_BREAKING_BLOCKS.getValue()){
             cir.setReturnValue(true);
         }
-        if(Config.BLACKLISTED_BLOCKS.contains(block)){
+        if(Config.ENABLE_BLOCK_BLACKLIST.getValue() && Config.BLACKLISTED_BLOCKS.contains(block)){
             cir.setReturnValue(true);
         }
     }

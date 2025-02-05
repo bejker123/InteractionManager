@@ -7,7 +7,7 @@
 
   "button.interactionmanager.block_blacklist": "Block Blacklist",
   "button.interactionmanager.block_blacklist.tooltip": "Manage block blacklist\nBlacklisted block can't be broken.",
-  "category.interactionmanager.blacklisted": "Blacklisted",
+  "category.interactionmanager.blacklisted": "Blacklisted Blocks",
 
   "button.interactionmanager.restore_defaults": "Restore Defaults",
   "button.interactionmanager.restore_defaults.active.tooltip": "Restore vanilla minecraft behaviour",
@@ -34,5 +34,10 @@
   "option.interactionmanager.pet_attack_mode.tooltip": "All - you can attack all pets\nOnly Not Yours - You can attack not tamed pets and other players' pets\nNot Tamed - You can only attack not tamed pets\nNone - You can't attack any tamable mobs\nIf Attack Passive Mobs is OFF this will have no effect",
 
   "option.interactionmanager.allow_breaking_blocks": "Break Blocks",
-  "option.interactionmanager.allow_breaking_blocks.tooltip": "Toggle the ability to break blocks"
+  "option.interactionmanager.allow_breaking_blocks.tooltip": "Toggle the ability to break blocks",
+
+  "option.interactionmanager.enable_block_blacklist": "Block Blacklist",
+  "option.interactionmanager.enable_block_blacklist.enabled":"Enabled",
+  "option.interactionmanager.enable_block_blacklist.disabled": "Disabled",
+  "option.interactionmanager.enable_block_blacklist.tooltip": "Enabled - You can't break blacklisted blocks\nDisabled - You can break blacklisted blocks, unless the 'Break Blocks' option is OFF"
 }
