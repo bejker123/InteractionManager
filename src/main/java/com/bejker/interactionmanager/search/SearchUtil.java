@@ -10,23 +10,23 @@ import java.util.*;
 //TODO: add searching by id
 public class SearchUtil {
 
-    private static SearchTree<Block> blockNameTree;
+    private static SearchTree<Block> blockSearchTree;
 
     private static String current_language;
 
     //Should be called on client init and when language is changed
     public static void init(){
         String language = MinecraftClient.getInstance().getLanguageManager().getLanguage();
-        if(language.equals(current_language) && blockNameTree.list.size() == Registries.BLOCK.size()){
+        if(language.equals(current_language) && blockSearchTree.list.size() == Registries.BLOCK.size()){
             return;
         }
         current_language = language;
-        blockNameTree = new SearchTree<>();
+        blockSearchTree = new SearchTree<>();
 
         for(var block : Registries.BLOCK){
             RegistryEntry<Block> entry = Registries.BLOCK.getEntry(block);
-            blockNameTree.put(getLocalizedBlockName(block),block);
-            blockNameTree.put(entry.getIdAsString(),block);
+            blockSearchTree.put(getLocalizedBlockName(block),block);
+            blockSearchTree.put(entry.getIdAsString(),block);
         }
     }
 
@@ -35,7 +35,7 @@ public class SearchUtil {
     }
     public static Collection<Block> searchBlocks(String word,int results){
         init();
-        return blockNameTree.search(word,results);
+        return blockSearchTree.search(word,results);
     }
     public static String getLocalizedBlockName(Block block){
         return block.getName().getContent().visit(Optional::of).get().toLowerCase(Locale.ROOT);
