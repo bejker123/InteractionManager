@@ -1,6 +1,8 @@
 package com.bejker.interactionmanager.search;
 
+import com.bejker.interactionmanager.InteractionManager;
 import net.minecraft.block.Block;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.registry.Registries;
 
 import java.util.*;
@@ -10,9 +12,15 @@ public class SearchUtil {
 
     private static SearchTree<Block> blockNameTree;
 
+    private static String current_language;
 
     //Should be called on client init and when language is changed
     public static void init(){
+        String language = MinecraftClient.getInstance().getLanguageManager().getLanguage();
+        if(language.equals(current_language) && blockNameTree.list.size() == Registries.BLOCK.size()){
+            return;
+        }
+        current_language = language;
         blockNameTree = new SearchTree<>();
 
         for(var block : Registries.BLOCK){
@@ -21,6 +29,7 @@ public class SearchUtil {
     }
 
     public static Collection<Block> searchBlocks(String word,int results){
+        init();
         return blockNameTree.search(word,results);
     }
     public static String getLocalizedBlockName(Block block){
