@@ -75,7 +75,7 @@ public class SearchUtil {
         }
 
         public Collection<T> search(String word,int results){
-            return tree.search(word,results).stream().map(this::mapIndexToEntry).toList();
+            return tree.search(word,results).stream().map(this::mapIndexToEntry).sorted(Comparator.comparing(Object::toString).reversed()).toList();
         }
     }
 
