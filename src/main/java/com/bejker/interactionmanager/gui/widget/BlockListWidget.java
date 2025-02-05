@@ -12,6 +12,7 @@ import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
@@ -100,6 +101,10 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
         public final Text block_name_text;
         public final Text block_id_text;
         private final ButtonWidget button;
+        private final Block block;
+
+        private static final int MAX_CHARS = 30;
+
         static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(
                 Identifier.ofVanilla("pending_invite/accept"),
                 Identifier.ofVanilla("pending_invite/accept_highlighted")
@@ -107,9 +112,11 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
 
         public BlockEntry(Block block){
            RegistryEntry<Block> entry = Registries.BLOCK.getEntry(block);
-           this.block_name_text = block.getName();
-           this.block_id_text = Text.of(entry.getIdAsString()).copy().withColor(Colors.GRAY);
+           this.block_name_text = Text.of(block.getName().asTruncatedString(MAX_CHARS));
+           String id = entry.getIdAsString();
+           this.block_id_text = Text.literal(id.substring(0,Math.min(id.length(),MAX_CHARS))).withColor(Colors.GRAY);
            this.button = this.createButton(block);
+           this.block = block;
         }
         ButtonWidget createButton(Block block){
             return new TexturedButtonWidget(20,20, BUTTON_TEXTURES,(button)->{
@@ -131,6 +138,9 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
         @Override
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             int ref_x = x + entryWidth / 32;
+            if(Config.RENDER_ITEMS_IN_BLOCK_BLACKLIST.getValue()){
+               ref_x += 14;
+            }
             int ref_y = y + entryHeight - 9;
 
             context.drawTextWithShadow(BlockListWidget.this.client.textRenderer, this.block_name_text,ref_x,ref_y , Colors.WHITE);
@@ -139,6 +149,9 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
             this.button.setX(x + entryWidth - this.button.getWidth() - 3);
             this.button.setY(ref_y - 1);
             this.button.render(context,mouseX,mouseY,tickDelta);
+            if(Config.RENDER_ITEMS_IN_BLOCK_BLACKLIST.getValue()){
+                context.drawItemWithoutEntity(new ItemStack(block),ref_x - 20,ref_y);
+            }
         }
 
     }

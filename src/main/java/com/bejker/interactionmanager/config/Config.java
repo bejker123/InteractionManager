@@ -42,6 +42,9 @@ public class Config {
 
     public static final BooleanOption ENABLE_ENTITY_BLACKLIST = new BooleanOption("enable_entity_blacklist",true,"enabled","disabled");
 
+    @IFileOnlyOption
+    public static final BooleanOption RENDER_ITEMS_IN_BLOCK_BLACKLIST = new BooleanOption("render_items_in_block_blacklist");
+
     public enum PetAttackMode{
         ALL,
         ONLY_OTHER,
