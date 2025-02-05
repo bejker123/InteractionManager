@@ -35,7 +35,8 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
     private void updateEntries() {
        this.clearEntries();
        if(last_search != null && !last_search.isBlank()){
-           SearchUtil.searchBlocks(last_search,-1).stream()
+           SearchUtil.searchBlocks(last_search).stream()
+           .distinct()
            .filter((x) -> !Config.BLACKLISTED_BLOCKS.contains(x))
            .map(SearchBlockEntry::new)
            .toList().forEach(this::addEntry);

@@ -1,9 +1,9 @@
 package com.bejker.interactionmanager.search;
 
-import com.bejker.interactionmanager.InteractionManager;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 
 import java.util.*;
 
@@ -24,10 +24,15 @@ public class SearchUtil {
         blockNameTree = new SearchTree<>();
 
         for(var block : Registries.BLOCK){
+            RegistryEntry<Block> entry = Registries.BLOCK.getEntry(block);
             blockNameTree.put(getLocalizedBlockName(block),block);
+            blockNameTree.put(entry.getIdAsString(),block);
         }
     }
 
+    public static Collection<Block> searchBlocks(String word){
+        return searchBlocks(word,-1);
+    }
     public static Collection<Block> searchBlocks(String word,int results){
         init();
         return blockNameTree.search(word,results);
@@ -40,23 +45,37 @@ public class SearchUtil {
         GeneralizedSuffixTree tree;
         ArrayList<T> list;
 
+        //Used to map
+        HashMap<Integer,Integer> remap;
+
         private int idx;
+
         public SearchTree(){
             tree = new GeneralizedSuffixTree();
             list = new ArrayList<>();
+            remap = new HashMap<>();
             idx = 0;
         }
 
         public void put(String word,T entry){
             tree.put(word,idx++);
-            list.add(entry);
+
+            int remap_idx = list.indexOf(entry);
+            remap.put(idx,list.size());
+
+            if(remap_idx == -1){
+                list.add(entry);
+            }
         }
 
-        public Collection<T> search(String word){
-            return search(word,-1);
+        private T mapIndexToEntry(int i){
+            return list.get(
+                    Objects.requireNonNullElse(remap.get(i), i)
+            );
         }
+
         public Collection<T> search(String word,int results){
-            return tree.search(word,results).stream().map((i) -> list.get(i)).toList();
+            return tree.search(word,results).stream().map(this::mapIndexToEntry).toList();
         }
     }
 
