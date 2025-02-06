@@ -46,6 +46,9 @@ It's stored in JSON, which is easy to read and modify.
    - `always` - Always show the `Interactions` button.
    - *default* `only_if_mod_menu_is_not_installed` - Hide the `Interactions` button if mod menu is installed.
    - `never` - Hide the `Interactions` button.
+2. `render_items_in_block_blacklist` - Change if block icons should be rendered in the blacklist menu.
+   - *default* 'true' - Will render block icons in the block blacklist.
+   -  'false' - Won't render block icons in the block blacklist.
 
 </details>
 
