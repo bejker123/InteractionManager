@@ -45,6 +45,7 @@ public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> 
            .map(SearchEntityEntry::new)
            .forEach(this::addEntry);
        }
+       int search_entries = this.getEntryCount();
        this.addEntry(new CategoryEntry(Text.translatable("category.interactionmanager.blacklisted_entities")));
        for (EntityType<?> i : Config.BLACKLISTED_ENTITIES){
           this.addEntry(new EntityEntry(i));
@@ -54,6 +55,9 @@ public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> 
        //when it could be possible
        if(this.getEntryCount() == 0){
            return;
+       }
+       if(search_entries == 0){
+           this.setScrollY(this.getRowTop(0));
        }
        //if(this.getScrollY() > this.getRowBottom(this.getEntryCount() - 1)){
        //    this.setScrollY(this.getRowBottom(this.getEntryCount() - 1));

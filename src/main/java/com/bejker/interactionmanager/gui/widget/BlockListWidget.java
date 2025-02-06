@@ -42,6 +42,7 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
            .map(SearchBlockEntry::new)
            .forEach(this::addEntry);
        }
+       int search_entries = this.getEntryCount();
        this.addEntry(new CategoryEntry(Text.translatable("category.interactionmanager.blacklisted_blocks")));
        for (Block i : Config.BLACKLISTED_BLOCKS){
           this.addEntry(new BlockEntry(i));
@@ -52,6 +53,9 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
        if(this.getEntryCount() == 0){
            return;
        }
+        if(search_entries == 0){
+            this.setScrollY(this.getRowTop(0));
+        }
        //if(this.getScrollY() > this.getRowBottom(this.getEntryCount() - 1)){
        //    this.setScrollY(this.getRowBottom(this.getEntryCount() - 1));
        //}

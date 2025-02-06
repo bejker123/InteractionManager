@@ -44,13 +44,11 @@ public class OptionsScreen extends GameOptionsScreen {
               .build();
             widgets.add(block_blacklist);
 
-            // entity_blacklist = ButtonWidget.builder(Text.translatable("button.interactionmanager.entity_blacklist"),)
-            // .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.entity_blacklist.tooltip")))
-            // .build();
-
-            entity_blacklist = new Button((button)->{
-                client.setScreen(new EntityBlacklistScreen(this));
-            });
+             entity_blacklist = ButtonWidget.builder(Text.translatable("button.interactionmanager.entity_blacklist"),(button)->{
+                         client.setScreen(new EntityBlacklistScreen(this));
+             })
+             .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.entity_blacklist.tooltip")))
+             .build();
 
             widgets.add(entity_blacklist);
 
