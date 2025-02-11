@@ -96,6 +96,9 @@ public class InteractionManager implements ModInitializer {
         if(!Config.ALLOW_ATTACKING_VILLAGERS.getValue() && target instanceof VillagerEntity){
             ci.cancel();
         }
+        if(!Config.ALLOW_ATTACKING_VEHICLES.getValue() && target instanceof VehicleEntity){
+            ci.cancel();
+        }
     }
 
     public static void restrictBlockBreaking(Block block, CallbackInfoReturnable<Boolean> cir) {

@@ -31,6 +31,8 @@
   "option.interactionmanager.allow_attacking_passive_entities.tooltip": "Toggle the ability to attack and damage passive mobs",
   "option.interactionmanager.allow_attacking_villagers": "Attack Villagers",
   "option.interactionmanager.allow_attacking_villagers.tooltip": "Toggle the ability to attack and damage villagers.\nIf Attack Passive Mobs is OFF this will have no effect.",
+  "option.interactionmanager.allow_attacking_vehicles": "Attack Vehicles",
+  "option.interactionmanager.allow_attacking_vehicles.tooltip": "Toggle the ability to attack and damage vehicles. (Boats, minecarts)",
   "option.interactionmanager.pet_attack_mode": "Attack Pets",
   "option.interactionmanager.pet_attack_mode.all": "All",
   "option.interactionmanager.pet_attack_mode.only_other": "Only Not Yours",
