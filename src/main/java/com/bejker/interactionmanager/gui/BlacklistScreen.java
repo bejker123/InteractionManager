@@ -44,11 +44,16 @@ public abstract class BlacklistScreen extends GameOptionsScreen {
         //blockList = layout.addBody(new BlockListWidget(this, this.client));
     }
 
-    @Override
     protected void refreshWidgetPositions() {
         this.layout.refreshPositions();
         //this.listWidget.position(this.width, this.layout);
         titleWidget.setX(titleWidget.getX() + titleWidget.getWidth() / 2);
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        this.refreshWidgetPositions();
     }
 
     @Override
