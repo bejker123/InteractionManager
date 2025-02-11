@@ -1,13 +1,18 @@
 {
   "screen.interactionmanager.interactions": "Interactions",
   "screen.interactionmanager.block_blacklist": "Block Blacklist",
+  "screen.interactionmanager.entity_blacklist": "Entity Blacklist",
 
   "option.interactionmanager.on": "ON",
   "option.interactionmanager.off": "OFF",
 
   "button.interactionmanager.block_blacklist": "Block Blacklist",
-  "button.interactionmanager.block_blacklist.tooltip": "Manage block blacklist\nBlacklisted block can't be broken.",
-  "category.interactionmanager.blacklisted": "Blacklisted",
+  "button.interactionmanager.block_blacklist.tooltip": "Manage block blacklist\nBlacklisted blocks can't be broken.",
+  "category.interactionmanager.blacklisted_blocks": "Blacklisted Blocks",
+
+  "button.interactionmanager.entity_blacklist": "Entity Blacklist",
+  "button.interactionmanager.entity_blacklist.tooltip": "Manage entity blacklist\nBlacklisted entities can't be attacked.",
+  "category.interactionmanager.blacklisted_entities": "Blacklisted Entities",
 
   "button.interactionmanager.restore_defaults": "Restore Defaults",
   "button.interactionmanager.restore_defaults.active.tooltip": "Restore vanilla minecraft behaviour",
@@ -34,5 +39,15 @@
   "option.interactionmanager.pet_attack_mode.tooltip": "All - you can attack all pets\nOnly Not Yours - You can attack not tamed pets and other players' pets\nNot Tamed - You can only attack not tamed pets\nNone - You can't attack any tamable mobs\nIf Attack Passive Mobs is OFF this will have no effect",
 
   "option.interactionmanager.allow_breaking_blocks": "Break Blocks",
-  "option.interactionmanager.allow_breaking_blocks.tooltip": "Toggle the ability to break blocks"
+  "option.interactionmanager.allow_breaking_blocks.tooltip": "Toggle the ability to break blocks",
+
+  "option.interactionmanager.enable_block_blacklist": "Block Blacklist",
+  "option.interactionmanager.enable_block_blacklist.enabled":"Enabled",
+  "option.interactionmanager.enable_block_blacklist.disabled": "Disabled",
+  "option.interactionmanager.enable_block_blacklist.tooltip": "Enabled - You can't break blacklisted blocks\nDisabled - You can break blacklisted blocks, unless the 'Break Blocks' option is OFF",
+
+  "option.interactionmanager.enable_entity_blacklist": "Entity Blacklist",
+  "option.interactionmanager.enable_entity_blacklist.enabled":"Enabled",
+  "option.interactionmanager.enable_entity_blacklist.disabled": "Disabled",
+  "option.interactionmanager.enable_entity_blacklist.tooltip": "Enabled - You can't attack blacklisted entities\nDisabled - You can attack blacklisted entities, unless "
 }

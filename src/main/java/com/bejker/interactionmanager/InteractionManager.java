@@ -60,6 +60,11 @@ public class InteractionManager implements ModInitializer {
     }
 
     public static void onAttackEntity(UUID player_uuid, Entity target, CallbackInfo ci) {
+        if(Config.ENABLE_ENTITY_BLACKLIST.getValue() && Config.BLACKLISTED_ENTITIES.contains(target.getType())){
+            ci.cancel();
+            return;
+        }
+
         boolean is_hostile = (target instanceof HostileEntity) || Monster.class.isAssignableFrom(target.getClass());
         if(!Config.ALLOW_ATTACKING_HOSTILE_ENTITIES.getValue()&&
                 is_hostile){
@@ -94,7 +99,7 @@ public class InteractionManager implements ModInitializer {
         if(!Config.ALLOW_BREAKING_BLOCKS.getValue()){
             cir.setReturnValue(true);
         }
-        if(Config.BLACKLISTED_BLOCKS.contains(block)){
+        if(Config.ENABLE_BLOCK_BLACKLIST.getValue() && Config.BLACKLISTED_BLOCKS.contains(block)){
             cir.setReturnValue(true);
         }
     }

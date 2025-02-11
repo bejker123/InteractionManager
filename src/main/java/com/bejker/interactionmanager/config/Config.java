@@ -3,6 +3,7 @@ package com.bejker.interactionmanager.config;
 import com.bejker.interactionmanager.config.option.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.option.SimpleOption;
+import net.minecraft.entity.EntityType;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -14,6 +15,8 @@ import java.util.Set;
 // For saving and loading config use ConfigManager
 // For internal storage use OptionStorage
 public class Config {
+    //Option names are intentionally verbose for clarity reasons
+
     public static final BooleanOption ALLOW_SHOVEL_CREATE_PATHS = new BooleanOption("allow_shovel_create_paths");
     public static final BooleanOption ALLOW_AXE_STRIP_BLOCKS = new BooleanOption("allow_axe_strip_blocks");
     public static final BooleanOption ALLOW_USE_FIREWORK_ON_BLOCK = new BooleanOption("allow_use_firework_on_block");
@@ -31,7 +34,16 @@ public class Config {
 
     public static final BooleanOption ALLOW_BREAKING_BLOCKS = new BooleanOption("allow_breaking_blocks");
 
+    public static final BooleanOption ENABLE_BLOCK_BLACKLIST = new BooleanOption("enable_block_blacklist",true,"enabled","disabled");
+
     public static final Set<Block> BLACKLISTED_BLOCKS = new HashSet<>();
+
+    public static final Set<EntityType<?>> BLACKLISTED_ENTITIES = new HashSet<>();
+
+    public static final BooleanOption ENABLE_ENTITY_BLACKLIST = new BooleanOption("enable_entity_blacklist",true,"enabled","disabled");
+
+    @IFileOnlyOption
+    public static final BooleanOption RENDER_ITEMS_IN_BLOCK_BLACKLIST = new BooleanOption("render_items_in_block_blacklist");
 
     public enum PetAttackMode{
         ALL,

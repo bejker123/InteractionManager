@@ -1,8 +1,9 @@
 package com.bejker.interactionmanager.gui.widget;
 
-import com.bejker.interactionmanager.search.SearchUtil;
 import com.bejker.interactionmanager.config.Config;
 import com.bejker.interactionmanager.gui.BlockBlacklistScreen;
+import com.bejker.interactionmanager.gui.EntityBlacklistScreen;
+import com.bejker.interactionmanager.search.SearchUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -12,20 +13,22 @@ import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.EntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
-public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
-    private final BlockBlacklistScreen parent;
+public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> {
+    private final EntityBlacklistScreen parent;
     private String last_search = "";
 
-    public BlockListWidget(BlockBlacklistScreen parent,MinecraftClient client) {
+    public EntityListWidget(EntityBlacklistScreen parent, MinecraftClient client) {
 	    //(MinecraftClient client, int width, int height, int y, int itemHeight)
         super(client, parent.width, parent.layout.getContentHeight(), parent.layout.getHeaderHeight(), 23);
         this.parent = parent;
@@ -36,15 +39,15 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
     private void updateEntries() {
        this.clearEntries();
        if(last_search != null && !last_search.isBlank()){
-           SearchUtil.searchBlocks(last_search).stream()
+           SearchUtil.searchEntities(last_search).stream()
            .distinct()
-           .filter((x) -> !Config.BLACKLISTED_BLOCKS.contains(x))
-           .map(SearchBlockEntry::new)
+           .filter((x) -> !Config.BLACKLISTED_ENTITIES.contains(x))
+           .map(SearchEntityEntry::new)
            .forEach(this::addEntry);
        }
-       this.addEntry(new CategoryEntry(Text.translatable("category.interactionmanager.blacklisted_blocks")));
-       for (Block i : Config.BLACKLISTED_BLOCKS){
-          this.addEntry(new BlockEntry(i));
+       this.addEntry(new CategoryEntry(Text.translatable("category.interactionmanager.blacklisted_entities")));
+       for (EntityType<?> i : Config.BLACKLISTED_ENTITIES){
+          this.addEntry(new EntityEntry(i));
        }
 
        //It should be impossible, but better add this check now then debug this in the future,
@@ -90,37 +93,31 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
 
         return Optional.empty();
     }
-    public abstract class Entry extends ElementListWidget.Entry<BlockListWidget.Entry> {
+    public abstract class Entry extends ElementListWidget.Entry<EntityListWidget.Entry> {
         @Override
         public boolean isMouseOver(double mouseX, double mouseY) {
-            return Objects.equals(BlockListWidget.this.getEntryAtPosition(mouseX, mouseY), this);
+            return Objects.equals(EntityListWidget.this.getEntryAtPosition(mouseX, mouseY), this);
         }
     }
 
-    public class BlockEntry extends BlockListWidget.Entry {
+    public class EntityEntry extends EntityListWidget.Entry {
         public final Text block_name_text;
         public final Text block_id_text;
         private final ButtonWidget button;
-        private final Block block;
-
-        private static final int MAX_CHARS = 30;
-
         static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(
                 Identifier.ofVanilla("pending_invite/accept"),
                 Identifier.ofVanilla("pending_invite/accept_highlighted")
         );
 
-        public BlockEntry(Block block){
-           RegistryEntry<Block> entry = Registries.BLOCK.getEntry(block);
-           this.block_name_text = Text.of(block.getName().asTruncatedString(MAX_CHARS));
-           String id = entry.getIdAsString();
-           this.block_id_text = Text.literal(id.substring(0,Math.min(id.length(),MAX_CHARS))).withColor(Colors.GRAY);
-           this.button = this.createButton(block);
-           this.block = block;
+        public EntityEntry(EntityType<?> type){
+           RegistryEntry<EntityType<?>> entry = Registries.ENTITY_TYPE.getEntry(type);
+           this.block_name_text = type.getName();
+           this.block_id_text = Text.of(entry.getIdAsString()).copy().withColor(Colors.GRAY);
+           this.button = this.createButton(type);
         }
-        ButtonWidget createButton(Block block){
+        ButtonWidget createButton(EntityType<?> type){
             return new TexturedButtonWidget(20,20, BUTTON_TEXTURES,(button)->{
-                Config.BLACKLISTED_BLOCKS.remove(block);
+                Config.BLACKLISTED_ENTITIES.remove(type);
                 updateEntries();
             },Text.translatable("button.interactionmanager.remove"));
         }
@@ -138,30 +135,24 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
         @Override
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             int ref_x = x + entryWidth / 32;
-            if(Config.RENDER_ITEMS_IN_BLOCK_BLACKLIST.getValue()){
-               ref_x += 14;
-            }
             int ref_y = y + entryHeight - 9;
 
-            context.drawTextWithShadow(BlockListWidget.this.client.textRenderer, this.block_name_text,ref_x,ref_y , Colors.WHITE);
+            context.drawTextWithShadow(EntityListWidget.this.client.textRenderer, this.block_name_text,ref_x,ref_y , Colors.WHITE);
 
-            context.drawTextWithShadow(BlockListWidget.this.client.textRenderer, this.block_id_text, ref_x, ref_y + 10, Colors.GRAY);
+            context.drawTextWithShadow(EntityListWidget.this.client.textRenderer, this.block_id_text, ref_x, ref_y + 10, Colors.GRAY);
             this.button.setX(x + entryWidth - this.button.getWidth() - 3);
             this.button.setY(ref_y - 1);
             this.button.render(context,mouseX,mouseY,tickDelta);
-            if(Config.RENDER_ITEMS_IN_BLOCK_BLACKLIST.getValue()){
-                context.drawItemWithoutEntity(new ItemStack(block),ref_x - 20,ref_y);
-            }
         }
 
     }
 
-    public class SearchBlockEntry extends BlockEntry{
+    public class SearchEntityEntry extends EntityEntry{
 
         private static final int lines = 2;
 
-        public SearchBlockEntry(Block block){
-            super(block);
+        public SearchEntityEntry(EntityType<?> type){
+            super(type);
         }
 
         static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(
@@ -169,9 +160,9 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
                 Identifier.ofVanilla("pending_invite/reject_highlighted")
         );
         @Override
-        ButtonWidget createButton(Block block){
+        ButtonWidget createButton(EntityType<?> type){
             return new TexturedButtonWidget(20,20, BUTTON_TEXTURES,(button)->{
-                Config.BLACKLISTED_BLOCKS.add(block);
+                Config.BLACKLISTED_ENTITIES.add(type);
                 updateEntries();
             },Text.translatable("button.interactionmanager.remove"));
         }
@@ -206,8 +197,8 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
 
         @Override
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            int text_width = BlockListWidget.this.client.textRenderer.getWidth(text);
-            context.drawTextWithShadow(BlockListWidget.this.client.textRenderer,text,x +entryWidth / 2- text_width / 2,y + entryHeight / 4 + 2,Colors.WHITE);
+            int text_width = EntityListWidget.this.client.textRenderer.getWidth(text);
+            context.drawTextWithShadow(EntityListWidget.this.client.textRenderer,text,x +entryWidth / 2- text_width / 2,y + entryHeight / 4 + 2,Colors.WHITE);
         }
     }
 }

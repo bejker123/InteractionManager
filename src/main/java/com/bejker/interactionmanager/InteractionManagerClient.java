@@ -10,6 +10,5 @@ public class InteractionManagerClient implements ClientModInitializer {
     public void onInitializeClient() {
         ConfigManager.loadConfig();
         ConfigManager.initRuntimeOptions();
-        SearchUtil.init();
     }
 }
