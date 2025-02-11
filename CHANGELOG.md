@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.4.0
+### Added
+- Toggling attacking vehicles (boats, minecarts)
+- Displaying block icons in the block blacklist screen
+### Fixed
+- Vehicles being grouped as passive entities, and turning off attacking passive mobs would make you unable to damage vehicles
+- UI scrolling bug
 ## 1.3.0
 ### Added
 - Entity blacklist
