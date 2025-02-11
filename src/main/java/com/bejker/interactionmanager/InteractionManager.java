@@ -6,10 +6,12 @@ import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.VillagerEntity;
+import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.FireworkRocketItem;
 import net.minecraft.item.ItemStack;
@@ -72,7 +74,8 @@ public class InteractionManager implements ModInitializer {
            return;
         }
         if(!Config.ALLOW_ATTACKING_PASSIVE_ENTITIES.getValue()&&
-                !is_hostile){
+                !is_hostile&&
+                target instanceof LivingEntity){
             ci.cancel();
             return;
         }
