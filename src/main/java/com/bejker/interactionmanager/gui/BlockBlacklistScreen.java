@@ -1,17 +1,8 @@
 package com.bejker.interactionmanager.gui;
 
 import com.bejker.interactionmanager.gui.widget.BlockListWidget;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.option.GameOptionsScreen;
-import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.text.Text;
-
-import java.util.Locale;
-import java.util.Optional;
 
 
 public class BlockBlacklistScreen extends BlacklistScreen {
@@ -27,13 +18,14 @@ public class BlockBlacklistScreen extends BlacklistScreen {
     @Override
     protected void initBody() {
         super.initBody();
-        blockList = layout.addBody(new BlockListWidget(this, this.client));
+        blockList = new BlockListWidget(this, this.client);
+        this.addDrawableChild(blockList);
     }
 
     @Override
     protected void refreshWidgetPositions() {
         super.refreshWidgetPositions();
-        this.blockList.position(this.width, this.layout);
+        //this.blockList.position(this.width, this.layout);
     }
 
 }

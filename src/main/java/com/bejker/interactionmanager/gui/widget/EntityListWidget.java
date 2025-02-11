@@ -9,7 +9,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
-import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
@@ -18,6 +17,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> 
 
     public EntityListWidget(EntityBlacklistScreen parent, MinecraftClient client) {
 	    //(MinecraftClient client, int width, int height, int y, int itemHeight)
-        super(client, parent.width, parent.layout.getContentHeight(), parent.layout.getHeaderHeight(), 23);
+        super(client, 0,0,parent.width, parent.height,23);
         this.parent = parent;
 
         this.updateEntries();
@@ -57,7 +57,7 @@ public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> 
            return;
        }
        if(search_entries == 0){
-           this.setScrollY(this.getRowTop(0));
+           this.setScrollAmount(this.getRowTop(0));
        }
        //if(this.getScrollY() > this.getRowBottom(this.getEntryCount() - 1)){
        //    this.setScrollY(this.getRowBottom(this.getEntryCount() - 1));
@@ -82,7 +82,7 @@ public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> 
         for (int i = 0; i < entryCount; i++) {
             int rowTop = this.getRowTop(i);
             int rowBottom = this.getRowBottom(i);
-            if (rowBottom >= this.getY() && rowTop <= this.getBottom()) {
+            if (rowBottom >= 0 && rowTop <= this.height) {
                 this.renderEntry(context, mouseX, mouseY, delta, i, rowLeft, rowTop, rowWidth, itemHeight);
             }
         }
@@ -108,22 +108,27 @@ public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> 
         public final Text block_name_text;
         public final Text block_id_text;
         private final ButtonWidget button;
-        static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(
-                Identifier.ofVanilla("pending_invite/accept"),
-                Identifier.ofVanilla("pending_invite/accept_highlighted")
-        );
+        //static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(
+        //        Identifier.ofVanilla("pending_invite/accept"),
+        //        Identifier.ofVanilla("pending_invite/accept_highlighted")
+        //);
 
         public EntityEntry(EntityType<?> type){
            RegistryEntry<EntityType<?>> entry = Registries.ENTITY_TYPE.getEntry(type);
            this.block_name_text = type.getName();
-           this.block_id_text = Text.of(entry.getIdAsString()).copy().withColor(Colors.GRAY);
+           this.block_id_text = Text.of(entry.toString()).copy().formatted(Formatting.GRAY);
            this.button = this.createButton(type);
         }
         ButtonWidget createButton(EntityType<?> type){
-            return new TexturedButtonWidget(20,20, BUTTON_TEXTURES,(button)->{
-                Config.BLACKLISTED_ENTITIES.remove(type);
-                updateEntries();
-            },Text.translatable("button.interactionmanager.remove"));
+            //return new TexturedButtonWidget(20,20, BUTTON_TEXTURES,(button)->{
+            //    Config.BLACKLISTED_ENTITIES.remove(type);
+            //    updateEntries();
+            //},Text.translatable("button.interactionmanager.remove"));
+            return ButtonWidget.builder(Text.translatable("button.interactionmanager.add"),
+                    (button)->{
+                        Config.BLACKLISTED_ENTITIES.add(type);
+                        updateEntries();
+                    }).size(20,20).build();
         }
 
         @Override
@@ -159,16 +164,22 @@ public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> 
             super(type);
         }
 
-        static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(
-                Identifier.ofVanilla("pending_invite/reject"),
-                Identifier.ofVanilla("pending_invite/reject_highlighted")
-        );
+        //static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(
+        //        Identifier.ofVanilla("pending_invite/reject"),
+        //        Identifier.ofVanilla("pending_invite/reject_highlighted")
+        //);
         @Override
         ButtonWidget createButton(EntityType<?> type){
-            return new TexturedButtonWidget(20,20, BUTTON_TEXTURES,(button)->{
-                Config.BLACKLISTED_ENTITIES.add(type);
-                updateEntries();
-            },Text.translatable("button.interactionmanager.remove"));
+            //return new TexturedButtonWidget(20,20, BUTTON_TEXTURES,(button)->{
+            //    Config.BLACKLISTED_ENTITIES.add(type);
+            //    updateEntries();
+            //},Text.translatable("button.interactionmanager.remove"));
+
+            return ButtonWidget.builder(Text.translatable("button.interactionmanager.remove"),
+                (button)->{
+                    Config.BLACKLISTED_ENTITIES.add(type);
+                    updateEntries();
+                }).size(20,20).build();
         }
 
         @Override

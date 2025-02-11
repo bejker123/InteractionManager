@@ -31,13 +31,13 @@ public class SearchUtil {
         for(var block : Registries.BLOCK){
             RegistryEntry<Block> entry = Registries.BLOCK.getEntry(block);
             blockSearchTree.put(getLocalizedBlockName(block),block);
-            blockSearchTree.put(entry.getIdAsString(),block);
+            blockSearchTree.put(entry.toString(),block);
         }
 
         for(var entity_type : Registries.ENTITY_TYPE){
             RegistryEntry<EntityType<?>> entry = Registries.ENTITY_TYPE.getEntry(entity_type);
             entitySearchTree.put(getLocalizedEntityName(entity_type),entity_type);
-            entitySearchTree.put(entry.getIdAsString(),entity_type);
+            entitySearchTree.put(entry.toString(),entity_type);
         }
     }
 

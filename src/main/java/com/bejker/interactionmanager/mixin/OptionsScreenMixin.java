@@ -3,8 +3,6 @@ package com.bejker.interactionmanager.mixin;
 import com.bejker.interactionmanager.gui.GuiCallbacks;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.OptionsScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
 import net.minecraft.client.gui.widget.GridWidget;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,8 +17,8 @@ public class OptionsScreenMixin extends Screen {
         super(title);
     }
 
-   @Inject(method = "init",at= @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/ThreePartsLayoutWidget;forEachChild(Ljava/util/function/Consumer;)V"),locals = LocalCapture.CAPTURE_FAILSOFT)
-    protected void onInit(CallbackInfo ci,DirectionalLayoutWidget dli,DirectionalLayoutWidget dli2,GridWidget gridWidget,GridWidget.Adder adder) {
+   @Inject(method = "init",at= @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/GridWidget;forEachChild(Ljava/util/function/Consumer;)V"),locals = LocalCapture.CAPTURE_FAILSOFT)
+    protected void onInit(CallbackInfo ci,GridWidget gridWidget,GridWidget.Adder adder) {
         if(gridWidget == null){
             return;
         }

@@ -83,7 +83,7 @@ public class ConfigManager {
                             continue;
                         }
                         for(JsonElement element : jsonArray) {
-                            Block block = Registries.BLOCK.get(Identifier.of(element.getAsString()));
+                            Block block = Registries.BLOCK.get(Identifier.of("",element.getAsString()));
                             Config.BLACKLISTED_BLOCKS.add(block);
                         }
                     }

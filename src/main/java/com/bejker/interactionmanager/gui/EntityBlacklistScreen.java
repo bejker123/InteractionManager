@@ -18,13 +18,15 @@ public class EntityBlacklistScreen extends BlacklistScreen {
     @Override
     protected void initBody() {
         super.initBody();
-        entityList = layout.addBody(new EntityListWidget(this, this.client));
+        //entityList = layout.addBody(new EntityListWidget(this, this.client));
+        entityList = new EntityListWidget(this,this.client);
+        this.addDrawableChild(entityList);
     }
 
     @Override
     protected void refreshWidgetPositions() {
         super.refreshWidgetPositions();
-        this.entityList.position(this.width, this.layout);
+        //this.entityList.position(this.width, this.layout);
     }
 
 }
