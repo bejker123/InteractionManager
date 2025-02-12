@@ -29,7 +29,6 @@ import java.util.UUID;
 public class InteractionManager implements ModInitializer {
 
     public static final String MOD_ID = "interactionmanager";
-    public static Logger CLIENT_LOGGER = LoggerFactory.getLogger(MOD_ID+":client");
 
     public static Identifier id(String s){
         return Identifier.of(MOD_ID,s);
