@@ -1,6 +1,8 @@
 package com.bejker.interactionmanager.gui;
 
+import com.bejker.interactionmanager.InteractionManager;
 import com.bejker.interactionmanager.config.Config;
+import com.bejker.interactionmanager.config.ConfigManager;
 import com.bejker.interactionmanager.gui.widget.BlockListWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -16,7 +18,6 @@ public abstract class BlacklistScreen extends GameOptionsScreen {
 
     private final Screen parent;
 
-    private TextWidget titleWidget;
     TextFieldWidget search;
     private OptionListWidget optionList;
 
@@ -31,21 +32,20 @@ public abstract class BlacklistScreen extends GameOptionsScreen {
        // widget.getMainPositioner().margin(0,5);
        // widget.getMainPositioner().alignVerticalCenter();
        // widget.setY(0);
-        titleWidget = new TextWidget(title,textRenderer);
-        titleWidget.alignCenter();
         //widget.add(titleWidget);
         search = new TextFieldWidget(textRenderer,0,0,150,20,Text.empty());
+        search.setX(width / 2 - search.getWidth() / 2);
+        search.setY(33);
         //search.setX(width / 2 - search.getWidth() / 2);
         //widget.add(search);
         //this.layout.addHeader(widget);
         //this.layout.setHeaderHeight(this.layout.getHeaderHeight() + 20);
-        this.addDrawableChild(titleWidget);
+        //this.addDrawableChild(titleWidget);
         this.addDrawableChild(search);
     }
 
     protected void initBody() {
-        this.addDrawableChild(search);
-        this.optionList.addAll(Config.asOptions());
+        //this.optionList.addAll(Config.asOptions());
         //blockList = layout.addBody(new BlockListWidget(this, this.client));
     }
 
@@ -54,12 +54,13 @@ public abstract class BlacklistScreen extends GameOptionsScreen {
         super.init();
         this.initHeader();
         this.initBody();
+        this.refreshWidgetPositions();
     }
 
     protected void refreshWidgetPositions() {
         //this.layout.refreshPositions();
         //this.listWidget.position(this.width, this.layout);
-        titleWidget.setX(titleWidget.getX() + titleWidget.getWidth() / 2);
+        //titleWidget.setX(titleWidget.getX() + titleWidget.getWidth() / 2);
     }
 
     @Override

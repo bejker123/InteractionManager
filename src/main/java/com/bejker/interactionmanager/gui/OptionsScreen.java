@@ -13,6 +13,8 @@ import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.*;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.option.SimpleOption;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 
@@ -24,34 +26,11 @@ public class OptionsScreen extends SimpleOptionsScreen {
     private ButtonWidget restore_defaults;
     private ButtonWidget block_blacklist;
     private ButtonWidget entity_blacklist;
-    private OptionListWidget optionList;
 
     private static final Text TITLE_TEXT = Text.translatable("screen.interactionmanager.interactions");
     public OptionsScreen(Screen parent) {
         super(parent,MinecraftClient.getInstance().options,TITLE_TEXT,Config.asOptions());
         ConfigManager.loadConfig();
-    }
-
-    protected void addOptions() {
-        //List<ClickableWidget> option_widgets = Arrays.stream(Config.asOptions()).map((x) -> x.createWidget(gameOptions)).toList();
-        //ArrayList<ClickableWidget> widgets = new ArrayList<>(option_widgets);
-
-        //block_blacklist = ButtonWidget.builder(Text.translatable("button.interactionmanager.block_blacklist"),(button)->{
-        //    client.setScreen(new BlockBlacklistScreen(this));
-        //})
-        //  .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.block_blacklist.tooltip")))
-        //  .build();
-        //widgets.add(block_blacklist);
-
-        // entity_blacklist = ButtonWidget.builder(Text.translatable("button.interactionmanager.entity_blacklist"),(button)->{
-        //             client.setScreen(new EntityBlacklistScreen(this));
-        // })
-        // .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.entity_blacklist.tooltip")))
-        // .build();
-
-        //widgets.add(entity_blacklist);
-
-        //widgets.forEach(this::addDrawableChild);
     }
 
     @Override
@@ -60,12 +39,17 @@ public class OptionsScreen extends SimpleOptionsScreen {
     }
 
     protected void init() {
-        super.init();
         //List<ClickableWidget> option_widgets = Arrays.stream(Config.asOptions()).map((x) -> x.createWidget(gameOptions,0,0,150)).toList();
         //ArrayList<ClickableWidget> widgets = new ArrayList<>(option_widgets);
         //widgets.forEach(this::addDrawableChild);
+        this.buttonList = new OptionListWidget(this.client, this.width, this.height, 32, this.height - 32, 25);
+        this.buttonList.addAll(this.options);
+        this.addSelectableChild(this.buttonList);
+        this.block_blacklist = this.addDrawableChild(ButtonWidget.builder(Text.translatable("button.interactionmanager.block_blacklist"),(button) -> {
+            client.setScreen(new BlockBlacklistScreen(this));
+        }).build());
 
-        this.restore_defaults = ButtonWidget.builder(Text.translatable("button.interactionmanager.restore_defaults"), button -> {
+        this.restore_defaults = this.addDrawableChild(ButtonWidget.builder(Text.translatable("button.interactionmanager.restore_defaults"), button -> {
             if(client == null){
                 return;
             }
@@ -81,8 +65,12 @@ public class OptionsScreen extends SimpleOptionsScreen {
                 }
             }, Text.translatable("screen.interactionmanager.restore_defaults"),
                     Text.translatable("confirm.interactionmanager.restore_defaults")));
-        }).build();
-        this.addDrawableChild(restore_defaults);
+        }).dimensions(this.width / 2 - 155, this.height - 29, 150, 20).build());
+        this.addDrawableChild(
+                ButtonWidget.builder(ScreenTexts.DONE, button -> this.client.setScreen(this.parent))
+                        .dimensions(this.width / 2 - 155 + 160, this.height - 29, 150, 20)
+                        .build()
+        );
         //DirectionalLayoutWidget directionalLayoutWidget = this.layout.addFooter(DirectionalLayoutWidget.horizontal().spacing(8));
         //directionalLayoutWidget.add(this.restore_defaults);
         //directionalLayoutWidget.add(ButtonWidget.builder(ScreenTexts.DONE, button -> this.close()).build());

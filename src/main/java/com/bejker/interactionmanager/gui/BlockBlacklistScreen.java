@@ -26,6 +26,8 @@ public class BlockBlacklistScreen extends BlacklistScreen {
     protected void refreshWidgetPositions() {
         super.refreshWidgetPositions();
         //this.blockList.position(this.width, this.layout);
+        this.blockList.updateSize(this.width * 31 / 32,this.height - 43,43,this.height);
+        this.blockList.setLeftPos(0);
     }
 
 }
