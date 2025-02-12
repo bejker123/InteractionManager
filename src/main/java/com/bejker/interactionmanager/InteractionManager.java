@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.Monster;
+import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.vehicle.VehicleEntity;
@@ -72,9 +73,9 @@ public class InteractionManager implements ModInitializer {
            ci.cancel();
            return;
         }
-        if(!Config.ALLOW_ATTACKING_PASSIVE_ENTITIES.getValue()&&
-                !is_hostile&&
-                target instanceof LivingEntity){
+        if(!Config.ALLOW_ATTACKING_PASSIVE_ENTITIES.getValue() &&
+                !is_hostile &&
+                target instanceof PassiveEntity){
             ci.cancel();
             return;
         }
