@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.4.1
+### Fixed
+- Saving and loading the entity blacklist
+- Enable entity blacklist button tooltip
+- A potential logic bug, when used with mods
 ## 1.4.0
 ### Added
 - Toggling attacking vehicles (boats, minecarts)

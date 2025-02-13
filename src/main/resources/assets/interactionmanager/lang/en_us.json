@@ -51,5 +51,5 @@
   "option.interactionmanager.enable_entity_blacklist": "Entity Blacklist",
   "option.interactionmanager.enable_entity_blacklist.enabled":"Enabled",
   "option.interactionmanager.enable_entity_blacklist.disabled": "Disabled",
-  "option.interactionmanager.enable_entity_blacklist.tooltip": "Enabled - You can't attack blacklisted entities\nDisabled - You can attack blacklisted entities, unless "
+  "option.interactionmanager.enable_entity_blacklist.tooltip": "Enabled - You can't attack blacklisted entities\nDisabled - You can attack blacklisted entities, unless they are protected by another option"
 }
