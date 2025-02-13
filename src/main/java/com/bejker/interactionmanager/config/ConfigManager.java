@@ -5,6 +5,7 @@ import com.bejker.interactionmanager.config.option.*;
 import com.google.gson.*;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 
@@ -86,6 +87,16 @@ public class ConfigManager {
                             Block block = Registries.BLOCK.get(Identifier.of(element.getAsString()));
                             Config.BLACKLISTED_BLOCKS.add(block);
                         }
+                    }else if(field.getName().equals("BLACKLISTED_ENTITIES")){
+                        JsonArray jsonArray = json.getAsJsonArray(field.getName()
+                                .toLowerCase(Locale.ROOT));
+                        if(jsonArray == null||jsonArray.isEmpty()){
+                            continue;
+                        }
+                        for(JsonElement element : jsonArray) {
+                            EntityType<?> entityType = Registries.ENTITY_TYPE.get(Identifier.of(element.getAsString()));
+                            Config.BLACKLISTED_ENTITIES.add(entityType);
+                        }
                     }
                 }
             }
@@ -127,6 +138,12 @@ public class ConfigManager {
                         JsonArray array = new JsonArray();
                         for(var block : Config.BLACKLISTED_BLOCKS){
                             array.add(Registries.BLOCK.getId(block).toString());
+                        }
+                        config.add(field_name,array);
+                    } else if(field.getName().equals("BLACKLISTED_ENTITIES")){
+                        JsonArray array = new JsonArray();
+                        for(var entityType : Config.BLACKLISTED_ENTITIES){
+                            array.add(Registries.ENTITY_TYPE.getId(entityType).toString());
                         }
                         config.add(field_name,array);
                     }
