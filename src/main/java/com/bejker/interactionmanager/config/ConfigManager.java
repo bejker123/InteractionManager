@@ -19,9 +19,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-import static com.bejker.interactionmanager.InteractionManager.CLIENT_LOGGER;
-
-
 // Use this class to save, load, and init runtime config
 // To access and set config options use Config.
 // For internal storage use OptionStorage
@@ -71,7 +68,7 @@ public class ConfigManager {
                             if (found != null) {
                                 OptionStorage.setEnumRaw(option.getKey(), found);
                             } else{
-                                CLIENT_LOGGER.error("Invalid option in Interaction Manager config; Path: \"{}\": \"{}\":\"{}\"; Restoring saved: \"{}\"; Valid values: {}",config_path ,option.getKey(),jsonPrimitive.getAsString(),option.getValue().name().toLowerCase(Locale.ROOT),valid_values);
+                                InteractionManager.LOGGER.error("Invalid option in Interaction Manager config; Path: \"{}\": \"{}\":\"{}\"; Restoring saved: \"{}\"; Valid values: {}",config_path ,option.getKey(),jsonPrimitive.getAsString(),option.getValue().name().toLowerCase(Locale.ROOT),valid_values);
                                 found_invalid = true;
                             }
                         }
