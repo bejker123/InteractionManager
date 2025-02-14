@@ -3,9 +3,10 @@
   "id": "interactionmanager",
   "version": "${version}",
   "name": "InteractionManager",
-  "description": "Client side mod giving the option to toggle log stripping and creating paths.",
+  "description": "Customize how you interact with blocks and mobs to prevent accidents and improve your Minecraft experience.",
   "authors": ["bejker123"],
   "contact": {
+    "homepage": "https://modrinth.com/mod/interaction-manager",
     "sources": "https://github.com/bejker123/InteractionManager",
     "issues": "https://github.com/bejker123/InteractionManager/issues"
   },
