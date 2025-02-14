@@ -8,6 +8,7 @@ import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.VillagerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.FireworkRocketItem;
@@ -46,6 +47,11 @@ public class Interactions {
 
     public static void onAttackEntity(UUID player_uuid, Entity target, CallbackInfo ci) {
         if(Config.ENABLE_ENTITY_BLACKLIST.getValue() && Config.BLACKLISTED_ENTITIES.contains(target.getType())){
+            ci.cancel();
+            return;
+        }
+
+        if(Config.ALLOW_ATTACKING_PLAYERS.getValue() && target instanceof PlayerEntity){
             ci.cancel();
             return;
         }
