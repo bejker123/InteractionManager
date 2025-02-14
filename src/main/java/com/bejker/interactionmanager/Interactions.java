@@ -51,7 +51,7 @@ public class Interactions {
             return;
         }
 
-        if(Config.ALLOW_ATTACKING_PLAYERS.getValue() && target instanceof PlayerEntity){
+        if(!Config.ALLOW_ATTACKING_PLAYERS.getValue() && target instanceof PlayerEntity){
             ci.cancel();
             return;
         }
