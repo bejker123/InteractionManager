@@ -1,5 +1,11 @@
 # Change Log
-
+## 1.5.0
+### Added
+- Toggling attacking other players
+### Fixed
+- Restore Defaults confirmation screen message
+### Changed 
+- Updated the in-game mod description 
 ## 1.4.1
 ### Fixed
 - Saving and loading the entity blacklist
