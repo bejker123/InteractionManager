@@ -1,6 +1,6 @@
 package com.bejker.interactionmanager.mixin;
 
-import com.bejker.interactionmanager.InteractionManager;
+import com.bejker.interactionmanager.Interactions;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -36,11 +36,11 @@ public abstract class PlayerInteractionManagerMixin {
         ItemStack stack = player.getStackInHand(hand);
         Block block = client.world.getBlockState(hitResult.getBlockPos()).getBlock();
 
-        InteractionManager.onInteractBlock(stack,block,cir);
+        Interactions.onInteractBlock(stack,block,cir);
     }
     @Inject(method = "attackEntity",at=@At("HEAD"),cancellable = true)
     public void onAttackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {
-        InteractionManager.onAttackEntity(player.getUuid(),target,ci);
+        Interactions.onAttackEntity(player.getUuid(),target,ci);
     }
 
     @Inject(method = "updateBlockBreakingProgress",at = @At("HEAD"),cancellable = true)
@@ -48,6 +48,6 @@ public abstract class PlayerInteractionManagerMixin {
         if(MinecraftClient.getInstance().world == null){
             return;
         }
-        InteractionManager.restrictBlockBreaking(MinecraftClient.getInstance().world.getBlockState(pos).getBlock(),cir);
+        Interactions.restrictBlockBreaking(MinecraftClient.getInstance().world.getBlockState(pos).getBlock(),cir);
     }
 }
