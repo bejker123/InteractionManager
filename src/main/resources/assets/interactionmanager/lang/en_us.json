@@ -17,7 +17,7 @@
   "button.interactionmanager.restore_defaults": "Restore Defaults",
   "button.interactionmanager.restore_defaults.active.tooltip": "Restore vanilla minecraft behaviour",
   "screen.interactionmanager.restore_defaults": "Are you sure you'd like to restore default options?",
-  "confirm.interactionmanager.restore_defaults": "The current options will not be saved!\nYour current block blacklist won't be cleared.",
+  "confirm.interactionmanager.restore_defaults": "The current options will not be saved!\nYour current block and entity blacklists won't be cleared.",
 
   "option.interactionmanager.allow_shovel_create_paths": "Shovel Paths",
   "option.interactionmanager.allow_shovel_create_paths.tooltip": "Toggle shovels creating paths when used on dirt-like blocks",
