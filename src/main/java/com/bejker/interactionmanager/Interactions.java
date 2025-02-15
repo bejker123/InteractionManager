@@ -39,7 +39,7 @@ public class Interactions {
             return;
         }
 
-        if(Config.ALLOW_USE_FIREWORK_ON_BLOCK.getValue()
+        if(!Config.ALLOW_USE_FIREWORK_ON_BLOCK.getValue()
                 &&stack.getItem() instanceof FireworkRocketItem){
                 cir.setReturnValue(ActionResult.PASS);
         }
