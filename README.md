@@ -56,4 +56,4 @@ It's stored in JSON, which is easy to read and modify.
 ### [See Change Log](CHANGELOG.md)
 
 ### Suggestions and Issues
-If you have any **suggestions** or run into some **issues** please create a new ticket on the **[Issue Tracker](https://github.com/bejker123/InteractionManager/issues)**.
+If you have any **suggestions** or run into some **issues** please create a new ticket on the **[Issue Tracker](https://github.com/bejker123/InteractionManager/issues)**. If the issue is a bug or a crash please include game logs alongside a description of how to reproduce the issue.

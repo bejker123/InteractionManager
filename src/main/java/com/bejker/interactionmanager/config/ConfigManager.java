@@ -5,8 +5,11 @@ import com.bejker.interactionmanager.config.option.*;
 import com.google.gson.*;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -18,15 +21,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-import static com.bejker.interactionmanager.InteractionManager.CLIENT_LOGGER;
-
-
 // Use this class to save, load, and init runtime config
 // To access and set config options use Config.
 // For internal storage use OptionStorage
 public class ConfigManager {
 
     private static Path config_path;
+
+    static Logger LOGGER = LoggerFactory.getLogger(InteractionManager.MOD_ID + " | ConfigManager");
     public static void loadConfig(){
         setupConfigFile();
 
@@ -70,7 +72,7 @@ public class ConfigManager {
                             if (found != null) {
                                 OptionStorage.setEnumRaw(option.getKey(), found);
                             } else{
-                                CLIENT_LOGGER.error("Invalid option in Interaction Manager config; Path: \"{}\": \"{}\":\"{}\"; Restoring saved: \"{}\"; Valid values: {}",config_path ,option.getKey(),jsonPrimitive.getAsString(),option.getValue().name().toLowerCase(Locale.ROOT),valid_values);
+                                LOGGER.error("Invalid option in Interaction Manager config; Path: \"{}\": \"{}\":\"{}\"; Restoring saved: \"{}\"; Valid values: {}",config_path ,option.getKey(),jsonPrimitive.getAsString(),option.getValue().name().toLowerCase(Locale.ROOT),valid_values);
                                 found_invalid = true;
                             }
                         }
@@ -83,8 +85,26 @@ public class ConfigManager {
                             continue;
                         }
                         for(JsonElement element : jsonArray) {
-                            Block block = Registries.BLOCK.get(Identifier.of(element.getAsString()));
+                            Identifier id = elem2Id(element);
+                            if(id == null){
+                                continue;
+                            }
+                            Block block = Registries.BLOCK.get(id);
                             Config.BLACKLISTED_BLOCKS.add(block);
+                        }
+                    }else if(field.getName().equals("BLACKLISTED_ENTITIES")){
+                        JsonArray jsonArray = json.getAsJsonArray(field.getName()
+                                .toLowerCase(Locale.ROOT));
+                        if(jsonArray == null||jsonArray.isEmpty()){
+                            continue;
+                        }
+                        for(JsonElement element : jsonArray) {
+                            Identifier id = elem2Id(element);
+                            if(id == null){
+                                continue;
+                            }
+                            EntityType<?> entityType = Registries.ENTITY_TYPE.get(id);
+                            Config.BLACKLISTED_ENTITIES.add(entityType);
                         }
                     }
                 }
@@ -94,9 +114,23 @@ public class ConfigManager {
             }
 
         }catch (IOException | IllegalAccessException e){
-            System.err.println("Couldn't load Interaction Manager config, using defaults.");
+            LOGGER.error("Couldn't load Interaction Manager config, using defaults.");
             e.printStackTrace();
         }
+    }
+
+    private static Identifier elem2Id(JsonElement element){
+        try {
+            String id_str = element.getAsString();
+            Identifier id = Identifier.tryParse(id_str);
+            if(id == null){
+                LOGGER.error("'{}' couldn't be converted to a valid minecraft identifier",id_str);
+            }
+            return id;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static void saveConfig() {
@@ -129,6 +163,12 @@ public class ConfigManager {
                             array.add(Registries.BLOCK.getId(block).toString());
                         }
                         config.add(field_name,array);
+                    } else if(field.getName().equals("BLACKLISTED_ENTITIES")){
+                        JsonArray array = new JsonArray();
+                        for(var entityType : Config.BLACKLISTED_ENTITIES){
+                            array.add(Registries.ENTITY_TYPE.getId(entityType).toString());
+                        }
+                        config.add(field_name,array);
                     }
                 }
             }
@@ -143,7 +183,7 @@ public class ConfigManager {
             writer.write(string);
             writer.close();
         } catch (IOException e) {
-            System.err.println("Couldn't load Interaction Manager config, using defaults.");
+            LOGGER.error("Couldn't save Interaction Manager config.");
             e.printStackTrace();
         }
     }
@@ -163,7 +203,7 @@ public class ConfigManager {
                 }
             }
         }catch(IllegalAccessException e){
-            System.err.println("Couldn't restore Interaction Manager config to defaults.");
+            LOGGER.error("Couldn't restore Interaction Manager config to defaults.");
             e.printStackTrace();
         }
     }
@@ -187,7 +227,7 @@ public class ConfigManager {
                 }
             }
         }catch(IllegalAccessException e){
-            System.err.println("Couldn't check if Interaction Manager config is set to defaults.");
+            LOGGER.error("Couldn't check if Interaction Manager config is set to defaults.");
             e.printStackTrace();
         }
         return true;

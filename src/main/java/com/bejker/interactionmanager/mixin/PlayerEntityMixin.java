@@ -1,6 +1,6 @@
 package com.bejker.interactionmanager.mixin;
 
-import com.bejker.interactionmanager.InteractionManager;
+import com.bejker.interactionmanager.Interactions;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -19,6 +19,6 @@ public abstract class PlayerEntityMixin {
             return;
         }
         Block block = world.getBlockState(pos).getBlock();
-        InteractionManager.restrictBlockBreaking(block,cir);
+        Interactions.restrictBlockBreaking(block,cir);
     }
 }

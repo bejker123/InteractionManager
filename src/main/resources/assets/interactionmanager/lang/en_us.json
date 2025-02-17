@@ -17,7 +17,7 @@
   "button.interactionmanager.restore_defaults": "Restore Defaults",
   "button.interactionmanager.restore_defaults.active.tooltip": "Restore vanilla minecraft behaviour",
   "screen.interactionmanager.restore_defaults": "Are you sure you'd like to restore default options?",
-  "confirm.interactionmanager.restore_defaults": "The current options will not be saved!\nYour current block blacklist won't be cleared.",
+  "confirm.interactionmanager.restore_defaults": "The current options will not be saved!\nYour current block and entity blacklists won't be cleared.",
 
   "option.interactionmanager.allow_shovel_create_paths": "Shovel Paths",
   "option.interactionmanager.allow_shovel_create_paths.tooltip": "Toggle shovels creating paths when used on dirt-like blocks",
@@ -25,6 +25,8 @@
   "option.interactionmanager.allow_axe_strip_blocks.tooltip": "Toggle axes stripping blocks, such as logs",
   "option.interactionmanager.allow_use_firework_on_block": "Use Fireworks On Blocks",
   "option.interactionmanager.allow_use_firework_on_block.tooltip": "Toggle setting off fireworks when used on blocks",
+  "option.interactionmanager.allow_attacking_players": "Attack Players",
+  "option.interactionmanager.allow_attacking_players.tooltip": "Toggle the ability to attack and damage other players",
   "option.interactionmanager.allow_attacking_hostile_entities": "Attack Hostile Mobs",
   "option.interactionmanager.allow_attacking_hostile_entities.tooltip": "Toggle the ability to attack and damage hostile mobs",
   "option.interactionmanager.allow_attacking_passive_entities": "Attack Passive Mobs",
@@ -51,5 +53,5 @@
   "option.interactionmanager.enable_entity_blacklist": "Entity Blacklist",
   "option.interactionmanager.enable_entity_blacklist.enabled":"Enabled",
   "option.interactionmanager.enable_entity_blacklist.disabled": "Disabled",
-  "option.interactionmanager.enable_entity_blacklist.tooltip": "Enabled - You can't attack blacklisted entities\nDisabled - You can attack blacklisted entities, unless "
+  "option.interactionmanager.enable_entity_blacklist.tooltip": "Enabled - You can't attack blacklisted entities\nDisabled - You can attack blacklisted entities, unless they are protected by another option"
 }
