@@ -1,4 +1,12 @@
 # Change Log
+
+## 1.5.1
+### Fixed
+- Reversed logic: use fireworks on blocks would be turned off when the option is on, and vice versa
+### Added
+- Improved logging
+### Changed
+- Versions are built for a specific minecraft version, which eliminates certain bugs
 ## 1.5.0
 ### Added
 - Toggling attacking other players
