@@ -42,6 +42,9 @@
   "option.interactionmanager.pet_attack_mode.none": "None",
   "option.interactionmanager.pet_attack_mode.tooltip": "All - you can attack all pets\nOnly Not Yours - You can attack not tamed pets and other players' pets\nNot Tamed - You can only attack not tamed pets\nNone - You can't attack any tamable mobs\nIf Attack Passive Mobs is OFF this will have no effect",
 
+  "option.interactionmanager.protect_from_sweeping_edge": "Sweeping Edge Protection",
+  "option.interactionmanager.protect_from_sweeping_edge.tooltip": "When enabled if an attack with sweeping edge would hit a protected entity it'll be canceled",
+
   "option.interactionmanager.allow_breaking_blocks": "Break Blocks",
   "option.interactionmanager.allow_breaking_blocks.tooltip": "Toggle the ability to break blocks",
 
