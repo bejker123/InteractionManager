@@ -45,6 +45,9 @@
   "option.interactionmanager.allow_breaking_blocks": "Break Blocks",
   "option.interactionmanager.allow_breaking_blocks.tooltip": "Toggle the ability to break blocks",
 
+  "option.interactionmanager.allow_placing_blocks": "Place Blocks",
+  "option.interactionmanager.allow_placing_blocks.tooltip": "Toggle the ability to place blocks",
+
   "option.interactionmanager.enable_block_blacklist": "Block Blacklist",
   "option.interactionmanager.enable_block_blacklist.enabled":"Enabled",
   "option.interactionmanager.enable_block_blacklist.disabled": "Disabled",

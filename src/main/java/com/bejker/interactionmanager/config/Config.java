@@ -36,6 +36,8 @@ public class Config {
 
     public static final BooleanOption ALLOW_BREAKING_BLOCKS = new BooleanOption("allow_breaking_blocks");
 
+    public static final BooleanOption ALLOW_PLACING_BLOCKS = new BooleanOption("allow_placing_blocks");
+
     public static final BooleanOption ENABLE_BLOCK_BLACKLIST = new BooleanOption("enable_block_blacklist",true,"enabled","disabled");
 
     public static final Set<Block> BLACKLISTED_BLOCKS = new HashSet<>();

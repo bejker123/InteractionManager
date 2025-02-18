@@ -10,10 +10,7 @@ import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.VehicleEntity;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.FireworkRocketItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShovelItem;
+import net.minecraft.item.*;
 import net.minecraft.util.ActionResult;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -23,6 +20,10 @@ import java.util.UUID;
 
 public class Interactions {
     public static void onInteractBlock(ItemStack stack, Block block, CallbackInfoReturnable<ActionResult> cir) {
+        if(!Config.ALLOW_PLACING_BLOCKS.getValue()&&stack.getItem() instanceof BlockItem){
+            cir.setReturnValue(ActionResult.PASS);
+            return;
+        }
         if(!Config.ALLOW_SHOVEL_CREATE_PATHS.getValue()
                 &&stack.getItem() instanceof ShovelItem){
             if(ShovelItem.PATH_STATES.get(block) != null){
