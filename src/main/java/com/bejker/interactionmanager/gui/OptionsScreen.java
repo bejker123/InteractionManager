@@ -38,6 +38,9 @@ public class OptionsScreen extends GameOptionsScreen {
             ArrayList<ClickableWidget> widgets = new ArrayList<>(option_widgets);
 
             block_blacklist = ButtonWidget.builder(Text.translatable("button.interactionmanager.block_blacklist"),(button)->{
+                if(client == null){
+                    return;
+                }
                 client.setScreen(new BlockBlacklistScreen(this));
             })
               .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.block_blacklist.tooltip")))
@@ -45,6 +48,9 @@ public class OptionsScreen extends GameOptionsScreen {
             widgets.add(block_blacklist);
 
             entity_blacklist = ButtonWidget.builder(Text.translatable("button.interactionmanager.entity_blacklist"),(button)->{
+                if(client == null){
+                    return;
+                }
                 client.setScreen(new EntityBlacklistScreen(this));
             })
             .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.entity_blacklist.tooltip")))
