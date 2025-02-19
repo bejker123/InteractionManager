@@ -1,5 +1,6 @@
 package com.bejker.interactionmanager.gui;
 
+import com.bejker.interactionmanager.InteractionManager;
 import com.bejker.interactionmanager.gui.widget.BlockListWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -7,8 +8,11 @@ import net.minecraft.client.gui.screen.option.GameOptionsScreen;
 import net.minecraft.client.gui.widget.*;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.text.Text;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL;
 
 import java.util.Locale;
+import java.util.Objects;
 
 public abstract class BlacklistScreen extends GameOptionsScreen {
 
@@ -70,5 +74,23 @@ public abstract class BlacklistScreen extends GameOptionsScreen {
 
     public String getSearch() {
         return this.search.getText().strip().toLowerCase(Locale.ROOT);
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        //If ESC is pressed we exit early
+        if(super.keyPressed(keyCode, scanCode, modifiers)){
+            return true;
+        }
+
+        //If no modifiers(except num lock, caps lock and shift) are held we assume the user wants to search,
+        //and focus the search widget.
+        //Modifiers are set using individual bits, so when no modifiers are present modifiers == 0
+        int not_ignored_mods = modifiers & ~GLFW.GLFW_MOD_NUM_LOCK & ~GLFW.GLFW_MOD_CAPS_LOCK & ~GLFW.GLFW_MOD_SHIFT;
+        if(not_ignored_mods == 0){
+            search.setFocused(true);
+            this.setFocused(search);
+        }
+        return false;
     }
 }
