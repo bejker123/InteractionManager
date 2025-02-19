@@ -4,10 +4,11 @@
   "package": "com.bejker.interactionmanager.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "EntityRendererMixin",
     "OptionsScreenMixin",
-    "PlayerInteractionManagerMixin",
     "PlayerEntityMixin",
-    "EntityRendererMixin"
+    "PlayerInteractionManagerMixin",
+    "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

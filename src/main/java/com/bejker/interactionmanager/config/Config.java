@@ -32,6 +32,8 @@ public class Config {
 
     public static final BooleanOption RENDER_PROTECTED_ENTITIES = new BooleanOption("render_protected_entities");
 
+    public static final BooleanOption RENDER_PROTECTED_BLOCKS = new BooleanOption("render_protected_blocks");
+
     @IRuntimeInternalOnlyOption
     public static final BooleanOption IS_MODMENU_INSTALLED = new BooleanOption("mod_menu_installed",false);
 
