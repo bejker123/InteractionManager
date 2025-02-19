@@ -42,8 +42,20 @@
   "option.interactionmanager.pet_attack_mode.none": "None",
   "option.interactionmanager.pet_attack_mode.tooltip": "All - you can attack all pets\nOnly Not Yours - You can attack not tamed pets and other players' pets\nNot Tamed - You can only attack not tamed pets\nNone - You can't attack any tamable mobs\nIf Attack Passive Mobs is OFF this will have no effect",
 
+  "option.interactionmanager.protect_from_sweeping_edge": "Sweeping Edge Protection",
+  "option.interactionmanager.protect_from_sweeping_edge.tooltip": "When enabled if an attack with sweeping edge would hit a protected entity it'll be canceled",
+
+  "option.interactionmanager.render_protected_entities": "Draw Protected Mobs",
+  "option.interactionmanager.render_protected_entities.tooltip": "When attacking a protected entity a box will be drawn around it, to indicate that it's protected.\nWhen attacking an entity would cause sweeping edge damage to a protected entity and Sweeping Edge protection is ON a different color box will be drawn around the attacked entity",
+
+  "option.interactionmanager.render_protected_blocks": "Draw Protected Blocks",
+  "option.interactionmanager.render_protected_blocks.tooltip": "When looking at a protected block a red outline will be drawn",
+
   "option.interactionmanager.allow_breaking_blocks": "Break Blocks",
   "option.interactionmanager.allow_breaking_blocks.tooltip": "Toggle the ability to break blocks",
+
+  "option.interactionmanager.allow_placing_blocks": "Place Blocks",
+  "option.interactionmanager.allow_placing_blocks.tooltip": "Toggle the ability to place blocks",
 
   "option.interactionmanager.enable_block_blacklist": "Block Blacklist",
   "option.interactionmanager.enable_block_blacklist.enabled":"Enabled",
