@@ -3,10 +3,8 @@ package com.bejker.interactionmanager;
 import com.bejker.interactionmanager.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.Monster;
@@ -16,9 +14,7 @@ import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.item.*;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -65,6 +61,7 @@ public class Interactions {
             return false;
         }
 
+        boolean ret = false;
         for (LivingEntity newTarget : world.getNonSpectatingEntities(LivingEntity.class, target.getBoundingBox().expand(1.0, 0.25, 1.0))) {
             if (newTarget != player
                     && newTarget != target
@@ -72,11 +69,12 @@ public class Interactions {
                     && (!(newTarget instanceof ArmorStandEntity) || !((ArmorStandEntity)newTarget).isMarker())
                     && player.squaredDistanceTo(newTarget) < 9.0) {
                 if(isProtected(player_uuid,newTarget)){
-                    return true;
+                    RenderProtected.markAsProtected(newTarget);
+                    ret = true;
                 }
             }
         }
-        return false;
+        return ret;
     }
 
     private static boolean isProtected(UUID player_uuid,Entity target){
@@ -120,6 +118,7 @@ public class Interactions {
             return;
         }
         if(isProtected(player_uuid,target)){
+            RenderProtected.markAsProtected(target);
             ci.cancel();
             return;
         }
@@ -128,8 +127,9 @@ public class Interactions {
         }
 
         PlayerEntity player = MinecraftClient.getInstance().player;
-        if(player.getStackInHand(player.preferredHand).getItem() instanceof SwordItem) {
+        if(player.getStackInHand(player.getActiveHand()).getItem() instanceof SwordItem) {
             if(protectFromSweepingEdge(player_uuid,target)){
+                RenderProtected.markAsUnprotected(target);
                 ci.cancel();
             }
         }

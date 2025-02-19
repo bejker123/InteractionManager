@@ -30,6 +30,8 @@ public class Config {
 
     public static final BooleanOption PROTECT_FROM_SWEEPING_EDGE = new BooleanOption("protect_from_sweeping_edge");
 
+    public static final BooleanOption RENDER_PROTECTED_ENTITIES = new BooleanOption("render_protected_entities");
+
     @IRuntimeInternalOnlyOption
     public static final BooleanOption IS_MODMENU_INSTALLED = new BooleanOption("mod_menu_installed",false);
 

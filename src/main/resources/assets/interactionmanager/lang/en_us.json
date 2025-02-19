@@ -45,6 +45,9 @@
   "option.interactionmanager.protect_from_sweeping_edge": "Sweeping Edge Protection",
   "option.interactionmanager.protect_from_sweeping_edge.tooltip": "When enabled if an attack with sweeping edge would hit a protected entity it'll be canceled",
 
+  "option.interactionmanager.render_protected_entities": "Draw Protected",
+  "option.interactionmanager.render_protected_entities.tooltip": "When attacking a protected entity a box will be drawn around it, to indicate that it's protected.\nWhen attacking an entity would cause sweeping edge damage to a protected entity and Sweeping Edge protection is ON a different color box will be drawn around the attacked entity",
+
   "option.interactionmanager.allow_breaking_blocks": "Break Blocks",
   "option.interactionmanager.allow_breaking_blocks.tooltip": "Toggle the ability to break blocks",
 

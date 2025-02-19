@@ -6,7 +6,8 @@
   "client": [
     "OptionsScreenMixin",
     "PlayerInteractionManagerMixin",
-    "PlayerEntityMixin"
+    "PlayerEntityMixin",
+    "EntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
