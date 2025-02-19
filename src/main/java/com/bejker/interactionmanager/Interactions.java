@@ -6,6 +6,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -15,6 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.item.*;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -127,12 +129,38 @@ public class Interactions {
         }
 
         PlayerEntity player = MinecraftClient.getInstance().player;
-        if(player.getStackInHand(player.getActiveHand()).getItem() instanceof SwordItem) {
+        if(wouldDealSweepingEdgeDamage(player,target)) {
             if(protectFromSweepingEdge(player_uuid,target)){
                 RenderProtected.markAsUnprotected(target);
                 ci.cancel();
             }
         }
+    }
+
+    //Sourced from PlayerEntity.attack
+    private static boolean wouldDealSweepingEdgeDamage(PlayerEntity player, Entity target){
+        float h = player.getAttackCooldownProgress(0.5F);
+        boolean bl4 = false;
+        boolean bl = h > 0.9F;
+        boolean bl2;
+        bl2 = player.isSprinting() && bl;
+        boolean bl3 = bl
+                && player.fallDistance > 0.0F
+                && !player.isOnGround()
+                && !player.isClimbing()
+                && !player.isTouchingWater()
+                && !player.hasStatusEffect(StatusEffects.BLINDNESS)
+                && !player.hasVehicle()
+                && target instanceof LivingEntity
+                && !player.isSprinting();
+        double d = (double)(player.horizontalSpeed - player.prevHorizontalSpeed);
+        if (bl && !bl3 && !bl2 && player.isOnGround() && d < (double)player.getMovementSpeed()) {
+            ItemStack itemStack2 = player.getStackInHand(Hand.MAIN_HAND);
+            if (itemStack2.getItem() instanceof SwordItem) {
+                bl4 = true;
+            }
+        }
+        return bl4;
     }
 
     public static void restrictBlockBreaking(Block block, CallbackInfoReturnable<Boolean> cir) {
