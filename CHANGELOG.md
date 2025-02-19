@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.6.0
+### Added
+- Drawing protected blocks and entities
+- Protection from sweeping edge
+- Focusing search bar when a key is pressed
+### Fixed
+- Rare screen related bugs
 ## 1.5.1
 ### Fixed
 - Reversed logic: use fireworks on blocks would be turned off when the option is on, and vice versa
