@@ -53,7 +53,10 @@ public class RenderProtected {
    //             .build(true)
    // );
 
-    public static <T extends Entity> void onRender(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+    public static <T extends Entity> void onRender(T entity, MatrixStack matrices, VertexConsumerProvider vertexConsumers) {
+        if(entity == null){
+            return;
+        }
         if(!Config.RENDER_PROTECTED_ENTITIES.getValue()){
             return;
         }
@@ -96,7 +99,7 @@ public class RenderProtected {
         VertexConsumer consumer = vertexConsumers.getBuffer(RenderLayer.getDebugFilledBox());
         Box box = entity.getBoundingBox()
                 .offset(-entity.getX(), -entity.getY(), -entity.getZ());
-        VertexRendering.drawBox(matrices,
+        VertexRendering.drawFilledBox(matrices,
                 consumer,
                 box.minX,
                 box.minY,
