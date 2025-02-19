@@ -96,7 +96,7 @@ public class RenderProtected {
         VertexConsumer consumer = vertexConsumers.getBuffer(RenderLayer.getDebugFilledBox());
         Box box = entity.getBoundingBox()
                 .offset(-entity.getX(), -entity.getY(), -entity.getZ());
-        WorldRenderer.renderFilledBox(matrices,
+        VertexRendering.drawBox(matrices,
                 consumer,
                 box.minX,
                 box.minY,

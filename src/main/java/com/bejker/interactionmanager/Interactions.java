@@ -15,8 +15,10 @@ import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.item.*;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -153,12 +155,10 @@ public class Interactions {
                 && !player.hasVehicle()
                 && target instanceof LivingEntity
                 && !player.isSprinting();
-        double d = (double)(player.horizontalSpeed - player.prevHorizontalSpeed);
-        if (bl && !bl3 && !bl2 && player.isOnGround() && d < (double)player.getMovementSpeed()) {
-            ItemStack itemStack2 = player.getStackInHand(Hand.MAIN_HAND);
-            if (itemStack2.getItem() instanceof SwordItem) {
-                bl4 = true;
-            }
+        double d = player.getMovement().horizontalLengthSquared();
+        double e = (double)player.getMovementSpeed() * (double)2.5F;
+        if (d < MathHelper.square(e) && player.getStackInHand(Hand.MAIN_HAND).isIn(ItemTags.SWORDS)) {
+            bl4 = true;
         }
         return bl4;
     }
