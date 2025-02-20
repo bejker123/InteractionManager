@@ -25,7 +25,7 @@ public class BlockOptionsScreen extends OptionsScreen {
     @Override
     protected void addOptions() {
         if(this.body != null){
-            List<ClickableWidget> option_widgets = Arrays.stream(Config.asOptions(IBlockOption.class))
+            List<ClickableWidget> option_widgets = Arrays.stream(Config.asOptions(this.options_target))
                     .map((x) -> x.createWidget(gameOptions)).toList();
             ArrayList<ClickableWidget> widgets = new ArrayList<>(option_widgets);
 

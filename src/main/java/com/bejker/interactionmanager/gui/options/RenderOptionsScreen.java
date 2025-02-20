@@ -2,6 +2,7 @@ package com.bejker.interactionmanager.gui.options;
 
 import com.bejker.interactionmanager.config.Config;
 import com.bejker.interactionmanager.config.option.interfaces.IEntityOption;
+import com.bejker.interactionmanager.config.option.interfaces.IRenderOption;
 import com.bejker.interactionmanager.gui.options.blacklist.EntityBlacklistScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.Tooltip;
@@ -13,13 +14,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class EntityOptionsScreen extends OptionsScreen {
-    private ButtonWidget entity_blacklist;
-
-    private static final Text TITLE_TEXT = Text.translatable("screen.interactionmanager.entity_options");
-    public EntityOptionsScreen(Screen parent) {
+public class RenderOptionsScreen extends OptionsScreen {
+    private static final Text TITLE_TEXT = Text.translatable("screen.interactionmanager.render_options");
+    public RenderOptionsScreen(Screen parent) {
         super(parent,TITLE_TEXT);
-        this.options_target = IEntityOption.class;
+        this.options_target = IRenderOption.class;
     }
 
     @Override
@@ -28,18 +27,6 @@ public class EntityOptionsScreen extends OptionsScreen {
             List<ClickableWidget> option_widgets = Arrays.stream(Config.asOptions(this.options_target))
                     .map((x) -> x.createWidget(gameOptions)).toList();
             ArrayList<ClickableWidget> widgets = new ArrayList<>(option_widgets);
-
-            entity_blacklist = ButtonWidget.builder(Text.translatable("button.interactionmanager.entity_blacklist"),(button)->{
-                if(client == null){
-                    return;
-                }
-                client.setScreen(new EntityBlacklistScreen(this));
-            })
-            .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.entity_blacklist.tooltip")))
-            .build();
-
-            widgets.add(entity_blacklist);
-
             this.body.addAll(widgets);
         }
     }
@@ -50,7 +37,7 @@ public class EntityOptionsScreen extends OptionsScreen {
             return;
         }
         this.close();
-        client.setScreen(new EntityOptionsScreen(client.currentScreen));
+        client.setScreen(new RenderOptionsScreen(client.currentScreen));
     }
 
 

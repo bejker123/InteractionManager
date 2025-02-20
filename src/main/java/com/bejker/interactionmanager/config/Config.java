@@ -49,16 +49,16 @@ public class Config {
     @IEntityOption
     public static final BooleanOption PROTECT_FROM_SWEEPING_EDGE = new BooleanOption("protect_from_sweeping_edge");
 
-    @IEntityOption
+    @IRenderOption
     public static final BooleanOption RENDER_PROTECTED_ENTITIES = new BooleanOption("render_protected_entities");
 
-    @IBlockOption
+    @IRenderOption
     public static final BooleanOption RENDER_PROTECTED_BLOCKS = new BooleanOption("render_protected_blocks");
 
     @IRuntimeInternalOnlyOption
     public static final BooleanOption IS_MODMENU_INSTALLED = new BooleanOption("mod_menu_installed",false);
 
-    @IFileOnlyOption
+    @IRenderOption
     public static final EnumOption<ShouldAddInteractionsButton> SHOULD_ADD_INTERACTIONS_BUTTON  = new EnumOption<ShouldAddInteractionsButton>("should_add_interactions_button",ShouldAddInteractionsButton.ONLY_IF_MOD_MENU_IS_NOT_INSTALLED);
 
     @IBlockOption
@@ -77,7 +77,7 @@ public class Config {
     @IEntityOption
     public static final BooleanOption ENABLE_ENTITY_BLACKLIST = new BooleanOption("enable_entity_blacklist",true,"enabled","disabled");
 
-    @IFileOnlyOption
+    @IRenderOption
     public static final BooleanOption RENDER_ITEMS_IN_BLOCK_BLACKLIST = new BooleanOption("render_items_in_block_blacklist");
 
     public enum PetAttackMode{

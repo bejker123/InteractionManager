@@ -3,6 +3,7 @@
 
   "screen.interactionmanager.entity_options": "Entity Options",
   "screen.interactionmanager.block_options": "Block Options",
+  "screen.interactionmanager.render_options": "Render Options",
 
   "option.interactionmanager.on": "ON",
   "option.interactionmanager.off": "OFF",
@@ -12,6 +13,9 @@
 
   "button.interactionmanager.block_options": "Block Options",
   "button.interactionmanager.block_options.tooltip": "Manage block options",
+
+  "button.interactionmanager.render_options": "Rendering Options",
+  "button.interactionmanager.render_options.tooltip": "Manage rendering options",
 
   "screen.interactionmanager.block_blacklist": "Block Blacklist",
   "screen.interactionmanager.entity_blacklist": "Entity Blacklist",
@@ -46,12 +50,19 @@
   "option.interactionmanager.allow_attacking_villagers.tooltip": "Toggle the ability to attack and damage villagers.\nIf Attack Passive Mobs is OFF this will have no effect.",
   "option.interactionmanager.allow_attacking_vehicles": "Attack Vehicles",
   "option.interactionmanager.allow_attacking_vehicles.tooltip": "Toggle the ability to attack and damage vehicles. (Boats, minecarts)",
+  "option.interactionmanager.render_items_in_block_blacklist": "Render Icons In Block Blacklist",
+  "option.interactionmanager.render_items_in_block_blacklist.tooltip": "Should render block icons in the block blacklist",
   "option.interactionmanager.pet_attack_mode": "Attack Pets",
   "option.interactionmanager.pet_attack_mode.all": "All",
   "option.interactionmanager.pet_attack_mode.only_other": "Only Not Yours",
   "option.interactionmanager.pet_attack_mode.not_tamed": "Only Not Tamed",
   "option.interactionmanager.pet_attack_mode.none": "None",
   "option.interactionmanager.pet_attack_mode.tooltip": "All - you can attack all pets\nOnly Not Yours - You can attack not tamed pets and other players' pets\nNot Tamed - You can only attack not tamed pets\nNone - You can't attack any tamable mobs\nIf Attack Passive Mobs is OFF this will have no effect",
+  "option.interactionmanager.should_add_interactions_button": "Add Button",
+  "option.interactionmanager.should_add_interactions_button.always": "Always",
+  "option.interactionmanager.should_add_interactions_button.only_if_mod_menu_is_not_installed": "No Mod Menu",
+  "option.interactionmanager.should_add_interactions_button.never": "Never",
+  "option.interactionmanager.should_add_interactions_button.tooltip": "Add Interactions button in the main menu.\nNo Mod Menu - Only if Mod Menu is not installed",
 
   "option.interactionmanager.protect_from_sweeping_edge": "Sweeping Edge Protection",
   "option.interactionmanager.protect_from_sweeping_edge.tooltip": "When enabled if an attack with sweeping edge would hit a protected entity it'll be canceled",
