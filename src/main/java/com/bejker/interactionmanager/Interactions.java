@@ -231,7 +231,11 @@ public class Interactions {
             ci.cancel();
             return;
         }
-        if(!Config.ALLOW_DROPPING_HOT_BAR_ITEMS.getValue()&&(actionType.equals(SlotActionType.THROW) &&(0 <= slotId - 36&&slotId - 36 <= 9))){
+        if(Config.LOCK_HOT_BAR.getValue()&&(actionType.equals(SlotActionType.THROW) &&(0 <= slotId - 36&&slotId - 36 <= 9))){
+            ci.cancel();
+            return;
+        }
+        if(Config.LOCK_HOT_BAR.getValue()&&((actionType.equals(SlotActionType.PICKUP)||actionType.equals(SlotActionType.PICKUP_ALL) || actionType.equals(SlotActionType.SWAP)) &&(0 <= slotId - 36&&slotId - 36 <= 9))){
             ci.cancel();
             return;
         }

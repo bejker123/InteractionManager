@@ -11,8 +11,8 @@ public class BooleanOption implements IOptionConvertable {
     private final String key;
     private final String translation_key;
     private final boolean default_value;
-    private final Text enabled_text;
-    private final Text disabled_text;
+    private Text enabled_text;
+    private Text disabled_text;
     private final String tooltip_key;
     private static final Text OPTION_ON_TEXT = Text.translatable("option.interactionmanager.on");
     private static final Text OPTION_OFF_TEXT = Text.translatable("option.interactionmanager.off");
@@ -31,6 +31,8 @@ public class BooleanOption implements IOptionConvertable {
 
     public BooleanOption(String key, boolean defaultValue) {
         this(key, defaultValue, "true", "false");
+        this.enabled_text = OPTION_ON_TEXT;
+        this.disabled_text = OPTION_OFF_TEXT;
     }
 
     //Default value set to true

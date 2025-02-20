@@ -111,7 +111,7 @@ public class Config {
     public static final BooleanOption ALLOW_DROPPING_ITEMS = new BooleanOption("allow_dropping_items");
 
     @IItemOption
-    public static final BooleanOption ALLOW_DROPPING_HOT_BAR_ITEMS = new BooleanOption("allow_dropping_hot_bar_items");
+    public static final BooleanOption LOCK_HOT_BAR = new BooleanOption("lock_hot_bar",false);
 
     public enum PetAttackMode{
         ALL,

@@ -62,8 +62,8 @@
   "option.interactionmanager.allow_dropping_items": "Drop Items",
   "option.interactionmanager.allow_dropping_items.tooltip": "Toggle dropping items\nDoes not work in creative",
 
-  "option.interactionmanager.allow_dropping_hot_bar_items": "Drop Hot Bar Items",
-  "option.interactionmanager.allow_dropping_hot_bar_items.tooltip": "Toggle dropping items in the hot bar\nDoes not work in creative",
+  "option.interactionmanager.lock_hot_bar": "Lock Hot Bar",
+  "option.interactionmanager.lock_hot_bar.tooltip": "Toggle moving and dropping hot bar items\nDoes not work in creative",
 
   "option.interactionmanager.allow_attacking_players": "Attack Players",
   "option.interactionmanager.allow_attacking_players.tooltip": "Toggle the ability to attack and damage other players",
