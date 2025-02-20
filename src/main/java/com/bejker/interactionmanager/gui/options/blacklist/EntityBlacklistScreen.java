@@ -1,4 +1,4 @@
-package com.bejker.interactionmanager.gui;
+package com.bejker.interactionmanager.gui.options.blacklist;
 
 import com.bejker.interactionmanager.gui.widget.EntityListWidget;
 import net.minecraft.client.gui.screen.Screen;

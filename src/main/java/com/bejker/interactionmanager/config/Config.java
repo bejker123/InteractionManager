@@ -1,10 +1,12 @@
 package com.bejker.interactionmanager.config;
 
 import com.bejker.interactionmanager.config.option.*;
+import com.bejker.interactionmanager.config.option.interfaces.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.option.SimpleOption;
 import net.minecraft.entity.EntityType;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -17,43 +19,99 @@ import java.util.Set;
 public class Config {
     //Option names are intentionally verbose for clarity reasons
 
+    @IItemOption
     public static final BooleanOption ALLOW_SHOVEL_CREATE_PATHS = new BooleanOption("allow_shovel_create_paths");
+
+    @IItemOption
     public static final BooleanOption ALLOW_AXE_STRIP_BLOCKS = new BooleanOption("allow_axe_strip_blocks");
+
+    @IItemOption
     public static final BooleanOption ALLOW_USE_FIREWORK_ON_BLOCK = new BooleanOption("allow_use_firework_on_block");
+
+    @IEntityOption
     public static final BooleanOption ALLOW_ATTACKING_PLAYERS = new BooleanOption("allow_attacking_players");
+
+    @IEntityOption
     public static final BooleanOption ALLOW_ATTACKING_HOSTILE_ENTITIES = new BooleanOption("allow_attacking_hostile_entities");
+
+    @IEntityOption
     public static final BooleanOption ALLOW_ATTACKING_PASSIVE_ENTITIES = new BooleanOption("allow_attacking_passive_entities");
+
+    @IEntityOption
     public static final BooleanOption ALLOW_ATTACKING_VILLAGERS = new BooleanOption("allow_attacking_villagers");
+
+    @IEntityOption
     public static final BooleanOption ALLOW_ATTACKING_VEHICLES = new BooleanOption("allow_attacking_vehicles");
 
+    @IEntityOption
     public static final EnumOption<PetAttackMode> PET_ATTACK_MODE = new EnumOption<PetAttackMode>("pet_attack_mode",PetAttackMode.ALL);
 
+    @IEntityOption
     public static final BooleanOption PROTECT_FROM_SWEEPING_EDGE = new BooleanOption("protect_from_sweeping_edge");
 
+    @IEntityOption
+    public static final BooleanOption ALLOW_ENTITY_INTERACTION = new BooleanOption("allow_entity_interaction");
+
+    @IEntityOption
+    public static final BooleanOption ALLOW_VILLAGER_TRADING = new BooleanOption("allow_villager_trading");
+
+    @IRenderOption
     public static final BooleanOption RENDER_PROTECTED_ENTITIES = new BooleanOption("render_protected_entities");
 
+    @IRenderOption
     public static final BooleanOption RENDER_PROTECTED_BLOCKS = new BooleanOption("render_protected_blocks");
 
     @IRuntimeInternalOnlyOption
     public static final BooleanOption IS_MODMENU_INSTALLED = new BooleanOption("mod_menu_installed",false);
 
-    @IFileOnlyOption
+    @IRenderOption
     public static final EnumOption<ShouldAddInteractionsButton> SHOULD_ADD_INTERACTIONS_BUTTON  = new EnumOption<ShouldAddInteractionsButton>("should_add_interactions_button",ShouldAddInteractionsButton.ONLY_IF_MOD_MENU_IS_NOT_INSTALLED);
 
+    @IBlockOption
     public static final BooleanOption ALLOW_BREAKING_BLOCKS = new BooleanOption("allow_breaking_blocks");
 
+    @IBlockOption
     public static final BooleanOption ALLOW_PLACING_BLOCKS = new BooleanOption("allow_placing_blocks");
 
+    @IBlockOption
+    public static final BooleanOption ALLOW_OPENING_BLOCKS = new BooleanOption("allow_opening_blocks");
+
+    @IBlockOption
     public static final BooleanOption ENABLE_BLOCK_BLACKLIST = new BooleanOption("enable_block_blacklist",true,"enabled","disabled");
 
     public static final Set<Block> BLACKLISTED_BLOCKS = new HashSet<>();
 
     public static final Set<EntityType<?>> BLACKLISTED_ENTITIES = new HashSet<>();
 
+    @IEntityOption
     public static final BooleanOption ENABLE_ENTITY_BLACKLIST = new BooleanOption("enable_entity_blacklist",true,"enabled","disabled");
 
-    @IFileOnlyOption
+    @IRenderOption
     public static final BooleanOption RENDER_ITEMS_IN_BLOCK_BLACKLIST = new BooleanOption("render_items_in_block_blacklist");
+
+    @IItemOption
+    public static final BooleanOption ALLOW_EATING = new BooleanOption("allow_eating");
+
+    @IItemOption
+    public static final BooleanOption ALLOW_DRINKING_POTIONS = new BooleanOption("allow_drinking_potions");
+
+    @IItemOption
+    public static final BooleanOption ALLOW_USING_ENDER_PEARL = new BooleanOption("allow_using_ender_pearl");
+
+    @IItemOption
+    public static final BooleanOption ALLOW_USING_ENDER_EYE = new BooleanOption("allow_using_ender_eye");
+
+    @IItemOption
+    public static final BooleanOption ALLOW_USING_BOWS = new BooleanOption("allow_using_bows");
+
+    @IItemOption
+    public static final BooleanOption ALLOW_USING_CROSSBOWS = new BooleanOption("allow_using_crossbows");
+
+    @IItemOption
+    public static final BooleanOption ALLOW_DROPPING_ITEMS = new BooleanOption("allow_dropping_items");
+
+    @IItemOption
+    public static final BooleanOption LOCK_HOT_BAR = new BooleanOption("lock_hot_bar",false);
 
     public enum PetAttackMode{
         ALL,
@@ -68,7 +126,7 @@ public class Config {
         NEVER
     }
 
-    public static SimpleOption<?>[] asOptions() {
+    public static SimpleOption<?>[] asOptions(Class<? extends Annotation> target) {
         ArrayList<SimpleOption<?>> options = new ArrayList<>();
         for (Field field : Config.class.getDeclaredFields()) {
             if(field.isAnnotationPresent(IRuntimeInternalOnlyOption.class)){
@@ -76,6 +134,11 @@ public class Config {
             }
             if(field.isAnnotationPresent(IFileOnlyOption.class)){
                 continue;
+            }
+            if(target != null){
+                if(!field.isAnnotationPresent(target)){
+                    continue;
+                }
             }
             if (Modifier.isStatic(field.getModifiers()) && Modifier.isFinal(field.getModifiers()) &&
                     IOptionConvertable.class.isAssignableFrom(field.getType())) {

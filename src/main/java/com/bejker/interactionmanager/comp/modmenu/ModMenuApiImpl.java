@@ -1,5 +1,5 @@
 package com.bejker.interactionmanager.comp.modmenu;
-import com.bejker.interactionmanager.gui.OptionsScreen;
+import com.bejker.interactionmanager.gui.options.OptionsScreen;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 public class ModMenuApiImpl implements ModMenuApi{

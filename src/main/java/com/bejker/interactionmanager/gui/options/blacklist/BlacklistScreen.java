@@ -1,18 +1,13 @@
-package com.bejker.interactionmanager.gui;
+package com.bejker.interactionmanager.gui.options.blacklist;
 
-import com.bejker.interactionmanager.InteractionManager;
-import com.bejker.interactionmanager.gui.widget.BlockListWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
 import net.minecraft.client.gui.widget.*;
-import net.minecraft.client.option.GameOptions;
 import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL;
 
 import java.util.Locale;
-import java.util.Objects;
 
 public abstract class BlacklistScreen extends GameOptionsScreen {
 

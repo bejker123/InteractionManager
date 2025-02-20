@@ -1,10 +1,28 @@
 {
   "screen.interactionmanager.interactions": "Interactions",
-  "screen.interactionmanager.block_blacklist": "Block Blacklist",
-  "screen.interactionmanager.entity_blacklist": "Entity Blacklist",
+
+  "screen.interactionmanager.entity_options": "Entity Options",
+  "screen.interactionmanager.block_options": "Block Options",
+  "screen.interactionmanager.render_options": "Rendering Options",
+  "screen.interactionmanager.item_options": "Item Options",
 
   "option.interactionmanager.on": "ON",
   "option.interactionmanager.off": "OFF",
+
+  "button.interactionmanager.entity_options": "Entity Options",
+  "button.interactionmanager.entity_options.tooltip": "",
+
+  "button.interactionmanager.block_options": "Block Options",
+  "button.interactionmanager.block_options.tooltip": "",
+
+  "button.interactionmanager.render_options": "Rendering Options",
+  "button.interactionmanager.render_options.tooltip": "",
+
+  "button.interactionmanager.item_options": "Item Options",
+  "button.interactionmanager.item_options.tooltip": "",
+
+  "screen.interactionmanager.block_blacklist": "Block Blacklist",
+  "screen.interactionmanager.entity_blacklist": "Entity Blacklist",
 
   "button.interactionmanager.block_blacklist": "Block Blacklist",
   "button.interactionmanager.block_blacklist.tooltip": "Manage block blacklist\nBlacklisted blocks can't be broken.",
@@ -25,6 +43,28 @@
   "option.interactionmanager.allow_axe_strip_blocks.tooltip": "Toggle axes stripping blocks, such as logs",
   "option.interactionmanager.allow_use_firework_on_block": "Use Fireworks On Blocks",
   "option.interactionmanager.allow_use_firework_on_block.tooltip": "Toggle setting off fireworks when used on blocks",
+
+  "option.interactionmanager.allow_eating": "Allow Eating",
+  "option.interactionmanager.allow_eating.tooltip": "Toggle eating food",
+  "option.interactionmanager.allow_drinking_potions": "Allow Drinking Potions",
+  "option.interactionmanager.allow_drinking_potions.tooltip": "Toggle drinking potions",
+
+  "option.interactionmanager.allow_using_ender_pearl": "Use Ender Pearls",
+  "option.interactionmanager.allow_using_ender_pearl.tooltip": "Toggle throwing ender pearls",
+  "option.interactionmanager.allow_using_ender_eye": "Use Ender Eyes",
+  "option.interactionmanager.allow_using_ender_eye.tooltip": "Toggle throwing ender eyes",
+
+  "option.interactionmanager.allow_using_bows": "Use Bows",
+  "option.interactionmanager.allow_using_bows.tooltip": "Toggle using/drawing bows",
+  "option.interactionmanager.allow_using_crossbows": "Use Crossbows",
+  "option.interactionmanager.allow_using_crossbows.tooltip": "Toggle using/drawing crossbows",
+
+  "option.interactionmanager.allow_dropping_items": "Drop Items",
+  "option.interactionmanager.allow_dropping_items.tooltip": "Toggle dropping items\nDoes not work in creative",
+
+  "option.interactionmanager.lock_hot_bar": "Lock Hot Bar",
+  "option.interactionmanager.lock_hot_bar.tooltip": "Toggle moving and dropping hot bar items\nDoes not work in creative",
+
   "option.interactionmanager.allow_attacking_players": "Attack Players",
   "option.interactionmanager.allow_attacking_players.tooltip": "Toggle the ability to attack and damage other players",
   "option.interactionmanager.allow_attacking_hostile_entities": "Attack Hostile Mobs",
@@ -35,15 +75,28 @@
   "option.interactionmanager.allow_attacking_villagers.tooltip": "Toggle the ability to attack and damage villagers.\nIf Attack Passive Mobs is OFF this will have no effect.",
   "option.interactionmanager.allow_attacking_vehicles": "Attack Vehicles",
   "option.interactionmanager.allow_attacking_vehicles.tooltip": "Toggle the ability to attack and damage vehicles. (Boats, minecarts)",
+  "option.interactionmanager.render_items_in_block_blacklist": "Render Icons In Block Blacklist",
+  "option.interactionmanager.render_items_in_block_blacklist.tooltip": "Should render block icons in the block blacklist",
   "option.interactionmanager.pet_attack_mode": "Attack Pets",
   "option.interactionmanager.pet_attack_mode.all": "All",
   "option.interactionmanager.pet_attack_mode.only_other": "Only Not Yours",
   "option.interactionmanager.pet_attack_mode.not_tamed": "Only Not Tamed",
   "option.interactionmanager.pet_attack_mode.none": "None",
   "option.interactionmanager.pet_attack_mode.tooltip": "All - you can attack all pets\nOnly Not Yours - You can attack not tamed pets and other players' pets\nNot Tamed - You can only attack not tamed pets\nNone - You can't attack any tamable mobs\nIf Attack Passive Mobs is OFF this will have no effect",
+  "option.interactionmanager.should_add_interactions_button": "Add Button",
+  "option.interactionmanager.should_add_interactions_button.always": "Always",
+  "option.interactionmanager.should_add_interactions_button.only_if_mod_menu_is_not_installed": "No Mod Menu",
+  "option.interactionmanager.should_add_interactions_button.never": "Never",
+  "option.interactionmanager.should_add_interactions_button.tooltip": "Changing NOT recommended!\nAdd Interactions button in the main menu.\nNo Mod Menu - Only if Mod Menu is not installed",
 
   "option.interactionmanager.protect_from_sweeping_edge": "Sweeping Edge Protection",
   "option.interactionmanager.protect_from_sweeping_edge.tooltip": "When enabled if an attack with sweeping edge would hit a protected entity it'll be canceled",
+
+  "option.interactionmanager.allow_entity_interaction": "Interact With Mobs",
+  "option.interactionmanager.allow_entity_interaction.tooltip": "Toggle interacting with entities",
+
+  "option.interactionmanager.allow_villager_trading": "Villager Trading",
+  "option.interactionmanager.allow_villager_trading.tooltip": "Toggle trading with villagers",
 
   "option.interactionmanager.render_protected_entities": "Draw Protected Mobs",
   "option.interactionmanager.render_protected_entities.tooltip": "When attacking a protected entity a box will be drawn around it, to indicate that it's protected.\nWhen attacking an entity would cause sweeping edge damage to a protected entity and Sweeping Edge protection is ON a different color box will be drawn around the attacked entity",
@@ -56,6 +109,9 @@
 
   "option.interactionmanager.allow_placing_blocks": "Place Blocks",
   "option.interactionmanager.allow_placing_blocks.tooltip": "Toggle the ability to place blocks",
+
+  "option.interactionmanager.allow_opening_blocks": "Open Blocks",
+  "option.interactionmanager.allow_opening_blocks.tooltip": "Toggle the ability to open blocks, such as crafting tables and furnaces",
 
   "option.interactionmanager.enable_block_blacklist": "Block Blacklist",
   "option.interactionmanager.enable_block_blacklist.enabled":"Enabled",
