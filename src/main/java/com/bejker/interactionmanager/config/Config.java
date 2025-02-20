@@ -77,6 +77,9 @@ public class Config {
     public static final BooleanOption ALLOW_OPENING_BLOCKS = new BooleanOption("allow_opening_blocks");
 
     @IBlockOption
+    public static final BooleanOption ALLOW_OPENING_DOORS = new BooleanOption("allow_opening_doors");
+
+    @IBlockOption
     public static final BooleanOption ENABLE_BLOCK_BLACKLIST = new BooleanOption("enable_block_blacklist",true,"enabled","disabled");
 
     public static final Set<Block> BLACKLISTED_BLOCKS = new HashSet<>();
