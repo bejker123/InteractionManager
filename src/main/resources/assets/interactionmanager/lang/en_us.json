@@ -46,6 +46,9 @@
 
   "option.interactionmanager.allow_eating": "Allow Eating",
   "option.interactionmanager.allow_eating.tooltip": "Toggle eating food",
+  "option.interactionmanager.allow_drinking_potions": "Allow Drinking Potions",
+  "option.interactionmanager.allow_drinking_potions.tooltip": "Toggle drinking potions",
+
   "option.interactionmanager.allow_using_ender_pearl": "Use Ender Pearls",
   "option.interactionmanager.allow_using_ender_pearl.tooltip": "Toggle throwing ender pearls",
   "option.interactionmanager.allow_using_ender_eye": "Use Ender Eyes",

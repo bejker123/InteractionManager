@@ -87,6 +87,9 @@ public class Config {
     public static final BooleanOption ALLOW_EATING = new BooleanOption("allow_eating");
 
     @IItemOption
+    public static final BooleanOption ALLOW_DRINKING_POTIONS = new BooleanOption("allow_drinking_potions");
+
+    @IItemOption
     public static final BooleanOption ALLOW_USING_ENDER_PEARL = new BooleanOption("allow_using_ender_pearl");
 
     @IItemOption

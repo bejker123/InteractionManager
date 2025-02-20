@@ -209,5 +209,9 @@ public class Interactions {
             cir.setReturnValue(ActionResult.FAIL);
             return;
         }
+        if(!Config.ALLOW_DRINKING_POTIONS.getValue()&&item instanceof PotionItem){
+            cir.setReturnValue(ActionResult.FAIL);
+            return;
+        }
     }
 }
