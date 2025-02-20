@@ -2,6 +2,8 @@ package com.bejker.interactionmanager.config;
 
 import com.bejker.interactionmanager.InteractionManager;
 import com.bejker.interactionmanager.config.option.*;
+import com.bejker.interactionmanager.config.option.interfaces.IFileOnlyOption;
+import com.bejker.interactionmanager.config.option.interfaces.IRuntimeInternalOnlyOption;
 import com.google.gson.*;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;

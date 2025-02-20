@@ -1,12 +1,13 @@
 package com.bejker.interactionmanager.config.option;
 
+import com.bejker.interactionmanager.config.option.interfaces.IOptionConvertable;
 import com.bejker.interactionmanager.util.Util;
 import net.minecraft.client.option.SimpleOption;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import net.minecraft.text.Texts;
 
-public class BooleanOption implements IOptionConvertable{
+public class BooleanOption implements IOptionConvertable {
     private final String key;
     private final String translation_key;
     private final boolean default_value;

@@ -1,5 +1,6 @@
 package com.bejker.interactionmanager.config.option;
 
+import com.bejker.interactionmanager.config.option.interfaces.IOptionConvertable;
 import com.bejker.interactionmanager.util.Util;
 import com.mojang.serialization.Codec;
 import net.minecraft.client.option.SimpleOption;
@@ -10,7 +11,7 @@ import net.minecraft.text.Texts;
 import java.util.Arrays;
 import java.util.Locale;
 
-public class EnumOption<E extends Enum<E>> implements IOptionConvertable{
+public class EnumOption<E extends Enum<E>> implements IOptionConvertable {
 
     private final String key;
     private final String translation_key;

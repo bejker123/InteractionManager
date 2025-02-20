@@ -1,5 +1,4 @@
-package com.bejker.interactionmanager.config.option;
-
+package com.bejker.interactionmanager.config.option.interfaces;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -7,6 +6,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-// Options annotated with this will only be displayed in the entity options screen
-public @interface IEntityOption {
+// Config option annotated with this won't be displayed in the in game config screen
+public @interface IFileOnlyOption {
 }

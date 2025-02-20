@@ -1,6 +1,7 @@
 package com.bejker.interactionmanager.config;
 
 import com.bejker.interactionmanager.config.option.*;
+import com.bejker.interactionmanager.config.option.interfaces.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.option.SimpleOption;
 import net.minecraft.entity.EntityType;

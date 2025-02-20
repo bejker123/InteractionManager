@@ -1,18 +1,12 @@
 package com.bejker.interactionmanager.gui.options;
 
 import com.bejker.interactionmanager.config.Config;
-import com.bejker.interactionmanager.config.ConfigManager;
-import com.bejker.interactionmanager.config.option.IEntityOption;
+import com.bejker.interactionmanager.config.option.interfaces.IEntityOption;
 import com.bejker.interactionmanager.gui.options.blacklist.EntityBlacklistScreen;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
-import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;

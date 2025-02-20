@@ -1,4 +1,4 @@
-package com.bejker.interactionmanager.config.option;
+package com.bejker.interactionmanager.config.option.interfaces;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
