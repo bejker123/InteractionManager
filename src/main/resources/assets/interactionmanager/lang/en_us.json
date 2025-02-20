@@ -3,7 +3,7 @@
 
   "screen.interactionmanager.entity_options": "Entity Options",
   "screen.interactionmanager.block_options": "Block Options",
-  "screen.interactionmanager.render_options": "Render Options",
+  "screen.interactionmanager.render_options": "Rendering Options",
   "screen.interactionmanager.item_options": "Item Options",
 
   "option.interactionmanager.on": "ON",
