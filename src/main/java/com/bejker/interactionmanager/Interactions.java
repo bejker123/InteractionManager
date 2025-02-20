@@ -37,16 +37,16 @@ public class Interactions {
                 &&stack.getItem() instanceof ShovelItem){
             if(ShovelItem.PATH_STATES.get(block) != null){
                 cir.setReturnValue(ActionResult.PASS);
+                return;
             }
-            return;
         }
 
         if(!Config.ALLOW_AXE_STRIP_BLOCKS.getValue()
                 &&stack.getItem() instanceof AxeItem){
             if(AxeItem.STRIPPED_BLOCKS.get(block) != null){
                 cir.setReturnValue(ActionResult.PASS);
+                return;
             }
-            return;
         }
 
         if(!Config.ALLOW_USE_FIREWORK_ON_BLOCK.getValue()
