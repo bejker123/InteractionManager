@@ -22,6 +22,7 @@ public class OptionsScreen extends GameOptionsScreen {
     private ButtonWidget entity_options;
     private ButtonWidget block_options;
     private ButtonWidget render_options;
+    private ButtonWidget item_options;
 
     private static final Text TITLE_TEXT = Text.translatable("screen.interactionmanager.interactions");
     protected Class<? extends Annotation> options_target = null;
@@ -59,6 +60,16 @@ public class OptionsScreen extends GameOptionsScreen {
                     .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.block_options.tooltip")))
                     .build();
             widgets.add(block_options);
+
+            item_options = ButtonWidget.builder(Text.translatable("button.interactionmanager.item_options"),(button)->{
+                        if(client == null){
+                            return;
+                        }
+                        client.setScreen(new ItemOptionsScreen(this));
+                    })
+                    .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.item_options.tooltip")))
+                    .build();
+            widgets.add(item_options);
 
             render_options = ButtonWidget.builder(Text.translatable("button.interactionmanager.render_options"),(button)->{
                         if(client == null){

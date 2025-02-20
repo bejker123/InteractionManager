@@ -2,7 +2,10 @@ package com.bejker.interactionmanager;
 
 import com.bejker.interactionmanager.config.Config;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.FoodComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
@@ -17,6 +20,7 @@ import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.item.*;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -49,6 +53,11 @@ public class Interactions {
         if(!Config.ALLOW_USE_FIREWORK_ON_BLOCK.getValue()
                 &&stack.getItem() instanceof FireworkRocketItem){
                 cir.setReturnValue(ActionResult.PASS);
+        }
+
+        if(!Config.ALLOW_OPENING_BLOCKS.getValue()
+           &&block instanceof BlockWithEntity){
+            cir.setReturnValue(ActionResult.PASS);
         }
     }
 
@@ -169,6 +178,29 @@ public class Interactions {
         }
         if(Config.ENABLE_BLOCK_BLACKLIST.getValue() && Config.BLACKLISTED_BLOCKS.contains(block)){
             cir.setReturnValue(true);
+        }
+    }
+
+    public static void onUseItem(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        ItemStack itemStack = player.getStackInHand(hand);
+        FoodComponent foodComponent = itemStack.get(DataComponentTypes.FOOD);
+        if (!Config.ALLOW_EATING.getValue()&&foodComponent != null) {
+            cir.setReturnValue(ActionResult.FAIL);
+        }
+
+        Item item = itemStack.getItem();
+
+        if(!Config.ALLOW_USING_ENDER_PEARL.getValue()&&item instanceof EnderPearlItem){
+            cir.setReturnValue(ActionResult.FAIL);
+        }
+        if(!Config.ALLOW_USING_ENDER_EYE.getValue()&&item instanceof EnderEyeItem){
+            cir.setReturnValue(ActionResult.FAIL);
+        }
+        if(!Config.ALLOW_USING_BOWS.getValue()&&item instanceof BowItem){
+            cir.setReturnValue(ActionResult.FAIL);
+        }
+        if(!Config.ALLOW_USING_CROSSBOWS.getValue()&&item instanceof CrossbowItem){
+            cir.setReturnValue(ActionResult.FAIL);
         }
     }
 }

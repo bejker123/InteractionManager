@@ -50,4 +50,11 @@ public abstract class PlayerInteractionManagerMixin {
         }
         Interactions.restrictBlockBreaking(MinecraftClient.getInstance().world.getBlockState(pos).getBlock(),cir);
     }
+    @Inject(method = "interactItem",at = @At("HEAD"),cancellable = true)
+    public void onInteractItem(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        if(player == null||hand == null){
+            return;
+        }
+        Interactions.onUseItem(player,hand,cir);
+    }
 }

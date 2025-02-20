@@ -4,22 +4,25 @@
   "screen.interactionmanager.entity_options": "Entity Options",
   "screen.interactionmanager.block_options": "Block Options",
   "screen.interactionmanager.render_options": "Render Options",
+  "screen.interactionmanager.item_options": "Item Options",
 
   "option.interactionmanager.on": "ON",
   "option.interactionmanager.off": "OFF",
 
   "button.interactionmanager.entity_options": "Entity Options",
-  "button.interactionmanager.entity_options.tooltip": "Manage entity options",
+  "button.interactionmanager.entity_options.tooltip": "",
 
   "button.interactionmanager.block_options": "Block Options",
-  "button.interactionmanager.block_options.tooltip": "Manage block options",
+  "button.interactionmanager.block_options.tooltip": "",
 
   "button.interactionmanager.render_options": "Rendering Options",
-  "button.interactionmanager.render_options.tooltip": "Manage rendering options",
+  "button.interactionmanager.render_options.tooltip": "",
+
+  "button.interactionmanager.item_options": "Item Options",
+  "button.interactionmanager.item_options.tooltip": "",
 
   "screen.interactionmanager.block_blacklist": "Block Blacklist",
   "screen.interactionmanager.entity_blacklist": "Entity Blacklist",
-
 
   "button.interactionmanager.block_blacklist": "Block Blacklist",
   "button.interactionmanager.block_blacklist.tooltip": "Manage block blacklist\nBlacklisted blocks can't be broken.",
@@ -40,6 +43,19 @@
   "option.interactionmanager.allow_axe_strip_blocks.tooltip": "Toggle axes stripping blocks, such as logs",
   "option.interactionmanager.allow_use_firework_on_block": "Use Fireworks On Blocks",
   "option.interactionmanager.allow_use_firework_on_block.tooltip": "Toggle setting off fireworks when used on blocks",
+
+  "option.interactionmanager.allow_eating": "Allow Eating",
+  "option.interactionmanager.allow_eating.tooltip": "Toggle eating food",
+  "option.interactionmanager.allow_using_ender_pearl": "Use Ender Pearls",
+  "option.interactionmanager.allow_using_ender_pearl.tooltip": "Toggle throwing ender pearls",
+  "option.interactionmanager.allow_using_ender_eye": "Use Ender Eyes",
+  "option.interactionmanager.allow_using_ender_eye.tooltip": "Toggle throwing ender eyes",
+
+  "option.interactionmanager.allow_using_bows": "Use Bows",
+  "option.interactionmanager.allow_using_bows.tooltip": "Toggle using/drawing bows",
+  "option.interactionmanager.allow_using_crossbows": "Use Crossbows",
+  "option.interactionmanager.allow_using_crossbows.tooltip": "Toggle using/drawing crossbows",
+
   "option.interactionmanager.allow_attacking_players": "Attack Players",
   "option.interactionmanager.allow_attacking_players.tooltip": "Toggle the ability to attack and damage other players",
   "option.interactionmanager.allow_attacking_hostile_entities": "Attack Hostile Mobs",
@@ -78,6 +94,9 @@
 
   "option.interactionmanager.allow_placing_blocks": "Place Blocks",
   "option.interactionmanager.allow_placing_blocks.tooltip": "Toggle the ability to place blocks",
+
+  "option.interactionmanager.allow_opening_blocks": "Open Blocks",
+  "option.interactionmanager.allow_opening_blocks.tooltip": "Toggle the ability to open blocks, such as crafting tables and furnaces",
 
   "option.interactionmanager.enable_block_blacklist": "Block Blacklist",
   "option.interactionmanager.enable_block_blacklist.enabled":"Enabled",

@@ -19,13 +19,13 @@ import java.util.Set;
 public class Config {
     //Option names are intentionally verbose for clarity reasons
 
-    @IBlockOption
+    @IItemOption
     public static final BooleanOption ALLOW_SHOVEL_CREATE_PATHS = new BooleanOption("allow_shovel_create_paths");
 
-    @IBlockOption
+    @IItemOption
     public static final BooleanOption ALLOW_AXE_STRIP_BLOCKS = new BooleanOption("allow_axe_strip_blocks");
 
-    @IBlockOption
+    @IItemOption
     public static final BooleanOption ALLOW_USE_FIREWORK_ON_BLOCK = new BooleanOption("allow_use_firework_on_block");
 
     @IEntityOption
@@ -68,6 +68,9 @@ public class Config {
     public static final BooleanOption ALLOW_PLACING_BLOCKS = new BooleanOption("allow_placing_blocks");
 
     @IBlockOption
+    public static final BooleanOption ALLOW_OPENING_BLOCKS = new BooleanOption("allow_opening_blocks");
+
+    @IBlockOption
     public static final BooleanOption ENABLE_BLOCK_BLACKLIST = new BooleanOption("enable_block_blacklist",true,"enabled","disabled");
 
     public static final Set<Block> BLACKLISTED_BLOCKS = new HashSet<>();
@@ -79,6 +82,21 @@ public class Config {
 
     @IRenderOption
     public static final BooleanOption RENDER_ITEMS_IN_BLOCK_BLACKLIST = new BooleanOption("render_items_in_block_blacklist");
+
+    @IItemOption
+    public static final BooleanOption ALLOW_EATING = new BooleanOption("allow_eating");
+
+    @IItemOption
+    public static final BooleanOption ALLOW_USING_ENDER_PEARL = new BooleanOption("allow_using_ender_pearl");
+
+    @IItemOption
+    public static final BooleanOption ALLOW_USING_ENDER_EYE = new BooleanOption("allow_using_ender_eye");
+
+    @IItemOption
+    public static final BooleanOption ALLOW_USING_BOWS = new BooleanOption("allow_using_bows");
+
+    @IItemOption
+    public static final BooleanOption ALLOW_USING_CROSSBOWS = new BooleanOption("allow_using_crossbows");
 
     public enum PetAttackMode{
         ALL,
