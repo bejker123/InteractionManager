@@ -59,6 +59,12 @@
   "option.interactionmanager.allow_using_crossbows": "Use Crossbows",
   "option.interactionmanager.allow_using_crossbows.tooltip": "Toggle using/drawing crossbows",
 
+  "option.interactionmanager.allow_dropping_items": "Drop Items",
+  "option.interactionmanager.allow_dropping_items.tooltip": "Toggle dropping items\nDoes not work in creative",
+
+  "option.interactionmanager.allow_dropping_hot_bar_items": "Drop Hot Bar Items",
+  "option.interactionmanager.allow_dropping_hot_bar_items.tooltip": "Toggle dropping items in the hot bar\nDoes not work in creative",
+
   "option.interactionmanager.allow_attacking_players": "Attack Players",
   "option.interactionmanager.allow_attacking_players.tooltip": "Toggle the ability to attack and damage other players",
   "option.interactionmanager.allow_attacking_hostile_entities": "Attack Hostile Mobs",

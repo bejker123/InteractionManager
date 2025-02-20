@@ -1,6 +1,7 @@
 package com.bejker.interactionmanager.mixin;
 
 import com.bejker.interactionmanager.Interactions;
+import com.bejker.interactionmanager.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -8,7 +9,10 @@ import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -76,5 +80,18 @@ public abstract class PlayerInteractionManagerMixin {
             return;
         }
         Interactions.onInteractEntity(player,entity,hand,cir);
+    }
+
+    @Inject(method = "clickSlot",at = @At("HEAD"),cancellable = true)
+    public void onSlotClick(int syncId, int slotId, int button, SlotActionType actionType, PlayerEntity player, CallbackInfo ci) {
+        if(player == null){
+            return;
+        }
+        ScreenHandler screenHandler = player.currentScreenHandler;
+        if (syncId != screenHandler.syncId) {
+            return;
+        }
+
+        Interactions.onSlotClick(syncId,slotId,actionType,player,ci);
     }
 }

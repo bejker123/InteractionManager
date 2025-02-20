@@ -107,6 +107,12 @@ public class Config {
     @IItemOption
     public static final BooleanOption ALLOW_USING_CROSSBOWS = new BooleanOption("allow_using_crossbows");
 
+    @IItemOption
+    public static final BooleanOption ALLOW_DROPPING_ITEMS = new BooleanOption("allow_dropping_items");
+
+    @IItemOption
+    public static final BooleanOption ALLOW_DROPPING_HOT_BAR_ITEMS = new BooleanOption("allow_dropping_hot_bar_items");
+
     public enum PetAttackMode{
         ALL,
         ONLY_OTHER,

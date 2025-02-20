@@ -18,6 +18,7 @@ import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.item.*;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
@@ -221,6 +222,17 @@ public class Interactions {
         }
         if(!Config.ALLOW_VILLAGER_TRADING.getValue()&&entity instanceof VillagerEntity){
             cir.setReturnValue(ActionResult.FAIL);
+            return;
+        }
+    }
+
+    public static void onSlotClick(int syncId, int slotId, SlotActionType actionType, PlayerEntity player, CallbackInfo ci) {
+        if(!Config.ALLOW_DROPPING_ITEMS.getValue()&&(actionType.equals(SlotActionType.THROW) || slotId < 0)){
+            ci.cancel();
+            return;
+        }
+        if(!Config.ALLOW_DROPPING_HOT_BAR_ITEMS.getValue()&&(actionType.equals(SlotActionType.THROW) &&(0 <= slotId - 36&&slotId - 36 <= 9))){
+            ci.cancel();
             return;
         }
     }
