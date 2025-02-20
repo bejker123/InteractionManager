@@ -1,10 +1,21 @@
 {
   "screen.interactionmanager.interactions": "Interactions",
-  "screen.interactionmanager.block_blacklist": "Block Blacklist",
-  "screen.interactionmanager.entity_blacklist": "Entity Blacklist",
+
+  "screen.interactionmanager.entity_options": "Entity Options",
+  "screen.interactionmanager.block_options": "Block Options",
 
   "option.interactionmanager.on": "ON",
   "option.interactionmanager.off": "OFF",
+
+  "button.interactionmanager.entity_options": "Entity Options",
+  "button.interactionmanager.entity_options.tooltip": "Manage entity options",
+
+  "button.interactionmanager.block_options": "Block Options",
+  "button.interactionmanager.block_options.tooltip": "Manage block options",
+
+  "screen.interactionmanager.block_blacklist": "Block Blacklist",
+  "screen.interactionmanager.entity_blacklist": "Entity Blacklist",
+
 
   "button.interactionmanager.block_blacklist": "Block Blacklist",
   "button.interactionmanager.block_blacklist.tooltip": "Manage block blacklist\nBlacklisted blocks can't be broken.",

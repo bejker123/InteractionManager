@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.option.SimpleOption;
 import net.minecraft.entity.EntityType;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -17,21 +18,40 @@ import java.util.Set;
 public class Config {
     //Option names are intentionally verbose for clarity reasons
 
+    @IBlockOption
     public static final BooleanOption ALLOW_SHOVEL_CREATE_PATHS = new BooleanOption("allow_shovel_create_paths");
+
+    @IBlockOption
     public static final BooleanOption ALLOW_AXE_STRIP_BLOCKS = new BooleanOption("allow_axe_strip_blocks");
+
+    @IBlockOption
     public static final BooleanOption ALLOW_USE_FIREWORK_ON_BLOCK = new BooleanOption("allow_use_firework_on_block");
+
+    @IEntityOption
     public static final BooleanOption ALLOW_ATTACKING_PLAYERS = new BooleanOption("allow_attacking_players");
+
+    @IEntityOption
     public static final BooleanOption ALLOW_ATTACKING_HOSTILE_ENTITIES = new BooleanOption("allow_attacking_hostile_entities");
+
+    @IEntityOption
     public static final BooleanOption ALLOW_ATTACKING_PASSIVE_ENTITIES = new BooleanOption("allow_attacking_passive_entities");
+
+    @IEntityOption
     public static final BooleanOption ALLOW_ATTACKING_VILLAGERS = new BooleanOption("allow_attacking_villagers");
+
+    @IEntityOption
     public static final BooleanOption ALLOW_ATTACKING_VEHICLES = new BooleanOption("allow_attacking_vehicles");
 
+    @IEntityOption
     public static final EnumOption<PetAttackMode> PET_ATTACK_MODE = new EnumOption<PetAttackMode>("pet_attack_mode",PetAttackMode.ALL);
 
+    @IEntityOption
     public static final BooleanOption PROTECT_FROM_SWEEPING_EDGE = new BooleanOption("protect_from_sweeping_edge");
 
+    @IEntityOption
     public static final BooleanOption RENDER_PROTECTED_ENTITIES = new BooleanOption("render_protected_entities");
 
+    @IBlockOption
     public static final BooleanOption RENDER_PROTECTED_BLOCKS = new BooleanOption("render_protected_blocks");
 
     @IRuntimeInternalOnlyOption
@@ -40,16 +60,20 @@ public class Config {
     @IFileOnlyOption
     public static final EnumOption<ShouldAddInteractionsButton> SHOULD_ADD_INTERACTIONS_BUTTON  = new EnumOption<ShouldAddInteractionsButton>("should_add_interactions_button",ShouldAddInteractionsButton.ONLY_IF_MOD_MENU_IS_NOT_INSTALLED);
 
+    @IBlockOption
     public static final BooleanOption ALLOW_BREAKING_BLOCKS = new BooleanOption("allow_breaking_blocks");
 
+    @IBlockOption
     public static final BooleanOption ALLOW_PLACING_BLOCKS = new BooleanOption("allow_placing_blocks");
 
+    @IBlockOption
     public static final BooleanOption ENABLE_BLOCK_BLACKLIST = new BooleanOption("enable_block_blacklist",true,"enabled","disabled");
 
     public static final Set<Block> BLACKLISTED_BLOCKS = new HashSet<>();
 
     public static final Set<EntityType<?>> BLACKLISTED_ENTITIES = new HashSet<>();
 
+    @IEntityOption
     public static final BooleanOption ENABLE_ENTITY_BLACKLIST = new BooleanOption("enable_entity_blacklist",true,"enabled","disabled");
 
     @IFileOnlyOption
@@ -68,7 +92,7 @@ public class Config {
         NEVER
     }
 
-    public static SimpleOption<?>[] asOptions() {
+    public static SimpleOption<?>[] asOptions(Class<? extends Annotation> target) {
         ArrayList<SimpleOption<?>> options = new ArrayList<>();
         for (Field field : Config.class.getDeclaredFields()) {
             if(field.isAnnotationPresent(IRuntimeInternalOnlyOption.class)){
@@ -76,6 +100,11 @@ public class Config {
             }
             if(field.isAnnotationPresent(IFileOnlyOption.class)){
                 continue;
+            }
+            if(target != null){
+                if(!field.isAnnotationPresent(target)){
+                    continue;
+                }
             }
             if (Modifier.isStatic(field.getModifiers()) && Modifier.isFinal(field.getModifiers()) &&
                     IOptionConvertable.class.isAssignableFrom(field.getType())) {

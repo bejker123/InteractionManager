@@ -1,6 +1,7 @@
 package com.bejker.interactionmanager.gui;
 
 import com.bejker.interactionmanager.config.Config;
+import com.bejker.interactionmanager.gui.options.OptionsScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.GridWidget;
