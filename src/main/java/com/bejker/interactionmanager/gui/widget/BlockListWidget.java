@@ -2,7 +2,7 @@ package com.bejker.interactionmanager.gui.widget;
 
 import com.bejker.interactionmanager.search.SearchUtil;
 import com.bejker.interactionmanager.config.Config;
-import com.bejker.interactionmanager.gui.BlockBlacklistScreen;
+import com.bejker.interactionmanager.gui.options.blacklist.BlockBlacklistScreen;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;

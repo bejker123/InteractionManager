@@ -2,7 +2,10 @@ package com.bejker.interactionmanager;
 
 import com.bejker.interactionmanager.config.Config;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.FoodComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
@@ -15,6 +18,7 @@ import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.item.*;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
@@ -34,21 +38,28 @@ public class Interactions {
                 &&stack.getItem() instanceof ShovelItem){
             if(ShovelItem.PATH_STATES.get(block) != null){
                 cir.setReturnValue(ActionResult.PASS);
+                return;
             }
-            return;
         }
 
         if(!Config.ALLOW_AXE_STRIP_BLOCKS.getValue()
                 &&stack.getItem() instanceof AxeItem){
             if(AxeItem.STRIPPED_BLOCKS.get(block) != null){
                 cir.setReturnValue(ActionResult.PASS);
+                return;
             }
-            return;
         }
 
         if(!Config.ALLOW_USE_FIREWORK_ON_BLOCK.getValue()
                 &&stack.getItem() instanceof FireworkRocketItem){
                 cir.setReturnValue(ActionResult.PASS);
+                return;
+        }
+
+        if(!Config.ALLOW_OPENING_BLOCKS.getValue()
+           &&block instanceof BlockWithEntity){
+            cir.setReturnValue(ActionResult.PASS);
+            return;
         }
     }
 
@@ -169,6 +180,64 @@ public class Interactions {
         }
         if(Config.ENABLE_BLOCK_BLACKLIST.getValue() && Config.BLACKLISTED_BLOCKS.contains(block)){
             cir.setReturnValue(true);
+        }
+    }
+
+    public static void onUseItem(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        ItemStack itemStack = player.getStackInHand(hand);
+        FoodComponent foodComponent = itemStack.get(DataComponentTypes.FOOD);
+        if (!Config.ALLOW_EATING.getValue()&&foodComponent != null) {
+            cir.setReturnValue(ActionResult.FAIL);
+            return;
+        }
+
+        Item item = itemStack.getItem();
+
+        if(!Config.ALLOW_USING_ENDER_PEARL.getValue()&&item instanceof EnderPearlItem){
+            cir.setReturnValue(ActionResult.FAIL);
+            return;
+        }
+        if(!Config.ALLOW_USING_ENDER_EYE.getValue()&&item instanceof EnderEyeItem){
+            cir.setReturnValue(ActionResult.FAIL);
+            return;
+        }
+        if(!Config.ALLOW_USING_BOWS.getValue()&&item instanceof BowItem){
+            cir.setReturnValue(ActionResult.FAIL);
+            return;
+        }
+        if(!Config.ALLOW_USING_CROSSBOWS.getValue()&&item instanceof CrossbowItem){
+            cir.setReturnValue(ActionResult.FAIL);
+            return;
+        }
+        if(!Config.ALLOW_DRINKING_POTIONS.getValue()&&item instanceof PotionItem){
+            cir.setReturnValue(ActionResult.FAIL);
+            return;
+        }
+    }
+
+    public static void onInteractEntity(PlayerEntity player, Entity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        if(!Config.ALLOW_ENTITY_INTERACTION.getValue()){
+            cir.setReturnValue(ActionResult.FAIL);
+            return;
+        }
+        if(!Config.ALLOW_VILLAGER_TRADING.getValue()&&entity instanceof VillagerEntity){
+            cir.setReturnValue(ActionResult.FAIL);
+            return;
+        }
+    }
+
+    public static void onSlotClick(int syncId, int slotId, SlotActionType actionType, PlayerEntity player, CallbackInfo ci) {
+        if(!Config.ALLOW_DROPPING_ITEMS.getValue()&&(actionType.equals(SlotActionType.THROW) || slotId < 0)){
+            ci.cancel();
+            return;
+        }
+        if(Config.LOCK_HOT_BAR.getValue()&&(actionType.equals(SlotActionType.THROW) &&(0 <= slotId - 36&&slotId - 36 <= 9))){
+            ci.cancel();
+            return;
+        }
+        if(Config.LOCK_HOT_BAR.getValue()&&((actionType.equals(SlotActionType.PICKUP)||actionType.equals(SlotActionType.PICKUP_ALL) || actionType.equals(SlotActionType.SWAP)) &&(0 <= slotId - 36&&slotId - 36 <= 9))){
+            ci.cancel();
+            return;
         }
     }
 }

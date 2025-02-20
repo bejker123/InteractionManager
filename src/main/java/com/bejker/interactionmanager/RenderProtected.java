@@ -4,7 +4,6 @@ import com.bejker.interactionmanager.config.Config;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 
@@ -15,15 +14,16 @@ public class RenderProtected {
     private static final HashMap<UUID,Long> recentlyProtectedEntities = new HashMap<>();
     private static final HashMap<UUID,Long> recentlyUnprotectedEntities = new HashMap<>();
 
-    public static final long RENDER_PROTECTED_TIME = 1000; // Milliseconds
-    public static final float RENDER_PROTECTED_CUTOFF = 1000.f; // Milliseconds
+    public static final long RENDER_PROTECTED_TIME = 20; // Milliseconds
+    public static final float RENDER_PROTECTED_CUTOFF = 20.f; // Milliseconds
 
     public static void markAsProtected(Entity entity){
-        recentlyProtectedEntities.put(entity.getUuid(), Util.getMeasuringTimeMs() + RENDER_PROTECTED_TIME);
+        recentlyProtectedEntities.put(entity.getUuid(), entity.getWorld().getTime() + RENDER_PROTECTED_TIME);
     }
 
     public static void markAsUnprotected(Entity entity){
-        recentlyUnprotectedEntities.put(entity.getUuid(), Util.getMeasuringTimeMs() + RENDER_PROTECTED_TIME);
+        recentlyUnprotectedEntities.put(entity.getUuid(), entity.getWorld().getTime() + RENDER_PROTECTED_TIME);
+
     }
 
     // public static final RenderPhase.Transparency TRANSPARENCY = new RenderPhase.Transparency(
@@ -60,7 +60,7 @@ public class RenderProtected {
 
         Long protectedUntil = recentlyProtectedEntities.get(entity.getUuid());
         if (protectedUntil != null) {
-            long delta = protectedUntil - Util.getMeasuringTimeMs();
+            long delta = protectedUntil - entity.getWorld().getTime();
             if (delta <= 0) {
                 recentlyProtectedEntities.remove(entity.getUuid());
                 return;
@@ -71,7 +71,7 @@ public class RenderProtected {
             if(unprotectedUntil == null){
                 return;
             }
-            long delta = unprotectedUntil - Util.getMeasuringTimeMs();
+            long delta = unprotectedUntil - entity.getWorld().getTime();
             if (delta <= 0) {
                 recentlyUnprotectedEntities.remove(entity.getUuid());
                 return;

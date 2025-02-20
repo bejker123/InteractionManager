@@ -1,4 +1,4 @@
-package com.bejker.interactionmanager.config.option;
+package com.bejker.interactionmanager.config.option.interfaces;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-// Options annotated with this won't be saved or displayed in the in game config screen.
-public @interface IRuntimeInternalOnlyOption {
+// Options annotated with this will only be displayed in the render options screen
+public @interface IRenderOption {
 }
