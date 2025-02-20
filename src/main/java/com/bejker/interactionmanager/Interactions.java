@@ -53,11 +53,13 @@ public class Interactions {
         if(!Config.ALLOW_USE_FIREWORK_ON_BLOCK.getValue()
                 &&stack.getItem() instanceof FireworkRocketItem){
                 cir.setReturnValue(ActionResult.PASS);
+                return;
         }
 
         if(!Config.ALLOW_OPENING_BLOCKS.getValue()
            &&block instanceof BlockWithEntity){
             cir.setReturnValue(ActionResult.PASS);
+            return;
         }
     }
 
@@ -186,21 +188,26 @@ public class Interactions {
         FoodComponent foodComponent = itemStack.get(DataComponentTypes.FOOD);
         if (!Config.ALLOW_EATING.getValue()&&foodComponent != null) {
             cir.setReturnValue(ActionResult.FAIL);
+            return;
         }
 
         Item item = itemStack.getItem();
 
         if(!Config.ALLOW_USING_ENDER_PEARL.getValue()&&item instanceof EnderPearlItem){
             cir.setReturnValue(ActionResult.FAIL);
+            return;
         }
         if(!Config.ALLOW_USING_ENDER_EYE.getValue()&&item instanceof EnderEyeItem){
             cir.setReturnValue(ActionResult.FAIL);
+            return;
         }
         if(!Config.ALLOW_USING_BOWS.getValue()&&item instanceof BowItem){
             cir.setReturnValue(ActionResult.FAIL);
+            return;
         }
         if(!Config.ALLOW_USING_CROSSBOWS.getValue()&&item instanceof CrossbowItem){
             cir.setReturnValue(ActionResult.FAIL);
+            return;
         }
     }
 }
