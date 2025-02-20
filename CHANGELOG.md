@@ -1,5 +1,21 @@
 # Change Log
 
+# 1.7.0
+### Changed
+- Overhauled and categorised the UI
+### Added
+- Toggling entity interactions
+- Toggling villager trading
+- Toggling opening blocks
+- Toggling eating
+- Toggling drinking potions
+- Toggling using ender pearls
+- Toggling using ender eyes
+- Toggling using bows
+- Toggling using crossbows
+- Toggling dropping items
+- Toggling locking the hot bar
+- Changing rendering options
 ## 1.6.0
 ### Added
 - Drawing protected blocks and entities

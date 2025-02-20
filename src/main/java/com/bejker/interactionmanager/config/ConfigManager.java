@@ -2,6 +2,8 @@ package com.bejker.interactionmanager.config;
 
 import com.bejker.interactionmanager.InteractionManager;
 import com.bejker.interactionmanager.config.option.*;
+import com.bejker.interactionmanager.config.option.interfaces.IFileOnlyOption;
+import com.bejker.interactionmanager.config.option.interfaces.IRuntimeInternalOnlyOption;
 import com.google.gson.*;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
@@ -14,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -188,11 +191,16 @@ public class ConfigManager {
         }
     }
 
-    public static void restoreDefaults() {
+    public static void restoreDefaults(Class<? extends Annotation> target) {
         try{
             for (Field field : Config.class.getDeclaredFields()){
                 if(field.isAnnotationPresent(IRuntimeInternalOnlyOption.class) || field.isAnnotationPresent(IFileOnlyOption.class)){
                     continue;
+                }
+                if (target != null) {
+                    if (!field.isAnnotationPresent(target)) {
+                        continue;
+                    }
                 }
                 if(BooleanOption.class.isAssignableFrom(field.getType())){
                     BooleanOption option = (BooleanOption) field.get(null);
@@ -208,11 +216,16 @@ public class ConfigManager {
         }
     }
 
-    public static boolean areOptionValuesSetToDefault() {
+    public static boolean areOptionValuesSetToDefault(Class<? extends Annotation> target) {
         try{
             for (Field field : Config.class.getDeclaredFields()){
                 if(field.isAnnotationPresent(IRuntimeInternalOnlyOption.class) || field.isAnnotationPresent(IFileOnlyOption.class)){
                     continue;
+                }
+                if (target != null) {
+                    if (!field.isAnnotationPresent(target)) {
+                        continue;
+                    }
                 }
                 if(BooleanOption.class.isAssignableFrom(field.getType())){
                     BooleanOption option = (BooleanOption) field.get(null);
