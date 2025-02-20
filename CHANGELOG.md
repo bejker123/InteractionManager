@@ -1,4 +1,9 @@
 # Change Log
+# 1.7.1
+### Fixed
+- Turning off setting off fireworks would prevent you from interacting with blocks
+### Added
+- Toggling opening doors, separate from other blocks
 
 # 1.7.0
 ### Changed

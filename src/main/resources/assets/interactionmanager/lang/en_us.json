@@ -111,7 +111,10 @@
   "option.interactionmanager.allow_placing_blocks.tooltip": "Toggle the ability to place blocks",
 
   "option.interactionmanager.allow_opening_blocks": "Open Blocks",
-  "option.interactionmanager.allow_opening_blocks.tooltip": "Toggle the ability to open blocks, such as crafting tables and furnaces",
+  "option.interactionmanager.allow_opening_blocks.tooltip": "Toggle the ability to open blocks, such as crafting tables and furnaces\nDoes not affect doors",
+
+  "option.interactionmanager.allow_opening_doors": "Open Doors",
+  "option.interactionmanager.allow_opening_doors.tooltip": "Toggle the ability to open doors",
 
   "option.interactionmanager.enable_block_blacklist": "Block Blacklist",
   "option.interactionmanager.enable_block_blacklist.enabled":"Enabled",

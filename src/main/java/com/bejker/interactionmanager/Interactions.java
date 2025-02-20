@@ -3,6 +3,7 @@ package com.bejker.interactionmanager;
 import com.bejker.interactionmanager.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockWithEntity;
+import net.minecraft.block.DoorBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.FoodComponent;
@@ -30,6 +31,18 @@ import java.util.UUID;
 
 public class Interactions {
     public static void onInteractBlock(ItemStack stack, Block block, CallbackInfoReturnable<ActionResult> cir) {
+        if(block instanceof DoorBlock){
+            if(!Config.ALLOW_OPENING_DOORS.getValue()){
+                cir.setReturnValue(ActionResult.PASS);
+            }
+            return;
+        }
+        if(block instanceof BlockWithEntity){
+            if(!Config.ALLOW_OPENING_BLOCKS.getValue()){
+                cir.setReturnValue(ActionResult.PASS);
+            }
+            return;
+        }
         if(!Config.ALLOW_PLACING_BLOCKS.getValue()&&stack.getItem() instanceof BlockItem){
             cir.setReturnValue(ActionResult.PASS);
             return;
@@ -56,11 +69,6 @@ public class Interactions {
                 return;
         }
 
-        if(!Config.ALLOW_OPENING_BLOCKS.getValue()
-           &&block instanceof BlockWithEntity){
-            cir.setReturnValue(ActionResult.PASS);
-            return;
-        }
     }
 
     private static boolean protectFromSweepingEdge(UUID player_uuid,Entity target){
