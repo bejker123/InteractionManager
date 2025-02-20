@@ -8,11 +8,15 @@ import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.GameMode;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -56,5 +60,21 @@ public abstract class PlayerInteractionManagerMixin {
             return;
         }
         Interactions.onUseItem(player,hand,cir);
+    }
+
+    @Inject(method = "interactEntity",at = @At("HEAD"),cancellable = true)
+    public void onInteractEntity(PlayerEntity player, Entity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        if(player == null||entity == null||hand == null){
+            return;
+        }
+        Interactions.onInteractEntity(player,entity,hand,cir);
+    }
+
+    @Inject(method = "interactEntityAtLocation",at = @At("HEAD"),cancellable = true)
+    public void interactEntityAtLocation(PlayerEntity player, Entity entity, EntityHitResult hitResult, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        if(player == null||entity == null||hand == null){
+            return;
+        }
+        Interactions.onInteractEntity(player,entity,hand,cir);
     }
 }

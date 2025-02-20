@@ -20,7 +20,6 @@ import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.item.*;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -210,6 +209,17 @@ public class Interactions {
             return;
         }
         if(!Config.ALLOW_DRINKING_POTIONS.getValue()&&item instanceof PotionItem){
+            cir.setReturnValue(ActionResult.FAIL);
+            return;
+        }
+    }
+
+    public static void onInteractEntity(PlayerEntity player, Entity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        if(!Config.ALLOW_ENTITY_INTERACTION.getValue()){
+            cir.setReturnValue(ActionResult.FAIL);
+            return;
+        }
+        if(!Config.ALLOW_VILLAGER_TRADING.getValue()&&entity instanceof VillagerEntity){
             cir.setReturnValue(ActionResult.FAIL);
             return;
         }

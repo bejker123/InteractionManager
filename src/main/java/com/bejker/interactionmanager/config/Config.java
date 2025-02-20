@@ -49,6 +49,12 @@ public class Config {
     @IEntityOption
     public static final BooleanOption PROTECT_FROM_SWEEPING_EDGE = new BooleanOption("protect_from_sweeping_edge");
 
+    @IEntityOption
+    public static final BooleanOption ALLOW_ENTITY_INTERACTION = new BooleanOption("allow_entity_interaction");
+
+    @IEntityOption
+    public static final BooleanOption ALLOW_VILLAGER_TRADING = new BooleanOption("allow_villager_trading");
+
     @IRenderOption
     public static final BooleanOption RENDER_PROTECTED_ENTITIES = new BooleanOption("render_protected_entities");
 
