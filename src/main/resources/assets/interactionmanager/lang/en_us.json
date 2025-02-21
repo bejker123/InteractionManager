@@ -71,6 +71,9 @@
   "option.interactionmanager.should_replace_with_same_block": "Replace Identical",
   "option.interactionmanager.should_replace_with_same_block.tooltip": "When enabled replacing blocks with the same block is allowed",
 
+  "option.interactionmanager.animate_replace_blocks": "Animate Replace",
+  "option.interactionmanager.animate_replace_blocks.tooltip": "Show hand swinging animation when replacing blocks",
+
   "option.interactionmanager.allow_attacking_players": "Attack Players",
   "option.interactionmanager.allow_attacking_players.tooltip": "Toggle the ability to attack and damage other players",
   "option.interactionmanager.allow_attacking_hostile_entities": "Attack Hostile Mobs",

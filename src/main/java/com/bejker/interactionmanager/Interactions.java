@@ -30,6 +30,7 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.DoubleSummaryStatistics;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -298,7 +299,21 @@ public class Interactions {
             if(cached_blockhr == null) {
                 return;
             }
-            ActionResult result = MinecraftClient.getInstance().interactionManager.interactBlock(player, Hand.OFF_HAND, cached_blockhr);
+            //ActionResult result = MinecraftClient.getInstance().interactionManager.interactBlock(player, Hand.OFF_HAND, cached_blockhr);
+            ItemStack itemStack = player.getStackInHand(Hand.OFF_HAND);
+            int i = itemStack.getCount();
+            ActionResult actionResult2 = MinecraftClient.getInstance().interactionManager.interactBlock(player, Hand.OFF_HAND, cached_blockhr);
+            if (Config.ANIMATE_REPLACE_BLOCKS.getValue()&&actionResult2.isAccepted()) {
+                if (actionResult2.shouldSwingHand()) {
+                    player.swingHand(Hand.OFF_HAND);
+                    if (!itemStack.isEmpty() && (itemStack.getCount() != i || MinecraftClient.getInstance().interactionManager.hasCreativeInventory())) {
+                        MinecraftClient.getInstance().gameRenderer.firstPersonRenderer.resetEquipProgress(Hand.OFF_HAND);
+                    }
+                }
+
+                return;
+            }
+            //player.swingHand(Hand.OFF_HAND);
             cached_blockhr = null;
         }
     }

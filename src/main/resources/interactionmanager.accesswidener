@@ -3,3 +3,4 @@ accessible field net/minecraft/client/gui/widget/GridWidget children Ljava/util/
 accessible field net/minecraft/item/ShovelItem PATH_STATES Ljava/util/Map;
 accessible field net/minecraft/item/AxeItem STRIPPED_BLOCKS Ljava/util/Map;
 accessible field net/minecraft/client/gui/screen/Screen drawables Ljava/util/List;
+accessible method net/minecraft/client/MinecraftClient doItemUse ()V

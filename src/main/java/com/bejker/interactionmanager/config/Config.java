@@ -123,6 +123,9 @@ public class Config {
     @IBlockOption
     public static final BooleanOption SHOULD_REPLACE_WITH_SAME_BLOCK = new BooleanOption("should_replace_with_same_block",false);
 
+    @IRenderOption
+    public static final BooleanOption ANIMATE_REPLACE_BLOCKS = new BooleanOption("animate_replace_blocks");
+
     public enum PetAttackMode{
         ALL,
         ONLY_OTHER,
