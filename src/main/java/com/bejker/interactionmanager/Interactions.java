@@ -1,10 +1,12 @@
 package com.bejker.interactionmanager;
 
 import com.bejker.interactionmanager.config.Config;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockWithEntity;
-import net.minecraft.block.DoorBlock;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.block.*;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.FoodComponent;
 import net.minecraft.entity.Entity;
@@ -22,6 +24,8 @@ import net.minecraft.item.*;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -29,7 +33,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Objects;
 import java.util.UUID;
 
+@Environment(EnvType.CLIENT)
 public class Interactions {
+    public static int should_place_off_hand_in = -1;
+    private static int SHOULD_PLACE_OFF_HAND_IN_DEFAULT = 2; // in ticks
+
+    private static BlockHitResult cached_blockhr = null;
+
     public static void onInteractBlock(ItemStack stack, Block block, CallbackInfoReturnable<ActionResult> cir) {
         if(block instanceof DoorBlock){
             if(!Config.ALLOW_OPENING_DOORS.getValue()){
@@ -243,9 +253,53 @@ public class Interactions {
             ci.cancel();
             return;
         }
-        if(Config.LOCK_HOT_BAR.getValue()&&((actionType.equals(SlotActionType.PICKUP)||actionType.equals(SlotActionType.PICKUP_ALL) || actionType.equals(SlotActionType.SWAP)) &&(0 <= slotId - 36&&slotId - 36 <= 9))){
-            ci.cancel();
+        if(Config.LOCK_HOT_BAR.getValue()&&((actionType.equals(SlotActionType.PICKUP)||actionType.equals(SlotActionType.PICKUP_ALL) || actionType.equals(SlotActionType.SWAP)) &&(0 <= slotId - 36&&slotId - 36 <= 9))){ci.cancel();
             return;
+        }
+    }
+
+    public static void onBreakBlock(ClientPlayerInteractionManager manager, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        if(player == null){
+            return;
+        }
+        if(!Config.REPLACE_BLOCKS.getValue()){
+           return;
+        }
+        ItemStack offHandStack = player.getStackInHand(Hand.OFF_HAND);
+        if(offHandStack == null||offHandStack.isEmpty()) {
+            return;
+        }
+        if(offHandStack.getItem() instanceof BlockItem blockItem){
+            BlockState blockState = player.getWorld().getBlockState(pos);
+            if(blockItem.getBlock().equals(blockState.getBlock())){
+               should_place_off_hand_in = Config.SHOULD_REPLACE_WITH_SAME_BLOCK.getValue() ? SHOULD_PLACE_OFF_HAND_IN_DEFAULT : -1;
+                if(MinecraftClient.getInstance().crosshairTarget instanceof BlockHitResult bhr){
+                    cached_blockhr = bhr;
+                }
+            }else{
+                should_place_off_hand_in = SHOULD_PLACE_OFF_HAND_IN_DEFAULT;
+                if(MinecraftClient.getInstance().crosshairTarget instanceof BlockHitResult bhr){
+                    cached_blockhr = bhr;
+                }
+            }
+        }
+    }
+
+    public static void onTick(ClientPlayerEntity player,CallbackInfo ci) {
+        if(Interactions.should_place_off_hand_in >= 0){
+            Interactions.should_place_off_hand_in -= 1;
+            if(Interactions.should_place_off_hand_in != -1){
+                return;
+            }
+            if(MinecraftClient.getInstance().interactionManager == null) {
+                return;
+            }
+            if(cached_blockhr == null) {
+                return;
+            }
+            ActionResult result = MinecraftClient.getInstance().interactionManager.interactBlock(player, Hand.OFF_HAND, cached_blockhr);
+            cached_blockhr = null;
         }
     }
 }

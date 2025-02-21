@@ -117,6 +117,12 @@ public class Config {
     @IItemOption
     public static final BooleanOption LOCK_HOT_BAR = new BooleanOption("lock_hot_bar",false);
 
+    @IBlockOption
+    public static final BooleanOption REPLACE_BLOCKS = new BooleanOption("replace_blocks",false);
+
+    @IBlockOption
+    public static final BooleanOption SHOULD_REPLACE_WITH_SAME_BLOCK = new BooleanOption("should_replace_with_same_block",false);
+
     public enum PetAttackMode{
         ALL,
         ONLY_OTHER,
