@@ -30,6 +30,7 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.lang.reflect.Method;
 import java.util.DoubleSummaryStatistics;
 import java.util.Objects;
 import java.util.UUID;
@@ -76,10 +77,38 @@ public class Interactions {
 
         if(!Config.ALLOW_USE_FIREWORK_ON_BLOCK.getValue()
                 &&stack.getItem() instanceof FireworkRocketItem){
-                cir.setReturnValue(ActionResult.PASS);
-                return;
+                // Check if block has an interaction.
+                // To do it we check if the 'onUse' method is overwritten
+                // by comparing the method's declaring class the default method class.
+            try{
+                Method method = getMethod(block.getClass(),"onUse");
+                Method method1 = getMethod(block.getClass().getSuperclass(),"onUse");
+                if(method.getDeclaringClass() == method1.getDeclaringClass()){
+                    cir.setReturnValue(ActionResult.PASS);
+                    return;
+                }
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
         }
 
+    }
+    private static Method getMethod(Class<?> cls, String methodName)
+            throws NoSuchMethodException {
+        if (cls == null)
+            throw new NoSuchMethodException(methodName);
+        Method methods[] = cls.getDeclaredMethods();
+        for (Method method : methods) {
+            if (method.getName().equals(methodName))
+                return method;
+            // TODO: shall we continue search for ambiguous match?
+        }
+        try {
+            return getMethod(cls.getSuperclass(), methodName);
+        } catch (NoSuchMethodException e) {
+            throw new NoSuchMethodException("No method named " + methodName
+                    + " in " + cls + " (or super classes)");
+        }
     }
 
     private static boolean protectFromSweepingEdge(UUID player_uuid,Entity target){
