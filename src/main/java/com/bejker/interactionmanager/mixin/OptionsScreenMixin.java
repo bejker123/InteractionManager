@@ -3,7 +3,6 @@ package com.bejker.interactionmanager.mixin;
 import com.bejker.interactionmanager.gui.GuiCallbacks;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.OptionsScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
 import net.minecraft.client.gui.widget.GridWidget;
 import net.minecraft.text.Text;

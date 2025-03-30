@@ -1,4 +1,8 @@
 # Change Log
+# 1.7.2
+### Fixed
+- Using fireworks on blocks would prevent from using the block, when Use Fireworks on Blocks option is OFF
+
 # 1.7.1
 ### Fixed
 - Turning off setting off fireworks would prevent you from interacting with blocks
