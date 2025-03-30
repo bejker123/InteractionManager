@@ -1,8 +1,8 @@
 package com.bejker.interactionmanager.gui.widget;
 
-import com.bejker.interactionmanager.search.SearchUtil;
 import com.bejker.interactionmanager.config.Config;
 import com.bejker.interactionmanager.gui.options.blacklist.BlockBlacklistScreen;
+import com.bejker.interactionmanager.search.SearchUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -19,7 +19,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
     private final BlockBlacklistScreen parent;

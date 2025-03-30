@@ -2,7 +2,6 @@ package com.bejker.interactionmanager.gui.options;
 
 import com.bejker.interactionmanager.config.Config;
 import com.bejker.interactionmanager.config.option.interfaces.IItemOption;
-import com.bejker.interactionmanager.config.option.interfaces.IRenderOption;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.text.Text;

@@ -1,26 +1,27 @@
 package com.bejker.interactionmanager.mixin;
 
 import com.bejker.interactionmanager.Interactions;
-import com.bejker.interactionmanager.config.Config;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.OperatorBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
-import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.GameMode;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -35,6 +36,10 @@ public abstract class PlayerInteractionManagerMixin {
     @Final
     @Shadow
     private MinecraftClient client;
+
+    @Shadow public abstract ActionResult interactBlock(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult);
+
+    @Shadow public abstract ActionResult interactEntity(PlayerEntity player, Entity entity, Hand hand);
 
     @Inject(method = "interactBlock",at= @At(value = "INVOKE", target = "Lorg/apache/commons/lang3/mutable/MutableObject;<init>()V"),cancellable = true)
     private void onInteractBlock(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
@@ -58,6 +63,13 @@ public abstract class PlayerInteractionManagerMixin {
         }
         Interactions.restrictBlockBreaking(MinecraftClient.getInstance().world.getBlockState(pos).getBlock(),cir);
     }
+
+
+    @Inject(method = "breakBlock",at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;onBreak(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/entity/player/PlayerEntity;)Lnet/minecraft/block/BlockState;",shift = At.Shift.AFTER),cancellable = true)
+    public void onBreakBlock(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+        Interactions.onBreakBlock((ClientPlayerInteractionManager) (Object)this,pos,cir);
+    }
+
     @Inject(method = "interactItem",at = @At("HEAD"),cancellable = true)
     public void onInteractItem(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         if(player == null||hand == null){

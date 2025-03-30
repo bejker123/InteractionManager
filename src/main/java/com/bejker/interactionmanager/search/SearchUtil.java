@@ -2,7 +2,6 @@ package com.bejker.interactionmanager.search;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
