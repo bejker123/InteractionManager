@@ -1,6 +1,7 @@
 package com.bejker.interactionmanager.config;
 
-import com.bejker.interactionmanager.config.option.*;
+import com.bejker.interactionmanager.config.option.BooleanOption;
+import com.bejker.interactionmanager.config.option.EnumOption;
 import com.bejker.interactionmanager.config.option.interfaces.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.option.SimpleOption;
@@ -80,6 +81,12 @@ public class Config {
     public static final BooleanOption ALLOW_OPENING_DOORS = new BooleanOption("allow_opening_doors");
 
     @IBlockOption
+    public static final BooleanOption REPLACE_BLOCKS = new BooleanOption("replace_blocks",false);
+
+    @IBlockOption
+    public static final BooleanOption SHOULD_REPLACE_WITH_SAME_BLOCK = new BooleanOption("should_replace_with_same_block",false);
+
+    @IBlockOption
     public static final BooleanOption ENABLE_BLOCK_BLACKLIST = new BooleanOption("enable_block_blacklist",true,"enabled","disabled");
 
     public static final Set<Block> BLACKLISTED_BLOCKS = new HashSet<>();
@@ -115,6 +122,9 @@ public class Config {
 
     @IItemOption
     public static final BooleanOption LOCK_HOT_BAR = new BooleanOption("lock_hot_bar",false);
+
+    @IRenderOption
+    public static final BooleanOption ANIMATE_REPLACE_BLOCKS = new BooleanOption("animate_replace_blocks");
 
     public enum PetAttackMode{
         ALL,

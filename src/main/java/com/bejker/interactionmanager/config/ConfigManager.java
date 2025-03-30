@@ -1,7 +1,9 @@
 package com.bejker.interactionmanager.config;
 
 import com.bejker.interactionmanager.InteractionManager;
-import com.bejker.interactionmanager.config.option.*;
+import com.bejker.interactionmanager.config.option.BooleanOption;
+import com.bejker.interactionmanager.config.option.EnumOption;
+import com.bejker.interactionmanager.config.option.OptionStorage;
 import com.bejker.interactionmanager.config.option.interfaces.IFileOnlyOption;
 import com.bejker.interactionmanager.config.option.interfaces.IRuntimeInternalOnlyOption;
 import com.google.gson.*;
@@ -22,7 +24,10 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 // Use this class to save, load, and init runtime config
 // To access and set config options use Config.
