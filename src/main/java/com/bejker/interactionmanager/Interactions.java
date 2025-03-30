@@ -33,7 +33,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.lang.reflect.Method;
-import java.util.DoubleSummaryStatistics;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -164,11 +163,13 @@ public class Interactions {
             if(petAttackMode == Config.PetAttackMode.NONE){
                 return true;
             }
-            boolean is_owner = Objects.equals(pet.getOwnerUuid(), player_uuid);
-            if(is_owner && petAttackMode == Config.PetAttackMode.ONLY_OTHER){
-                return true;
+            if(pet.getOwner() != null){
+                boolean is_owner = Objects.equals(pet.getOwner().getUuid(), player_uuid);
+                if(is_owner && petAttackMode == Config.PetAttackMode.ONLY_OTHER){
+                    return true;
+                }
+                return pet.isTamed() && petAttackMode == Config.PetAttackMode.NOT_TAMED;
             }
-            return pet.isTamed() && petAttackMode == Config.PetAttackMode.NOT_TAMED;
         }
         if(!Config.ALLOW_ATTACKING_VILLAGERS.getValue() && target instanceof VillagerEntity){
             return true;
@@ -336,7 +337,7 @@ public class Interactions {
             if (Config.ANIMATE_REPLACE_BLOCKS.getValue()&&actionResult2.isAccepted()) {
                 if (actionResult2.isAccepted()) {
                     player.swingHand(Hand.OFF_HAND);
-                    if (!itemStack.isEmpty() && (itemStack.getCount() != i || MinecraftClient.getInstance().interactionManager.hasCreativeInventory())) {
+                    if (!itemStack.isEmpty() && (itemStack.getCount() != i || player.isCreative())) {
                         MinecraftClient.getInstance().gameRenderer.firstPersonRenderer.resetEquipProgress(Hand.OFF_HAND);
                     }
                 }

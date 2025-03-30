@@ -17,7 +17,7 @@ public abstract class ClientPlayerEntityMixin {
             return;
         }
         ClientPlayerEntity player = (ClientPlayerEntity) ((Object) this);
-        if(Config.LOCK_HOT_BAR.getValue()&&0 <= player.getInventory().selectedSlot&& player.getInventory().selectedSlot <= 9){
+        if(Config.LOCK_HOT_BAR.getValue()&&0 <= player.getInventory().getSelectedSlot() && player.getInventory().getSelectedSlot() <= 9){
             cir.setReturnValue(false);
             return;
         }
