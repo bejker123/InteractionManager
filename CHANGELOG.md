@@ -1,4 +1,7 @@
 # Change Log
+# 1.7.3+1.21.5
+### Fixed
+- Instantaneous game crash on launch
 # 1.7.2
 ### Fixed
 - Using fireworks on blocks would prevent from using the block, when Use Fireworks on Blocks option is OFF
