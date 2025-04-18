@@ -10,6 +10,7 @@ import com.google.gson.*;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
+import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -24,10 +25,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 // Use this class to save, load, and init runtime config
 // To access and set config options use Config.
@@ -115,6 +113,23 @@ public class ConfigManager {
                             Config.BLACKLISTED_ENTITIES.add(entityType);
                         }
                     }
+                } else if(HashMap.class.isAssignableFrom(field.getType())){
+                   if(field.getName().equals("DENIED_ITEM_INTERACTIONS")){
+                      JsonObject jsonObject = json.getAsJsonObject(field.getName().toLowerCase(Locale.ROOT));
+                      if(jsonObject == null){
+                          continue;
+                      }
+                      for(Map.Entry<String, JsonElement> mapEntry : jsonObject.asMap().entrySet()){
+                         Item item = Registries.ITEM.get(Identifier.of(mapEntry.getKey()));
+                         HashSet<Block> set = new HashSet<>();
+                         JsonArray jsonArray = mapEntry.getValue().getAsJsonArray();
+                         for(JsonElement blockName : jsonArray){
+                             Block block = Registries.BLOCK.get(Identifier.of(blockName.getAsString()));
+                            set.add(block);
+                         }
+                         Config.DENIED_ITEM_INTERACTIONS.put(item,set);
+                      }
+                   }
                 }
             }
             if(found_invalid){
@@ -177,6 +192,19 @@ public class ConfigManager {
                             array.add(Registries.ENTITY_TYPE.getId(entityType).toString());
                         }
                         config.add(field_name,array);
+                    }
+                }else if(HashMap.class.isAssignableFrom(field.getType())){
+                    if(field.getName().equals("DENIED_ITEM_INTERACTIONS")){
+                        JsonObject jsonObject = new JsonObject();
+                        for(var entry : Config.DENIED_ITEM_INTERACTIONS.entrySet()){
+                            if(entry.getValue() == null || entry.getValue().isEmpty()){
+                                continue;
+                            }
+                            JsonArray jsonArray = new JsonArray();
+                            entry.getValue().forEach((block) -> jsonArray.add(Registries.BLOCK.getId(block).toString()));
+                            jsonObject.add(Registries.ITEM.getId(entry.getKey()).toString(),jsonArray);
+                        }
+                        config.add(field_name,jsonObject);
                     }
                 }
             }

@@ -15,8 +15,9 @@ public abstract class BlacklistScreen extends GameOptionsScreen {
 
     private final Screen parent;
 
-    private TextWidget titleWidget;
+    protected TextWidget titleWidget;
     TextFieldWidget search;
+    protected boolean focusSearchOnKeyPress = true;
 
     public BlacklistScreen(Screen parent,Text title) {
         super(parent, MinecraftClient.getInstance().options, title);
@@ -41,14 +42,14 @@ public abstract class BlacklistScreen extends GameOptionsScreen {
 
     @Override
     protected void initBody() {
-        this.addDrawableChild(search);
+        super.initBody();
         //blockList = layout.addBody(new BlockListWidget(this, this.client));
     }
 
     protected void refreshWidgetPositions() {
         this.layout.refreshPositions();
         //this.listWidget.position(this.width, this.layout);
-        titleWidget.setX(titleWidget.getX() + titleWidget.getWidth() / 2);
+        titleWidget.setX(this.width / 2 - titleWidget.getWidth() / 2);
     }
 
     @Override
@@ -80,13 +81,15 @@ public abstract class BlacklistScreen extends GameOptionsScreen {
             return true;
         }
 
-        //If no modifiers(except num lock, caps lock and shift) are held we assume the user wants to search,
-        //and focus the search widget.
-        //Modifiers are set using individual bits, so when no modifiers are present modifiers == 0
-        int not_ignored_mods = modifiers & ~GLFW.GLFW_MOD_NUM_LOCK & ~GLFW.GLFW_MOD_CAPS_LOCK & ~GLFW.GLFW_MOD_SHIFT;
-        if(not_ignored_mods == 0){
-            search.setFocused(true);
-            this.setFocused(search);
+        if(focusSearchOnKeyPress){
+            //If no modifiers(except num lock, caps lock and shift) are held we assume the user wants to search,
+            //and focus the search widget.
+            //Modifiers are set using individual bits, so when no modifiers are present modifiers == 0
+            int not_ignored_mods = modifiers & ~GLFW.GLFW_MOD_NUM_LOCK & ~GLFW.GLFW_MOD_CAPS_LOCK & ~GLFW.GLFW_MOD_SHIFT;
+            if(not_ignored_mods == 0){
+                search.setFocused(true);
+                this.setFocused(search);
+            }
         }
         return false;
     }

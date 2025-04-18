@@ -24,6 +24,13 @@
   "screen.interactionmanager.block_blacklist": "Block Blacklist",
   "screen.interactionmanager.entity_blacklist": "Entity Blacklist",
 
+  "button.interactionmanager.item_block_interaction_blacklist": "Item-Block Interactions",
+  "button.interactionmanager.item_block_interaction_blacklist.tooltip": "TODO!",
+
+  "screen.interactionmanager.item_block_interaction_blacklist": "Item-Block Interactions",
+
+  "search.interactionmanager.block_search.tooltip.inactive": "Please select a block first",
+
   "button.interactionmanager.block_blacklist": "Block Blacklist",
   "button.interactionmanager.block_blacklist.tooltip": "Manage block blacklist\nBlacklisted blocks can't be broken.",
   "category.interactionmanager.blacklisted_blocks": "Blacklisted Blocks",

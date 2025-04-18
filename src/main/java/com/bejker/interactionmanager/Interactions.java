@@ -32,6 +32,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.lang.reflect.Method;
 import java.util.DoubleSummaryStatistics;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -91,7 +92,14 @@ public class Interactions {
                 e.printStackTrace();
             }
         }
-
+        HashSet<Block> deniedBlockInteractions = Config.DENIED_ITEM_INTERACTIONS.get(stack.getItem());
+        if(deniedBlockInteractions == null){
+            return;
+        }
+        // We use minecraft:air to cancel all block interactions for a given item
+        if(deniedBlockInteractions.contains(block)||deniedBlockInteractions.contains(Blocks.AIR)){
+            cir.setReturnValue(ActionResult.PASS);
+        }
     }
     private static Method getMethod(Class<?> cls, String methodName)
             throws NoSuchMethodException {

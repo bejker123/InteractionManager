@@ -4,6 +4,7 @@ import com.bejker.interactionmanager.config.option.BooleanOption;
 import com.bejker.interactionmanager.config.option.EnumOption;
 import com.bejker.interactionmanager.config.option.interfaces.*;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.client.option.SimpleOption;
 import net.minecraft.entity.EntityType;
 
@@ -12,6 +13,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Set;
 
 // Use this class to access and set config options.
@@ -92,6 +94,8 @@ public class Config {
     public static final Set<Block> BLACKLISTED_BLOCKS = new HashSet<>();
 
     public static final Set<EntityType<?>> BLACKLISTED_ENTITIES = new HashSet<>();
+
+    public static final HashMap<Item,HashSet<Block>> DENIED_ITEM_INTERACTIONS = new HashMap<>();
 
     @IEntityOption
     public static final BooleanOption ENABLE_ENTITY_BLACKLIST = new BooleanOption("enable_entity_blacklist",true,"enabled","disabled");
