@@ -77,12 +77,19 @@ public class Interactions {
         }
 
         HashSet<Block> deniedBlockInteractions = Config.DENIED_ITEM_INTERACTIONS.get(stack.getItem());
-        if(deniedBlockInteractions == null){
-            return;
+        if(deniedBlockInteractions != null){
+            // We use minecraft:air to cancel all block interactions for a given item
+            if(deniedBlockInteractions.contains(block)||deniedBlockInteractions.contains(Blocks.AIR)){
+                cir.setReturnValue(ActionResult.PASS);
+            }
         }
-        // We use minecraft:air to cancel all block interactions for a given item
-        if(deniedBlockInteractions.contains(block)||deniedBlockInteractions.contains(Blocks.AIR)){
-            cir.setReturnValue(ActionResult.PASS);
+
+        // We use minecraft:air to cancel all item interactions for a given set of blocks
+        HashSet<Block> deniedBlockInteractionsForAllBlocks = Config.DENIED_ITEM_INTERACTIONS.get(Items.AIR);
+        if(deniedBlockInteractionsForAllBlocks != null) {
+            if (deniedBlockInteractionsForAllBlocks.contains(block) || deniedBlockInteractionsForAllBlocks.contains(Blocks.AIR)) {
+                cir.setReturnValue(ActionResult.PASS);
+            }
         }
     }
 

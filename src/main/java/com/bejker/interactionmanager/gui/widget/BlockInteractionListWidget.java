@@ -189,6 +189,7 @@ public class BlockInteractionListWidget extends ElementListWidget<BlockInteracti
 
         private static final int lines = 2;
         protected int borderColor = 0x0FBABABA;
+        protected int bgColor = 0x10_AA_AA_AA;
 
         public SearchBlockEntry(Block block){
             super(block);
@@ -235,7 +236,7 @@ public class BlockInteractionListWidget extends ElementListWidget<BlockInteracti
         public void drawBorder(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             int ref_y = y + entryHeight - 9 - 1;
             context.drawBorder(x - 2, ref_y - 2, entryWidth, entryHeight * lines - 2, borderColor);
-            context.fill(x - 1,ref_y - 1,x + entryWidth - 3,ref_y + entryHeight * lines - 4,0x10_AA_AA_AA);
+            context.fill(x - 1,ref_y - 1,x + entryWidth - 3,ref_y + entryHeight * lines - 5,bgColor);
         }
 
     }
@@ -246,6 +247,7 @@ public class BlockInteractionListWidget extends ElementListWidget<BlockInteracti
             this.block_name_text = Text.translatable("text.interactionmanager.deny_using_on_all_blocks.title");
             this.block_id_text = Text.translatable("text.interactionmanager.deny_using_on_all_blocks.tooltip");
             this.borderColor = 0xFC_AA_AA_AA;
+            this.bgColor = 0xCB_0F_0F_0F;
         }
     }
 }
