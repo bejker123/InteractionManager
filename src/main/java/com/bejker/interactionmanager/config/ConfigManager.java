@@ -182,16 +182,20 @@ public class ConfigManager {
                 String field_name = field.getName().toLowerCase(Locale.ROOT);
                 if (BooleanOption.class.isAssignableFrom(field.getType())) {
                     BooleanOption option = (BooleanOption) field.get(null) ;
-                    config.addProperty(field_name, option.getValue());
+                    if(option.getValue() != option.getDefaultValue()){
+                        config.addProperty(field_name, option.getValue());
+                    }
                 }else if (EnumOption.class.isAssignableFrom(field.getType()) && field.getGenericType() instanceof ParameterizedType) {
                     Type generic = ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
                     if (generic instanceof Class<?>) {
                         EnumOption<?> option = (EnumOption<?>) field.get(null);
-                        config.addProperty(field.getName().toLowerCase(Locale.ROOT),
-                                OptionStorage.getEnumRaw(option.getKey(), (Class<Enum<?>>) generic)
-                                        .name()
-                                        .toLowerCase(Locale.ROOT)
-                        );
+                        if(option.getValue() != option.getDefaultValue()) {
+                            config.addProperty(field.getName().toLowerCase(Locale.ROOT),
+                                    OptionStorage.getEnumRaw(option.getKey(), (Class<Enum<?>>) generic)
+                                            .name()
+                                            .toLowerCase(Locale.ROOT)
+                            );
+                        }
                     }
                 }else if(Set.class.isAssignableFrom(field.getType())){
                     if(field.getName().equals("DENIED_BLOCKS")){
@@ -199,23 +203,30 @@ public class ConfigManager {
                         for(var block : Config.DENIED_BLOCKS){
                             array.add(Registries.BLOCK.getId(block).toString());
                         }
-                        config.add(field_name,array);
+                        if(!array.isEmpty()) {
+                            config.add(field_name, array);
+                        }
                     } else if(field.getName().equals("DENIED_ENTITIES")){
                         JsonArray array = new JsonArray();
                         for(var entityType : Config.DENIED_ENTITIES){
                             array.add(Registries.ENTITY_TYPE.getId(entityType).toString());
                         }
-                        config.add(field_name,array);
+                        if(!array.isEmpty()) {
+                            config.add(field_name, array);
+                        }
                     }else if(field.getName().equals("DENIED_ITEMS")){
                         JsonArray array = new JsonArray();
                         for(var item : Config.DENIED_ITEMS){
                             array.add(Registries.ITEM.getId(item).toString());
                         }
-                        config.add(field_name,array);
+                        if(!array.isEmpty()) {
+                            config.add(field_name, array);
+                        }
                     }
                 }else if(HashMap.class.isAssignableFrom(field.getType())){
                     if(field.getName().equals("DENIED_ITEM_INTERACTIONS")){
                         JsonObject jsonObject = new JsonObject();
+                        boolean shouldSave = false;
                         for(var entry : Config.DENIED_ITEM_INTERACTIONS.entrySet()){
                             if(entry.getValue() == null || entry.getValue().isEmpty()){
                                 continue;
@@ -223,8 +234,13 @@ public class ConfigManager {
                             JsonArray jsonArray = new JsonArray();
                             entry.getValue().forEach((block) -> jsonArray.add(Registries.BLOCK.getId(block).toString()));
                             jsonObject.add(Registries.ITEM.getId(entry.getKey()).toString(),jsonArray);
+                            if(!jsonArray.isEmpty()){
+                                shouldSave = true;
+                            }
                         }
-                        config.add(field_name,jsonObject);
+                        if(shouldSave){
+                            config.add(field_name,jsonObject);
+                        }
                     }
                 }
             }
