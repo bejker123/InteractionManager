@@ -11,7 +11,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.Locale;
 
-public abstract class BlacklistScreen extends GameOptionsScreen {
+public abstract class DenyListScreen extends GameOptionsScreen {
 
     private final Screen parent;
 
@@ -19,7 +19,7 @@ public abstract class BlacklistScreen extends GameOptionsScreen {
     TextFieldWidget search;
     protected boolean focusSearchOnKeyPress = true;
 
-    public BlacklistScreen(Screen parent,Text title) {
+    public DenyListScreen(Screen parent, Text title) {
         super(parent, MinecraftClient.getInstance().options, title);
         this.parent = parent;
     }

@@ -5,13 +5,13 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
 
-public class BlockBlacklistScreen extends BlacklistScreen {
+public class BlockDenylistScreen extends DenyListScreen {
 
-    private static final Text TITLE_TEXT = Text.translatable("screen.interactionmanager.block_blacklist");
+    private static final Text TITLE_TEXT = Text.translatable("screen.interactionmanager.block_deny_list");
 
     private BlockListWidget blockList;
 
-    public BlockBlacklistScreen(Screen parent) {
+    public BlockDenylistScreen(Screen parent) {
         super(parent, TITLE_TEXT);
     }
 

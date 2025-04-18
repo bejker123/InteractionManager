@@ -5,13 +5,13 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
 
-public class EntityBlacklistScreen extends BlacklistScreen {
+public class EntityDenyListScreen extends DenyListScreen {
 
-    private static final Text TITLE_TEXT = Text.translatable("screen.interactionmanager.entity_blacklist");
+    private static final Text TITLE_TEXT = Text.translatable("screen.interactionmanager.entity_deny_list");
 
     private EntityListWidget entityList;
 
-    public EntityBlacklistScreen(Screen parent) {
+    public EntityDenyListScreen(Screen parent) {
         super(parent, TITLE_TEXT);
     }
 

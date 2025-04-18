@@ -29,13 +29,13 @@ public class ItemOptionsScreen extends OptionsScreen {
             List<ClickableWidget> option_widgets = Arrays.stream(Config.asOptions(this.options_target))
                     .map((x) -> x.createWidget(gameOptions)).toList();
             ArrayList<ClickableWidget> widgets = new ArrayList<>(option_widgets);
-             itemBlockInteractionBlacklist = ButtonWidget.builder(Text.translatable("button.interactionmanager.item_block_interaction_blacklist"),(button)->{
+             itemBlockInteractionBlacklist = ButtonWidget.builder(Text.translatable("button.interactionmanager.item_block_interaction_deny_list"),(button)->{
                         if(client == null){
                             return;
                         }
                         client.setScreen(new ItemBlockInteractionsScreen(this));
                     })
-                    .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.item_block_interaction_blacklist.tooltip")))
+                    .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.item_block_interaction_deny_list.tooltip")))
                     .build();
 
             widgets.add(itemBlockInteractionBlacklist);

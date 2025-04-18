@@ -89,19 +89,19 @@ public class Config {
     public static final BooleanOption SHOULD_REPLACE_WITH_SAME_BLOCK = new BooleanOption("should_replace_with_same_block",false);
 
     @IBlockOption
-    public static final BooleanOption ENABLE_BLOCK_BLACKLIST = new BooleanOption("enable_block_blacklist",true,"enabled","disabled");
+    public static final BooleanOption ENABLE_BLOCK_DENY_LIST = new BooleanOption("enable_block_deny_list",true,"enabled","disabled");
 
-    public static final Set<Block> BLACKLISTED_BLOCKS = new HashSet<>();
+    public static final Set<Block> DENIED_BLOCKS = new HashSet<>();
 
-    public static final Set<EntityType<?>> BLACKLISTED_ENTITIES = new HashSet<>();
+    public static final Set<EntityType<?>> DENIED_ENTITIES = new HashSet<>();
 
     public static final HashMap<Item,HashSet<Block>> DENIED_ITEM_INTERACTIONS = new HashMap<>();
 
     @IEntityOption
-    public static final BooleanOption ENABLE_ENTITY_BLACKLIST = new BooleanOption("enable_entity_blacklist",true,"enabled","disabled");
+    public static final BooleanOption ENABLE_ENTITY_DENY_LIST = new BooleanOption("enable_entity_deny_list",true,"enabled","disabled");
 
     @IRenderOption
-    public static final BooleanOption RENDER_ITEMS_IN_BLOCK_BLACKLIST = new BooleanOption("render_items_in_block_blacklist");
+    public static final BooleanOption RENDER_ITEMS_IN_BLOCK_DENY_LIST = new BooleanOption("render_items_in_block_deny_list");
 
     @IItemOption
     public static final BooleanOption ALLOW_EATING = new BooleanOption("allow_eating");

@@ -158,7 +158,7 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
 
         ButtonWidget createButton(Item item){
             return new TexturedButtonWidget(20,20, BUTTON_TEXTURES,(button)->{
-                Config.BLACKLISTED_BLOCKS.remove(item);
+                Config.DENIED_BLOCKS.remove(item);
                 updateEntries();
             },Text.translatable("button.interactionmanager.remove"));
         }
@@ -176,7 +176,7 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
         @Override
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             int ref_x = x + entryWidth / 32;
-            if(Config.RENDER_ITEMS_IN_BLOCK_BLACKLIST.getValue()){
+            if(Config.RENDER_ITEMS_IN_BLOCK_DENY_LIST.getValue()){
                ref_x += 14;
             }
             int ref_y = y + entryHeight - 9;
@@ -186,7 +186,7 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
             context.drawTextWithShadow(ItemListWidget.this.client.textRenderer, this.item_name_text,ref_x,ref_y ,isSelected ? 0xFF_FA_82_0A : Colors.WHITE);
 
             context.drawTextWithShadow(ItemListWidget.this.client.textRenderer, this.item_id_text, ref_x, ref_y + 10, Colors.GRAY);
-            if(Config.RENDER_ITEMS_IN_BLOCK_BLACKLIST.getValue()){
+            if(Config.RENDER_ITEMS_IN_BLOCK_DENY_LIST.getValue()){
                 context.drawItemWithoutEntity(new ItemStack(item),ref_x - 20,ref_y);
             }
             if(isSelected){

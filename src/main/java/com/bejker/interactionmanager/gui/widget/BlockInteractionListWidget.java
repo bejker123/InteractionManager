@@ -163,7 +163,7 @@ public class BlockInteractionListWidget extends ElementListWidget<BlockInteracti
         @Override
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             int ref_x = x + entryWidth / 32;
-            if(Config.RENDER_ITEMS_IN_BLOCK_BLACKLIST.getValue()){
+            if(Config.RENDER_ITEMS_IN_BLOCK_DENY_LIST.getValue()){
                ref_x += 14;
             }
             int ref_y = y + entryHeight - 9;
@@ -174,7 +174,7 @@ public class BlockInteractionListWidget extends ElementListWidget<BlockInteracti
             this.button.setX(x + entryWidth - this.button.getWidth() - 3);
             this.button.setY(ref_y - 1);
             this.button.render(context,mouseX,mouseY,tickDelta);
-            if(Config.RENDER_ITEMS_IN_BLOCK_BLACKLIST.getValue()){
+            if(Config.RENDER_ITEMS_IN_BLOCK_DENY_LIST.getValue()){
                 context.drawItemWithoutEntity(new ItemStack(block),ref_x - 20,ref_y);
             }
         }

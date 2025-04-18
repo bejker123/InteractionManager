@@ -13,9 +13,9 @@ import net.minecraft.util.Colors;
 
 import java.util.Locale;
 
-public class ItemBlockInteractionsScreen extends BlacklistScreen{
+public class ItemBlockInteractionsScreen extends DenyListScreen {
 
-    private static final Text TITLE_TEXT = Text.translatable("screen.interactionmanager.item_block_interaction_blacklist");
+    private static final Text TITLE_TEXT = Text.translatable("screen.interactionmanager.item_block_interaction_deny_list");
 
     private ItemListWidget itemListWidget;
     private BlockInteractionListWidget blockInteractionListWidget;

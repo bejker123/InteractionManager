@@ -1,7 +1,7 @@
 package com.bejker.interactionmanager.gui.widget;
 
 import com.bejker.interactionmanager.config.Config;
-import com.bejker.interactionmanager.gui.options.blacklist.EntityBlacklistScreen;
+import com.bejker.interactionmanager.gui.options.blacklist.EntityDenyListScreen;
 import com.bejker.interactionmanager.search.SearchUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -23,10 +23,10 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> {
-    private final EntityBlacklistScreen parent;
+    private final EntityDenyListScreen parent;
     private String last_search = "";
 
-    public EntityListWidget(EntityBlacklistScreen parent, MinecraftClient client) {
+    public EntityListWidget(EntityDenyListScreen parent, MinecraftClient client) {
 	    //(MinecraftClient client, int width, int height, int y, int itemHeight)
         super(client, parent.width, parent.layout.getContentHeight(), parent.layout.getHeaderHeight(), 23);
         this.parent = parent;
@@ -39,12 +39,12 @@ public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> 
        if(last_search != null && !last_search.isBlank()){
            SearchUtil.searchEntities(last_search).stream()
            .distinct()
-           .filter((x) -> !Config.BLACKLISTED_ENTITIES.contains(x))
+           .filter((x) -> !Config.DENIED_ENTITIES.contains(x))
            .map(SearchEntityEntry::new)
            .forEach(this::addEntry);
        }
-       this.addEntry(new CategoryEntry(Text.translatable("category.interactionmanager.blacklisted_entities")));
-       for (EntityType<?> i : Config.BLACKLISTED_ENTITIES){
+       this.addEntry(new CategoryEntry(Text.translatable("category.interactionmanager.deny_listed_entities")));
+       for (EntityType<?> i : Config.DENIED_ENTITIES){
           this.addEntry(new EntityEntry(i));
        }
 
@@ -115,7 +115,7 @@ public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> 
         }
         ButtonWidget createButton(EntityType<?> type){
             return new TexturedButtonWidget(20,20, BUTTON_TEXTURES,(button)->{
-                Config.BLACKLISTED_ENTITIES.remove(type);
+                Config.DENIED_ENTITIES.remove(type);
                 updateEntries();
             },Text.translatable("button.interactionmanager.remove"));
         }
@@ -160,7 +160,7 @@ public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> 
         @Override
         ButtonWidget createButton(EntityType<?> type){
             return new TexturedButtonWidget(20,20, BUTTON_TEXTURES,(button)->{
-                Config.BLACKLISTED_ENTITIES.add(type);
+                Config.DENIED_ENTITIES.add(type);
                 updateEntries();
             },Text.translatable("button.interactionmanager.remove"));
         }

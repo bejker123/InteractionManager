@@ -2,7 +2,7 @@ package com.bejker.interactionmanager.gui.options;
 
 import com.bejker.interactionmanager.config.Config;
 import com.bejker.interactionmanager.config.option.interfaces.IEntityOption;
-import com.bejker.interactionmanager.gui.options.blacklist.EntityBlacklistScreen;
+import com.bejker.interactionmanager.gui.options.blacklist.EntityDenyListScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -29,13 +29,13 @@ public class EntityOptionsScreen extends OptionsScreen {
                     .map((x) -> x.createWidget(gameOptions)).toList();
             ArrayList<ClickableWidget> widgets = new ArrayList<>(option_widgets);
 
-            entity_blacklist = ButtonWidget.builder(Text.translatable("button.interactionmanager.entity_blacklist"),(button)->{
+            entity_blacklist = ButtonWidget.builder(Text.translatable("button.interactionmanager.entity_deny_list"),(button)->{
                 if(client == null){
                     return;
                 }
-                client.setScreen(new EntityBlacklistScreen(this));
+                client.setScreen(new EntityDenyListScreen(this));
             })
-            .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.entity_blacklist.tooltip")))
+            .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.entity_deny_list.tooltip")))
             .build();
 
             widgets.add(entity_blacklist);

@@ -84,7 +84,7 @@ public class ConfigManager {
                         }
                     }
                 }else if(Set.class.isAssignableFrom(field.getType())){
-                    if(field.getName().equals("BLACKLISTED_BLOCKS")){
+                    if(field.getName().equals("DENIED_BLOCKS")){
                         JsonArray jsonArray = json.getAsJsonArray(field.getName()
                                 .toLowerCase(Locale.ROOT));
                         if(jsonArray == null||jsonArray.isEmpty()){
@@ -96,9 +96,9 @@ public class ConfigManager {
                                 continue;
                             }
                             Block block = Registries.BLOCK.get(id);
-                            Config.BLACKLISTED_BLOCKS.add(block);
+                            Config.DENIED_BLOCKS.add(block);
                         }
-                    }else if(field.getName().equals("BLACKLISTED_ENTITIES")){
+                    }else if(field.getName().equals("DENIED_ENTITIES")){
                         JsonArray jsonArray = json.getAsJsonArray(field.getName()
                                 .toLowerCase(Locale.ROOT));
                         if(jsonArray == null||jsonArray.isEmpty()){
@@ -110,7 +110,7 @@ public class ConfigManager {
                                 continue;
                             }
                             EntityType<?> entityType = Registries.ENTITY_TYPE.get(id);
-                            Config.BLACKLISTED_ENTITIES.add(entityType);
+                            Config.DENIED_ENTITIES.add(entityType);
                         }
                     }
                 } else if(HashMap.class.isAssignableFrom(field.getType())){
@@ -182,13 +182,13 @@ public class ConfigManager {
                 }else if(Set.class.isAssignableFrom(field.getType())){
                     if(field.getName().equals("BLACKLISTED_BLOCKS")){
                         JsonArray array = new JsonArray();
-                        for(var block : Config.BLACKLISTED_BLOCKS){
+                        for(var block : Config.DENIED_BLOCKS){
                             array.add(Registries.BLOCK.getId(block).toString());
                         }
                         config.add(field_name,array);
                     } else if(field.getName().equals("BLACKLISTED_ENTITIES")){
                         JsonArray array = new JsonArray();
-                        for(var entityType : Config.BLACKLISTED_ENTITIES){
+                        for(var entityType : Config.DENIED_ENTITIES){
                             array.add(Registries.ENTITY_TYPE.getId(entityType).toString());
                         }
                         config.add(field_name,array);

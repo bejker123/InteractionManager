@@ -2,7 +2,7 @@ package com.bejker.interactionmanager.gui.options;
 
 import com.bejker.interactionmanager.config.Config;
 import com.bejker.interactionmanager.config.option.interfaces.IBlockOption;
-import com.bejker.interactionmanager.gui.options.blacklist.BlockBlacklistScreen;
+import com.bejker.interactionmanager.gui.options.blacklist.BlockDenylistScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -29,13 +29,13 @@ public class BlockOptionsScreen extends OptionsScreen {
                     .map((x) -> x.createWidget(gameOptions)).toList();
             ArrayList<ClickableWidget> widgets = new ArrayList<>(option_widgets);
 
-            block_blacklist = ButtonWidget.builder(Text.translatable("button.interactionmanager.block_blacklist"),(button)->{
+            block_blacklist = ButtonWidget.builder(Text.translatable("button.interactionmanager.block_deny_list"),(button)->{
                         if(client == null){
                             return;
                         }
-                        client.setScreen(new BlockBlacklistScreen(this));
+                        client.setScreen(new BlockDenylistScreen(this));
                     })
-                    .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.block_blacklist.tooltip")))
+                    .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.block_deny_list.tooltip")))
                     .build();
             widgets.add(block_blacklist);
 

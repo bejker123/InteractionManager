@@ -31,7 +31,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.lang.reflect.Method;
-import java.util.DoubleSummaryStatistics;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
@@ -147,7 +146,7 @@ public class Interactions {
     }
 
     private static boolean isProtected(UUID player_uuid,Entity target){
-        if(Config.ENABLE_ENTITY_BLACKLIST.getValue() && Config.BLACKLISTED_ENTITIES.contains(target.getType())){
+        if(Config.ENABLE_ENTITY_DENY_LIST.getValue() && Config.DENIED_ENTITIES.contains(target.getType())){
             return true;
         }
 
@@ -234,7 +233,7 @@ public class Interactions {
         if(!Config.ALLOW_BREAKING_BLOCKS.getValue()){
             cir.setReturnValue(true);
         }
-        if(Config.ENABLE_BLOCK_BLACKLIST.getValue() && Config.BLACKLISTED_BLOCKS.contains(block)){
+        if(Config.ENABLE_BLOCK_DENY_LIST.getValue() && Config.DENIED_BLOCKS.contains(block)){
             cir.setReturnValue(true);
         }
     }
