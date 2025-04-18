@@ -1,9 +1,11 @@
 package com.bejker.interactionmanager.gui.widget;
 
 import com.bejker.interactionmanager.config.Config;
-import com.bejker.interactionmanager.gui.options.blacklist.ItemBlockInteractionsScreen;
+import com.bejker.interactionmanager.gui.options.denylist.ItemBlockInteractionsScreen;
 import com.bejker.interactionmanager.search.SearchUtil;
+import com.bejker.interactionmanager.util.Util;
 import net.minecraft.block.Block;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -48,6 +50,15 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
                    .distinct()
                    //.filter((x) -> !Config.BLACKLISTED_BLOCKS.contains(x))
                    //.sorted(Comparator.comparing((x) -> x.getName().getContent().visit(Optional::of).get().length()))
+                   .filter((Item item) -> {
+                       try {
+                           //TODO: add config option for blocks
+                           return Util.doesOverrideMethod(item.getClass(),"use",Item.class) || BlockItem.class.isAssignableFrom(item.getClass());
+                       } catch (NoSuchMethodException e) {
+                           e.printStackTrace();
+                       }
+                       return false;
+                   })
                    .map(SearchItemEntry::new)
                    .forEach(this::addSearchEntry);
        }

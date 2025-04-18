@@ -112,6 +112,20 @@ public class ConfigManager {
                             EntityType<?> entityType = Registries.ENTITY_TYPE.get(id);
                             Config.DENIED_ENTITIES.add(entityType);
                         }
+                    }else if(field.getName().equals("DENIED_ITEMS")){
+                        JsonArray jsonArray = json.getAsJsonArray(field.getName()
+                                .toLowerCase(Locale.ROOT));
+                        if(jsonArray == null||jsonArray.isEmpty()){
+                            continue;
+                        }
+                        for(JsonElement element : jsonArray) {
+                            Identifier id = elem2Id(element);
+                            if(id == null){
+                                continue;
+                            }
+                            Item item = Registries.ITEM.get(id);
+                            Config.DENIED_ITEMS.add(item);
+                        }
                     }
                 } else if(HashMap.class.isAssignableFrom(field.getType())){
                    if(field.getName().equals("DENIED_ITEM_INTERACTIONS")){
@@ -180,16 +194,22 @@ public class ConfigManager {
                         );
                     }
                 }else if(Set.class.isAssignableFrom(field.getType())){
-                    if(field.getName().equals("BLACKLISTED_BLOCKS")){
+                    if(field.getName().equals("DENIED_BLOCKS")){
                         JsonArray array = new JsonArray();
                         for(var block : Config.DENIED_BLOCKS){
                             array.add(Registries.BLOCK.getId(block).toString());
                         }
                         config.add(field_name,array);
-                    } else if(field.getName().equals("BLACKLISTED_ENTITIES")){
+                    } else if(field.getName().equals("DENIED_ENTITIES")){
                         JsonArray array = new JsonArray();
                         for(var entityType : Config.DENIED_ENTITIES){
                             array.add(Registries.ENTITY_TYPE.getId(entityType).toString());
+                        }
+                        config.add(field_name,array);
+                    }else if(field.getName().equals("DENIED_ITEMS")){
+                        JsonArray array = new JsonArray();
+                        for(var item : Config.DENIED_ITEMS){
+                            array.add(Registries.ITEM.getId(item).toString());
                         }
                         config.add(field_name,array);
                     }

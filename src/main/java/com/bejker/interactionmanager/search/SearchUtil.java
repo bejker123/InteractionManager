@@ -36,19 +36,19 @@ public class SearchUtil {
         for(var block : Registries.BLOCK){
             RegistryEntry<Block> entry = Registries.BLOCK.getEntry(block);
             blockSearchTree.put(getLocalizedName(block.getName()),block);
-            //blockSearchTree.put(entry.getIdAsString(),block);
+            blockSearchTree.put(entry.getIdAsString(),block);
         }
 
         for(var entity_type : Registries.ENTITY_TYPE){
             RegistryEntry<EntityType<?>> entry = Registries.ENTITY_TYPE.getEntry(entity_type);
             entitySearchTree.put(getLocalizedName(entity_type.getName()),entity_type);
-            //entitySearchTree.put(entry.getIdAsString(),entity_type);
+            entitySearchTree.put(entry.getIdAsString(),entity_type);
         }
 
         for(var item : Registries.ITEM){
             RegistryEntry<Item> entry = Registries.ITEM.getEntry(item);
             itemSearchTree.put(getLocalizedName(item.getName()),item);
-            //itemSearchTree.put(entry.getIdAsString(),item);
+            itemSearchTree.put(entry.getIdAsString(),item);
         }
     }
 

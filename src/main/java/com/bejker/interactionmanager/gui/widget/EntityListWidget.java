@@ -1,7 +1,7 @@
 package com.bejker.interactionmanager.gui.widget;
 
 import com.bejker.interactionmanager.config.Config;
-import com.bejker.interactionmanager.gui.options.blacklist.EntityDenyListScreen;
+import com.bejker.interactionmanager.gui.options.denylist.EntityDenyListScreen;
 import com.bejker.interactionmanager.search.SearchUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;

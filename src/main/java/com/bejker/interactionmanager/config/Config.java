@@ -28,9 +28,6 @@ public class Config {
     @IItemOption
     public static final BooleanOption ALLOW_AXE_STRIP_BLOCKS = new BooleanOption("allow_axe_strip_blocks");
 
-    @IItemOption
-    public static final BooleanOption ALLOW_USE_FIREWORK_ON_BLOCK = new BooleanOption("allow_use_firework_on_block");
-
     @IEntityOption
     public static final BooleanOption ALLOW_ATTACKING_PLAYERS = new BooleanOption("allow_attacking_players");
 
@@ -97,6 +94,8 @@ public class Config {
 
     public static final HashMap<Item,HashSet<Block>> DENIED_ITEM_INTERACTIONS = new HashMap<>();
 
+    public static final HashSet<Item> DENIED_ITEMS = new HashSet<>();
+
     @IEntityOption
     public static final BooleanOption ENABLE_ENTITY_DENY_LIST = new BooleanOption("enable_entity_deny_list",true,"enabled","disabled");
 
@@ -108,18 +107,6 @@ public class Config {
 
     @IItemOption
     public static final BooleanOption ALLOW_DRINKING_POTIONS = new BooleanOption("allow_drinking_potions");
-
-    @IItemOption
-    public static final BooleanOption ALLOW_USING_ENDER_PEARL = new BooleanOption("allow_using_ender_pearl");
-
-    @IItemOption
-    public static final BooleanOption ALLOW_USING_ENDER_EYE = new BooleanOption("allow_using_ender_eye");
-
-    @IItemOption
-    public static final BooleanOption ALLOW_USING_BOWS = new BooleanOption("allow_using_bows");
-
-    @IItemOption
-    public static final BooleanOption ALLOW_USING_CROSSBOWS = new BooleanOption("allow_using_crossbows");
 
     @IItemOption
     public static final BooleanOption ALLOW_DROPPING_ITEMS = new BooleanOption("allow_dropping_items");

@@ -25,7 +25,13 @@
   "screen.interactionmanager.entity_deny_list": "Entity Deny List",
 
   "button.interactionmanager.item_block_interaction_deny_list": "Item-Block Interactions",
-  "button.interactionmanager.item_block_interaction_deny_list.tooltip": "Manage Item-BLock interactions\nFirst select an item, then add blocks. That item can't be used on these blocks.",
+  "button.interactionmanager.item_block_interaction_deny_list.tooltip": "Manage Item-Block interactions\nFirst select an item, then add blocks. That item can't be used on these blocks.",
+
+  "button.interactionmanager.item_deny_list": "Item Deny List",
+  "button.interactionmanager.item_deny_list.tooltip": "Manage Item Deny List\nDenied items can't be used, only applies to items that can be used by not clicking a block",
+
+  "screen.interactionmanager.item_deny_list": "Item Deny List",
+  "category.interactionmanager.denied_items": "Deny Listed Items",
 
   "screen.interactionmanager.item_block_interaction_deny_list": "Item-Block Interactions",
 
@@ -91,8 +97,8 @@
   "option.interactionmanager.allow_attacking_villagers.tooltip": "Toggle the ability to attack and damage villagers.\nIf Attack Passive Mobs is OFF this will have no effect.",
   "option.interactionmanager.allow_attacking_vehicles": "Attack Vehicles",
   "option.interactionmanager.allow_attacking_vehicles.tooltip": "Toggle the ability to attack and damage vehicles. (Boats, minecarts)",
-  "option.interactionmanager.render_items_in_block_deny_list": "Render Icons In Block Deny List",
-  "option.interactionmanager.render_items_in_block_deny_list.tooltip": "Should render block icons in the block deny list",
+  "option.interactionmanager.render_items_in_block_deny_list": "Render Items",
+  "option.interactionmanager.render_items_in_block_deny_list.tooltip": "Toggle rendering item icons in the options",
   "option.interactionmanager.pet_attack_mode": "Attack Pets",
   "option.interactionmanager.pet_attack_mode.all": "All",
   "option.interactionmanager.pet_attack_mode.only_other": "Only Not Yours",
@@ -126,8 +132,8 @@
   "option.interactionmanager.allow_placing_blocks": "Place Blocks",
   "option.interactionmanager.allow_placing_blocks.tooltip": "Toggle the ability to place blocks",
 
-  "option.interactionmanager.allow_opening_blocks": "Open Blocks",
-  "option.interactionmanager.allow_opening_blocks.tooltip": "Toggle the ability to open blocks, such as crafting tables and furnaces\nDoes not affect doors",
+  "option.interactionmanager.allow_opening_blocks": "Open GUIs",
+  "option.interactionmanager.allow_opening_blocks.tooltip": "Toggle the ability to open block GUIs, such as crafting tables and furnaces\nDoes not affect doors",
 
   "option.interactionmanager.allow_opening_doors": "Open Doors",
   "option.interactionmanager.allow_opening_doors.tooltip": "Toggle the ability to open doors",
@@ -140,5 +146,8 @@
   "option.interactionmanager.enable_entity_deny_list": "Entity Deny List",
   "option.interactionmanager.enable_entity_deny_list.enabled":"Enabled",
   "option.interactionmanager.enable_entity_deny_list.disabled": "Disabled",
-  "option.interactionmanager.enable_entity_deny_list.tooltip": "Enabled - You can't attack denied entities\nDisabled - You can attack denied entities, unless they are protected by another option"
+  "option.interactionmanager.enable_entity_deny_list.tooltip": "Enabled - You can't attack denied entities\nDisabled - You can attack denied entities, unless they are protected by another option",
+
+  "text.interactionmanager.deny_using_on_all_blocks.title": "All",
+  "text.interactionmanager.deny_using_on_all_blocks.tooltip":"Deny using on all blocks"
 }

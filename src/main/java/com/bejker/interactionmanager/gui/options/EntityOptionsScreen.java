@@ -2,7 +2,7 @@ package com.bejker.interactionmanager.gui.options;
 
 import com.bejker.interactionmanager.config.Config;
 import com.bejker.interactionmanager.config.option.interfaces.IEntityOption;
-import com.bejker.interactionmanager.gui.options.blacklist.EntityDenyListScreen;
+import com.bejker.interactionmanager.gui.options.denylist.EntityDenyListScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;

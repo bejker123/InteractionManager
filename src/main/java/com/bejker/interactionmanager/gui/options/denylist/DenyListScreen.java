@@ -1,4 +1,4 @@
-package com.bejker.interactionmanager.gui.options.blacklist;
+package com.bejker.interactionmanager.gui.options.denylist;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;

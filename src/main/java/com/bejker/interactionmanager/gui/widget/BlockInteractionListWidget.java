@@ -1,8 +1,9 @@
 package com.bejker.interactionmanager.gui.widget;
 
 import com.bejker.interactionmanager.config.Config;
-import com.bejker.interactionmanager.gui.options.blacklist.ItemBlockInteractionsScreen;
+import com.bejker.interactionmanager.gui.options.denylist.ItemBlockInteractionsScreen;
 import com.bejker.interactionmanager.search.SearchUtil;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
@@ -41,14 +42,18 @@ public class BlockInteractionListWidget extends ElementListWidget<BlockInteracti
            SearchUtil.searchBlocks(last_search).stream()
            .distinct()
            //.filter((x) -> !Config.DENIED_ITEM_INTERACTIONS.getOrDefault(parent.getSelectedItem(),new HashSet<>()).contains(x))
+           .filter(x -> !x.equals(Blocks.AIR))
            .sorted(Comparator.comparing((x) -> x.getName().getContent().visit(Optional::of).get().length()))
            .map(SearchBlockEntry::new)
            .forEach(this::addEntry);
-       }
-       if(this.getEntryCount() == 0){
+       }else{
+           this.addEntry(new AllEntry());
            HashSet<Block> blocks = Config.DENIED_ITEM_INTERACTIONS.get(parent.getSelectedItem());
            if(blocks != null){
                for (Block i : blocks){
+                   if(i == Blocks.AIR){
+                       continue;
+                   }
                    this.addEntry(new BlockEntry(i));
                }
            }
@@ -105,8 +110,8 @@ public class BlockInteractionListWidget extends ElementListWidget<BlockInteracti
     }
 
     public class BlockEntry extends BlockInteractionListWidget.Entry {
-        public final Text block_name_text;
-        public final Text block_id_text;
+        public Text block_name_text;
+        public Text block_id_text;
         private final ButtonWidget button;
         private final Block block;
 
@@ -183,6 +188,7 @@ public class BlockInteractionListWidget extends ElementListWidget<BlockInteracti
     public class SearchBlockEntry extends BlockEntry{
 
         private static final int lines = 2;
+        protected int borderColor = 0x0FBABABA;
 
         public SearchBlockEntry(Block block){
             super(block);
@@ -228,35 +234,18 @@ public class BlockInteractionListWidget extends ElementListWidget<BlockInteracti
         @Override
         public void drawBorder(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             int ref_y = y + entryHeight - 9 - 1;
-            context.drawBorder(x - 2, ref_y - 2, entryWidth, entryHeight * lines - 2, 0x0FBABABA);
+            context.drawBorder(x - 2, ref_y - 2, entryWidth, entryHeight * lines - 2, borderColor);
             context.fill(x - 1,ref_y - 1,x + entryWidth - 3,ref_y + entryHeight * lines - 4,0x10_AA_AA_AA);
         }
 
     }
 
-    public class CategoryEntry extends Entry{
-
-        private final Text text;
-
-        public CategoryEntry(Text text){
-           this.text = text;
-        }
-
-        @Override
-        public List<? extends Selectable> selectableChildren() {
-            return List.of();
-        }
-
-        @Override
-        public List<? extends Element> children() {
-            return List.of();
-        }
-
-
-        @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            int text_width = BlockInteractionListWidget.this.client.textRenderer.getWidth(text);
-            context.drawTextWithShadow(BlockInteractionListWidget.this.client.textRenderer,text,x +entryWidth / 2- text_width / 2,y + entryHeight / 4 + 2,Colors.WHITE);
+    public class AllEntry extends SearchBlockEntry{
+        public AllEntry() {
+            super(Blocks.AIR);
+            this.block_name_text = Text.translatable("text.interactionmanager.deny_using_on_all_blocks.title");
+            this.block_id_text = Text.translatable("text.interactionmanager.deny_using_on_all_blocks.tooltip");
+            this.borderColor = 0xFC_AA_AA_AA;
         }
     }
 }

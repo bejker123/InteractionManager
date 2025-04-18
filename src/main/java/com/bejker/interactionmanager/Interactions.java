@@ -1,6 +1,7 @@
 package com.bejker.interactionmanager;
 
 import com.bejker.interactionmanager.config.Config;
+import com.bejker.interactionmanager.util.Util;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.*;
@@ -75,22 +76,6 @@ public class Interactions {
             }
         }
 
-        if(!Config.ALLOW_USE_FIREWORK_ON_BLOCK.getValue()
-                &&stack.getItem() instanceof FireworkRocketItem){
-                // Check if block has an interaction.
-                // To do it we check if the 'onUse' method is overwritten
-                // by comparing the method's declaring class the default method class.
-            try{
-                Method method = getMethod(block.getClass(),"onUse");
-                Method method1 = getMethod(block.getClass().getSuperclass(),"onUse");
-                if(method.getDeclaringClass() == method1.getDeclaringClass()){
-                    cir.setReturnValue(ActionResult.PASS);
-                    return;
-                }
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-        }
         HashSet<Block> deniedBlockInteractions = Config.DENIED_ITEM_INTERACTIONS.get(stack.getItem());
         if(deniedBlockInteractions == null){
             return;
@@ -98,23 +83,6 @@ public class Interactions {
         // We use minecraft:air to cancel all block interactions for a given item
         if(deniedBlockInteractions.contains(block)||deniedBlockInteractions.contains(Blocks.AIR)){
             cir.setReturnValue(ActionResult.PASS);
-        }
-    }
-    private static Method getMethod(Class<?> cls, String methodName)
-            throws NoSuchMethodException {
-        if (cls == null)
-            throw new NoSuchMethodException(methodName);
-        Method methods[] = cls.getDeclaredMethods();
-        for (Method method : methods) {
-            if (method.getName().equals(methodName))
-                return method;
-            // TODO: shall we continue search for ambiguous match?
-        }
-        try {
-            return getMethod(cls.getSuperclass(), methodName);
-        } catch (NoSuchMethodException e) {
-            throw new NoSuchMethodException("No method named " + methodName
-                    + " in " + cls + " (or super classes)");
         }
     }
 
@@ -248,23 +216,11 @@ public class Interactions {
 
         Item item = itemStack.getItem();
 
-        if(!Config.ALLOW_USING_ENDER_PEARL.getValue()&&item instanceof EnderPearlItem){
-            cir.setReturnValue(ActionResult.FAIL);
-            return;
-        }
-        if(!Config.ALLOW_USING_ENDER_EYE.getValue()&&item instanceof EnderEyeItem){
-            cir.setReturnValue(ActionResult.FAIL);
-            return;
-        }
-        if(!Config.ALLOW_USING_BOWS.getValue()&&item instanceof BowItem){
-            cir.setReturnValue(ActionResult.FAIL);
-            return;
-        }
-        if(!Config.ALLOW_USING_CROSSBOWS.getValue()&&item instanceof CrossbowItem){
-            cir.setReturnValue(ActionResult.FAIL);
-            return;
-        }
         if(!Config.ALLOW_DRINKING_POTIONS.getValue()&&item instanceof PotionItem){
+            cir.setReturnValue(ActionResult.FAIL);
+            return;
+        }
+        if(Config.DENIED_ITEMS.contains(item)){
             cir.setReturnValue(ActionResult.FAIL);
             return;
         }
