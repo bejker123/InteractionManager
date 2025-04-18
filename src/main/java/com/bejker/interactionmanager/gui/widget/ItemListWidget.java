@@ -16,6 +16,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
@@ -46,11 +47,7 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
     public void updateEntries() {
        this.clearEntries();
        if(last_search != null && !last_search.isBlank()) {
-           SearchUtil.searchItems(last_search).stream()
-                   .distinct()
-                   //.filter((x) -> !Config.BLACKLISTED_BLOCKS.contains(x))
-                   //.sorted(Comparator.comparing((x) -> x.getName().getContent().visit(Optional::of).get().length()))
-                   .filter((Item item) -> {
+           SearchUtil.searchItems(last_search,-1,(Item item) -> {
                        try {
                            //TODO: add config option for blocks
                            return Util.doesOverrideMethod(item.getClass(),"use",Item.class) || BlockItem.class.isAssignableFrom(item.getClass());
@@ -58,18 +55,22 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
                            e.printStackTrace();
                        }
                        return false;
-                   })
+                   }).stream()
+                   .distinct()
+                   //.filter((x) -> !Config.BLACKLISTED_BLOCKS.contains(x))
+                   //.sorted(Comparator.comparing((x) -> x.getName().getContent().visit(Optional::of).get().length()))
                    .map(SearchItemEntry::new)
                    .forEach(this::addSearchEntry);
        }
-       if(this.getEntryCount() == 0) {
+       else {
+           this.addEntry(new AllEntry());
            for (Map.Entry<Item, HashSet<Block>> mapEntry : Config.DENIED_ITEM_INTERACTIONS.entrySet()) {
                if (mapEntry.getKey() != this.selectedItem) {
                    if (mapEntry.getValue() == null || mapEntry.getValue().isEmpty()) {
                        continue;
                    }
                }
-               if (!searchEntryItems.contains(mapEntry.getKey())) {
+               if (!searchEntryItems.contains(mapEntry.getKey())&&mapEntry.getKey() != Items.AIR) {
                    this.addEntry(new ItemEntry(mapEntry.getKey()));
                }
            }
@@ -138,8 +139,8 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
     }
 
     public class ItemEntry extends ItemListWidget.Entry {
-        public final Text item_name_text;
-        public final Text item_id_text;
+        public Text item_name_text;
+        public Text item_id_text;
         private final ButtonWidget button;
         final Item item;
 
@@ -169,7 +170,7 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
 
         ButtonWidget createButton(Item item){
             return new TexturedButtonWidget(20,20, BUTTON_TEXTURES,(button)->{
-                Config.DENIED_BLOCKS.remove(item);
+                Config.DENIED_ITEMS.remove(item);
                 updateEntries();
             },Text.translatable("button.interactionmanager.remove"));
         }
@@ -202,7 +203,7 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
             }
             if(isSelected){
                 context.fill(x - 1,ref_y - 2,x + entryWidth - 3,ref_y + entryHeight * 2 - 6,0x20_0A_FA_0A);
-                context.drawBorder(x - 2, ref_y - 3, entryWidth, entryHeight * 2 - 2, 0x0FB_0A_0B0);
+                context.drawBorder(x - 2, ref_y - 3, entryWidth, entryHeight * 2 - 2, 0xFC_AA_AA_AA);
             }
         }
     }
@@ -210,6 +211,7 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
     public class SearchItemEntry extends ItemEntry{
 
         private static final int lines = 2;
+        protected int bgColor = 0x10_AA_AA_AA;
 
         public SearchItemEntry(Item item){
             super(item);
@@ -230,9 +232,21 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
         @Override
         public void drawBorder(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             int ref_y = y + entryHeight - 9 - 1;
-            context.drawBorder(x - 2, ref_y - 2, entryWidth, entryHeight * lines - 2, 0x0FBABABA);
-            context.fill(x - 1,ref_y - 1,x + entryWidth - 3,ref_y + entryHeight * lines - 4,0x10_AA_AA_AA);
+            boolean isSelected = ItemListWidget.this.selectedItem == this.item;
+            if(!isSelected){
+                context.drawBorder(x - 2, ref_y - 2, entryWidth, entryHeight * lines - 2, 0x0FBABABA);
+            }
+            context.fill(x - 1,ref_y - 1,x + entryWidth - 3,ref_y + entryHeight * lines - 4,this.bgColor);
         }
 
+    }
+
+    public class AllEntry extends SearchItemEntry {
+        public AllEntry() {
+            super(Items.AIR);
+            this.item_name_text = Text.translatable("text.interactionmanager.deny_using_all_items.title");
+            this.item_id_text = Text.translatable("text.interactionmanager.deny_using_all_items.tooltip");
+            this.bgColor = 0xCB_0F_0F_0F;
+        }
     }
 }

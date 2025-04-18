@@ -41,17 +41,15 @@ public class ItemDenyListWidget extends ElementListWidget<ItemDenyListWidget.Ent
     private void updateEntries() {
        this.clearEntries();
        if(last_search != null && !last_search.isBlank()){
-           SearchUtil.searchItems(last_search).stream()
-           .distinct()
-           .filter((x) -> !Config.DENIED_ITEMS.contains(x))
-           .filter((Item item) -> {
-               try {
-                   return Util.doesOverrideMethod(item.getClass(),"use",Item.class) && !BlockItem.class.isAssignableFrom(item.getClass());
-               } catch (NoSuchMethodException e) {
-                   e.printStackTrace();
-               }
-               return false;
-           })
+           SearchUtil.searchItems(last_search,-1,(Item item) -> {
+                       try {
+                           return Util.doesOverrideMethod(item.getClass(),"use",Item.class) && !BlockItem.class.isAssignableFrom(item.getClass());
+                       } catch (NoSuchMethodException e) {
+                           e.printStackTrace();
+                       }
+                       return false;
+                   }).stream()
+            .filter((x) -> !Config.DENIED_ITEMS.contains(x))
            .map(SearchItemEntry::new)
            .forEach(this::addEntry);
        }

@@ -37,9 +37,7 @@ public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> 
     private void updateEntries() {
        this.clearEntries();
        if(last_search != null && !last_search.isBlank()){
-           SearchUtil.searchEntities(last_search).stream()
-           .distinct()
-           .filter((x) -> !Config.DENIED_ENTITIES.contains(x))
+           SearchUtil.searchEntities(last_search,-1,(x) -> !Config.DENIED_ENTITIES.contains(x)).stream()
            .map(SearchEntityEntry::new)
            .forEach(this::addEntry);
        }

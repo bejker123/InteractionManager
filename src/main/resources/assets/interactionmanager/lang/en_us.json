@@ -149,5 +149,8 @@
   "option.interactionmanager.enable_entity_deny_list.tooltip": "Enabled - You can't attack denied entities\nDisabled - You can attack denied entities, unless they are protected by another option",
 
   "text.interactionmanager.deny_using_on_all_blocks.title": "All",
-  "text.interactionmanager.deny_using_on_all_blocks.tooltip":"Deny using on all blocks"
+  "text.interactionmanager.deny_using_on_all_blocks.tooltip":"Deny using on all blocks",
+
+  "text.interactionmanager.deny_using_all_items.title": "All",
+  "text.interactionmanager.deny_using_all_items.tooltip":"Deny using all items"
 }

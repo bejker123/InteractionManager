@@ -6,10 +6,11 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Pair;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 //TODO: add searching by id
 public class SearchUtil {
@@ -53,36 +54,81 @@ public class SearchUtil {
     }
 
 
-    public static Collection<Block> searchBlocks(String word){
-        return searchBlocks(word,-1);
-    }
-
-    public static Collection<Block> searchBlocks(String word,int results){
+    public static Collection<Block> searchBlocks(String word,int results,Predicate<? super Block> filterPredicate){
         init();
-        return blockSearchTree.search(word,results);
+        return blockSearchTree.search(word,results).stream()
+                .distinct()
+                .filter(filterPredicate)
+                .sorted(Comparator.comparingInt(x -> modLSD(
+                        getLocalizedName(x.getName()),
+                        word,0)))
+                .toList();
     }
 
-    public static Collection<EntityType<?>> searchEntities(String word){
-        return searchEntities(word,-1);
-    }
-
-    public static Collection<EntityType<?>> searchEntities(String word,int results){
+    public static Collection<EntityType<?>> searchEntities(String word,int results,Predicate<? super EntityType<?>> filterPredicate){
         init();
-        return entitySearchTree.search(word,results);
+        return entitySearchTree.search(word,results).stream()
+                .distinct()
+                .filter(filterPredicate)
+                .sorted(Comparator.comparingInt(x -> modLSD(
+                        getLocalizedName(x.getName()),
+                        word,0)))
+                .toList();
     }
 
     public static String getLocalizedName(Text text){
         return text.getContent().visit(Optional::of).get().toLowerCase(Locale.ROOT);
     }
 
-    public static Collection<Item> searchItems(String word, int results) {
+    public static Collection<Item> searchItems(String word, int results, Predicate<? super Item> filterPredicate) {
         init();
-        return itemSearchTree.search(word,results);
+        return itemSearchTree.search(word,results).stream()
+                .distinct()
+                .filter(filterPredicate)
+                .sorted(Comparator.comparingInt(x -> modLSD(
+                        getLocalizedName(x.getName()),
+                        word,0)))
+                .toList();
     }
 
-    public static Collection<Item> searchItems(String word) {
-        return searchItems(word,-1);
+    private static final HashMap<Pair<String,String>, Integer> lsdCache = new HashMap<>();
+
+    // Modified Leven Shtein Distance, added cutoff to reduce computation
+    private static int modLSD(String search, String word, int curr){
+        final int CUTOFF = 3;
+        if(curr >= CUTOFF){
+            return Math.max(search.length(),word.length());
+        }
+        Pair<String,String> pair = new Pair<>(search,word);
+        Integer ret = lsdCache.get(pair);
+        if(ret != null){
+            return ret;
+        }
+        // Don't cache trivial cases
+       if(search.isBlank()){
+           return word.length();
+       }
+       if(word.isBlank()){
+            return search.length();
+       }
+       String searchTail = search.substring(1);
+       String wordTail = word.substring(1);
+       if(search.charAt(0) == word.charAt(0)){
+           ret = modLSD(searchTail,wordTail,curr + 1);
+           lsdCache.put(pair,ret);
+           return ret;
+       }
+       ret = 1 +  Math.min(
+               Math.min(modLSD(searchTail,word, curr + 1), modLSD(search,wordTail, curr + 1)),
+               modLSD(searchTail,wordTail, curr + 1)
+       );
+       lsdCache.put(pair,ret);
+       return ret;
     }
+
+    //public static Collection<Item> searchItems(String word) {
+    //    return searchItems(word,-1);
+    //}
 
     private static class SearchTree<T>{
         GeneralizedSuffixTree tree;
