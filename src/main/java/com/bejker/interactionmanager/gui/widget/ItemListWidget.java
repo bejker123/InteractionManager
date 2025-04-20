@@ -50,7 +50,7 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
            SearchUtil.searchItems(last_search,-1,(Item item) -> {
                        try {
                            //TODO: add config option for blocks
-                           return Util.doesOverrideMethod(item.getClass(),"use",Item.class) || BlockItem.class.isAssignableFrom(item.getClass());
+                           return Util.doesOverrideMethod(item.getClass(),"useOnBlock",Item.class) || BlockItem.class.isAssignableFrom(item.getClass());
                        } catch (NoSuchMethodException e) {
                            e.printStackTrace();
                        }
