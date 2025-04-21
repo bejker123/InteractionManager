@@ -126,6 +126,9 @@
   "option.interactionmanager.render_protected_blocks": "Draw Protected Blocks",
   "option.interactionmanager.render_protected_blocks.tooltip": "When looking at a protected block a red outline will be drawn",
 
+  "option.interactionmanager.render_denied_block_placement": "Draw Denied Block Placement",
+  "option.interactionmanager.render_denied_block_placement.tooltip": "When looking at a block you can't place the current block on an orange outline will be drawn",
+
   "option.interactionmanager.allow_breaking_blocks": "Break Blocks",
   "option.interactionmanager.allow_breaking_blocks.tooltip": "Toggle the ability to break blocks",
 

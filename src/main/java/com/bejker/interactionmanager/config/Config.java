@@ -117,6 +117,9 @@ public class Config {
     @IRenderOption
     public static final BooleanOption ANIMATE_REPLACE_BLOCKS = new BooleanOption("animate_replace_blocks");
 
+    @IRenderOption
+    public static final BooleanOption RENDER_DENIED_BLOCK_PLACEMENT = new BooleanOption("render_denied_block_placement");
+
     public enum PetAttackMode{
         ALL,
         ONLY_OTHER,
