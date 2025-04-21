@@ -1,7 +1,6 @@
 package com.bejker.interactionmanager.util;
 
 import com.bejker.interactionmanager.InteractionManager;
-import net.minecraft.util.ActionResult;
 
 import java.lang.reflect.Method;
 

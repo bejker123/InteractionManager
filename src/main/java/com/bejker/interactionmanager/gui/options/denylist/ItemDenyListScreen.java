@@ -1,6 +1,5 @@
 package com.bejker.interactionmanager.gui.options.denylist;
 
-import com.bejker.interactionmanager.gui.widget.EntityListWidget;
 import com.bejker.interactionmanager.gui.widget.ItemDenyListWidget;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;

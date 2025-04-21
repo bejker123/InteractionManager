@@ -1,12 +1,9 @@
 package com.bejker.interactionmanager.gui.widget;
 
-import com.bejker.interactionmanager.InteractionManager;
 import com.bejker.interactionmanager.config.Config;
 import com.bejker.interactionmanager.gui.options.denylist.ItemDenyListScreen;
 import com.bejker.interactionmanager.search.SearchUtil;
 import com.bejker.interactionmanager.util.Util;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
@@ -15,6 +12,8 @@ import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;

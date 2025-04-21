@@ -5,9 +5,7 @@ import com.bejker.interactionmanager.config.Config;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -20,9 +18,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,12 +28,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(WorldRenderer.class)
 public abstract class WorldRendererMixin {
-
-    @Shadow private @Nullable VertexBuffer starsBuffer;
-
-    @Shadow public abstract void stopJukeboxSongAndUpdate(BlockPos jukeboxPos);
-
-    @Shadow protected abstract boolean hasBlindnessOrDarkness(Camera camera);
 
     @Shadow
     private ClientWorld world;

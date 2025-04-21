@@ -1,7 +1,6 @@
 package com.bejker.interactionmanager;
 
 import com.bejker.interactionmanager.config.Config;
-import com.bejker.interactionmanager.util.Util;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.*;
@@ -31,7 +30,6 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
