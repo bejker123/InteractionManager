@@ -32,7 +32,7 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.lang.reflect.Method;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -76,39 +76,20 @@ public class Interactions {
             }
         }
 
-        if(!Config.ALLOW_USE_FIREWORK_ON_BLOCK.getValue()
-                &&stack.getItem() instanceof FireworkRocketItem){
-                // Check if block has an interaction.
-                // To do it we check if the 'onUse' method is overwritten
-                // by comparing the method's declaring class the default method class.
-            try{
-                Method method = getMethod(block.getClass(),"onUse");
-                Method method1 = getMethod(block.getClass().getSuperclass(),"onUse");
-                if(method.getDeclaringClass() == method1.getDeclaringClass()){
-                    cir.setReturnValue(ActionResult.PASS);
-                    return;
-                }
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
+        HashSet<Block> deniedBlockInteractions = Config.DENIED_ITEM_INTERACTIONS.get(stack.getItem());
+        if(deniedBlockInteractions != null){
+            // We use minecraft:air to cancel all block interactions for a given item
+            if(deniedBlockInteractions.contains(block)||deniedBlockInteractions.contains(Blocks.AIR)){
+                cir.setReturnValue(ActionResult.PASS);
             }
         }
 
-    }
-    private static Method getMethod(Class<?> cls, String methodName)
-            throws NoSuchMethodException {
-        if (cls == null)
-            throw new NoSuchMethodException(methodName);
-        Method methods[] = cls.getDeclaredMethods();
-        for (Method method : methods) {
-            if (method.getName().equals(methodName))
-                return method;
-            // TODO: shall we continue search for ambiguous match?
-        }
-        try {
-            return getMethod(cls.getSuperclass(), methodName);
-        } catch (NoSuchMethodException e) {
-            throw new NoSuchMethodException("No method named " + methodName
-                    + " in " + cls + " (or super classes)");
+        // We use minecraft:air to cancel all item interactions for a given set of blocks
+        HashSet<Block> deniedBlockInteractionsForAllBlocks = Config.DENIED_ITEM_INTERACTIONS.get(Items.AIR);
+        if(deniedBlockInteractionsForAllBlocks != null) {
+            if (deniedBlockInteractionsForAllBlocks.contains(block) || deniedBlockInteractionsForAllBlocks.contains(Blocks.AIR)) {
+                cir.setReturnValue(ActionResult.PASS);
+            }
         }
     }
 
@@ -140,7 +121,7 @@ public class Interactions {
     }
 
     private static boolean isProtected(UUID player_uuid,Entity target){
-        if(Config.ENABLE_ENTITY_BLACKLIST.getValue() && Config.BLACKLISTED_ENTITIES.contains(target.getType())){
+        if(Config.ENABLE_ENTITY_DENY_LIST.getValue() && Config.DENIED_ENTITIES.contains(target.getType())){
             return true;
         }
 
@@ -227,7 +208,7 @@ public class Interactions {
         if(!Config.ALLOW_BREAKING_BLOCKS.getValue()){
             cir.setReturnValue(true);
         }
-        if(Config.ENABLE_BLOCK_BLACKLIST.getValue() && Config.BLACKLISTED_BLOCKS.contains(block)){
+        if(Config.ENABLE_BLOCK_DENY_LIST.getValue() && Config.DENIED_BLOCKS.contains(block)){
             cir.setReturnValue(true);
         }
     }
@@ -242,23 +223,11 @@ public class Interactions {
 
         Item item = itemStack.getItem();
 
-        if(!Config.ALLOW_USING_ENDER_PEARL.getValue()&&item instanceof EnderPearlItem){
-            cir.setReturnValue(ActionResult.FAIL);
-            return;
-        }
-        if(!Config.ALLOW_USING_ENDER_EYE.getValue()&&item instanceof EnderEyeItem){
-            cir.setReturnValue(ActionResult.FAIL);
-            return;
-        }
-        if(!Config.ALLOW_USING_BOWS.getValue()&&item instanceof BowItem){
-            cir.setReturnValue(ActionResult.FAIL);
-            return;
-        }
-        if(!Config.ALLOW_USING_CROSSBOWS.getValue()&&item instanceof CrossbowItem){
-            cir.setReturnValue(ActionResult.FAIL);
-            return;
-        }
         if(!Config.ALLOW_DRINKING_POTIONS.getValue()&&item instanceof PotionItem){
+            cir.setReturnValue(ActionResult.FAIL);
+            return;
+        }
+        if(Config.DENIED_ITEMS.contains(item)){
             cir.setReturnValue(ActionResult.FAIL);
             return;
         }

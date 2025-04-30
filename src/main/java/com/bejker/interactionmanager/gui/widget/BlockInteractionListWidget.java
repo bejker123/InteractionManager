@@ -1,9 +1,10 @@
 package com.bejker.interactionmanager.gui.widget;
 
 import com.bejker.interactionmanager.config.Config;
-import com.bejker.interactionmanager.gui.options.denylist.BlockDenylistScreen;
+import com.bejker.interactionmanager.gui.options.denylist.ItemBlockInteractionsScreen;
 import com.bejker.interactionmanager.search.SearchUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
@@ -19,32 +20,42 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
-public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
-    private final BlockDenylistScreen parent;
+public class BlockInteractionListWidget extends ElementListWidget<BlockInteractionListWidget.Entry> {
+    private final ItemBlockInteractionsScreen parent;
     private String last_search = "";
 
-    public BlockListWidget(BlockDenylistScreen parent, MinecraftClient client) {
-	    //(MinecraftClient client, int width, int height, int y, int itemHeight)
-        super(client, parent.width, parent.layout.getContentHeight(), parent.layout.getHeaderHeight(), 23);
+    public BlockInteractionListWidget(ItemBlockInteractionsScreen parent, MinecraftClient client) {
+        super(client, parent.width / 2 - 5, parent.layout.getContentHeight(), parent.layout.getHeaderHeight(), 23);
         this.parent = parent;
 
         this.updateEntries();
     }
 
-    private void updateEntries() {
+    public void updateEntries() {
        this.clearEntries();
+       if(this.parent.getSelectedItem() == null){
+           return;
+       }
        if(last_search != null && !last_search.isBlank()){
-           SearchUtil.searchBlocks(last_search,-1,(x) -> !Config.DENIED_BLOCKS.contains(x)).stream()
+           SearchUtil.searchBlocks(last_search,-1,x -> !x.equals(Blocks.AIR)).stream()
+           .distinct()
+           //.filter((x) -> !Config.DENIED_ITEM_INTERACTIONS.getOrDefault(parent.getSelectedItem(),new HashSet<>()).contains(x))
+           .sorted(Comparator.comparing((x) -> x.getName().getContent().visit(Optional::of).get().length()))
            .map(SearchBlockEntry::new)
            .forEach(this::addEntry);
-       }
-       this.addEntry(new CategoryEntry(Text.translatable("category.interactionmanager.denied_blocks")));
-       for (Block i : Config.DENIED_BLOCKS){
-          this.addEntry(new BlockEntry(i));
+       }else{
+           this.addEntry(new AllEntry());
+           HashSet<Block> blocks = Config.DENIED_ITEM_INTERACTIONS.get(parent.getSelectedItem());
+           if(blocks != null){
+               for (Block i : blocks){
+                   if(i == Blocks.AIR){
+                       continue;
+                   }
+                   this.addEntry(new BlockEntry(i));
+               }
+           }
        }
 
        //It should be impossible, but better add this check now then debug this in the future,
@@ -59,7 +70,7 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
 
     @Override
     protected void renderList(DrawContext context, int mouseX, int mouseY, float delta) {
-        String search = parent.getSearch();
+        String search = parent.getBlockSearch();
         if(!search.equals(last_search)){
             last_search = search;
             this.updateEntries();
@@ -90,16 +101,16 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
 
         return Optional.empty();
     }
-    public abstract class Entry extends ElementListWidget.Entry<BlockListWidget.Entry> {
+    public abstract class Entry extends ElementListWidget.Entry<BlockInteractionListWidget.Entry> {
         @Override
         public boolean isMouseOver(double mouseX, double mouseY) {
-            return Objects.equals(BlockListWidget.this.getEntryAtPosition(mouseX, mouseY), this);
+            return Objects.equals(BlockInteractionListWidget.this.getEntryAtPosition(mouseX, mouseY), this);
         }
     }
 
-    public class BlockEntry extends BlockListWidget.Entry {
-        public final Text block_name_text;
-        public final Text block_id_text;
+    public class BlockEntry extends BlockInteractionListWidget.Entry {
+        public Text block_name_text;
+        public Text block_id_text;
         private final ButtonWidget button;
         private final Block block;
 
@@ -118,11 +129,29 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
            this.button = this.createButton(block);
            this.block = block;
         }
+
+        @Override
+        public boolean mouseClicked(double mouseX, double mouseY, int button) {
+            return super.mouseClicked(mouseX, mouseY, button);
+        }
+
         ButtonWidget createButton(Block block){
             return new TexturedButtonWidget(20,20, BUTTON_TEXTURES,(button)->{
-                Config.DENIED_BLOCKS.remove(block);
-                updateEntries();
+                removeEntry(block);
             },Text.translatable("button.interactionmanager.remove"));
+        }
+
+        protected void removeEntry(Block block){
+            if(BlockInteractionListWidget.this.parent.getSelectedItem() == null){
+                return;
+            }
+            HashSet<Block> deniedBlocks = Config.DENIED_ITEM_INTERACTIONS.get(BlockInteractionListWidget.this.parent.getSelectedItem());
+            if(deniedBlocks != null){
+                deniedBlocks.remove(block);
+            }
+            Config.DENIED_ITEM_INTERACTIONS.put(BlockInteractionListWidget.this.parent.getSelectedItem(),deniedBlocks);
+            updateEntries();
+            BlockInteractionListWidget.this.parent.updateItems();
         }
 
         @Override
@@ -143,9 +172,9 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
             }
             int ref_y = y + entryHeight - 9;
 
-            context.drawTextWithShadow(BlockListWidget.this.client.textRenderer, this.block_name_text,ref_x,ref_y , Colors.WHITE);
+            context.drawTextWithShadow(BlockInteractionListWidget.this.client.textRenderer, this.block_name_text,ref_x,ref_y , Colors.WHITE);
 
-            context.drawTextWithShadow(BlockListWidget.this.client.textRenderer, this.block_id_text, ref_x, ref_y + 10, Colors.GRAY);
+            context.drawTextWithShadow(BlockInteractionListWidget.this.client.textRenderer, this.block_id_text, ref_x, ref_y + 10, Colors.GRAY);
             this.button.setX(x + entryWidth - this.button.getWidth() - 3);
             this.button.setY(ref_y - 1);
             this.button.render(context,mouseX,mouseY,tickDelta);
@@ -153,61 +182,71 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
                 context.drawItemWithoutEntity(new ItemStack(block),ref_x - 20,ref_y);
             }
         }
-
     }
 
     public class SearchBlockEntry extends BlockEntry{
 
         private static final int lines = 2;
+        protected int borderColor = 0x0FBABABA;
+        protected int bgColor = 0x10_AA_AA_AA;
 
         public SearchBlockEntry(Block block){
             super(block);
         }
 
-        static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(
+        static final ButtonTextures BUTTON_TEXTURES_REJECT = new ButtonTextures(
                 Identifier.ofVanilla("pending_invite/reject"),
                 Identifier.ofVanilla("pending_invite/reject_highlighted")
         );
+
+        static final ButtonTextures BUTTON_TEXTURES_ACCEPT = new ButtonTextures(
+                Identifier.ofVanilla("pending_invite/accept"),
+                Identifier.ofVanilla("pending_invite/accept_highlighted")
+        );
         @Override
         ButtonWidget createButton(Block block){
-            return new TexturedButtonWidget(20,20, BUTTON_TEXTURES,(button)->{
-                Config.DENIED_BLOCKS.add(block);
-                updateEntries();
+            HashSet<Block> startDeniedBlocks = Config.DENIED_ITEM_INTERACTIONS.get(BlockInteractionListWidget.this.parent.getSelectedItem());
+            boolean reject = startDeniedBlocks == null || !startDeniedBlocks.contains(block);
+
+            return new TexturedButtonWidget(20,20, reject ? BUTTON_TEXTURES_REJECT : BUTTON_TEXTURES_ACCEPT,(button)->{
+                if(reject){
+                    addEntry(block);
+                }else{
+                    removeEntry(block);
+                }
             },Text.translatable("button.interactionmanager.remove"));
+        }
+
+        void addEntry(Block block){
+            if(BlockInteractionListWidget.this.parent.getSelectedItem() == null){
+                return;
+            }
+            HashSet<Block> deniedBlocks = Config.DENIED_ITEM_INTERACTIONS.get(BlockInteractionListWidget.this.parent.getSelectedItem());
+            if(deniedBlocks == null){
+                deniedBlocks = new HashSet<>();
+            }
+            deniedBlocks.add(block);
+            Config.DENIED_ITEM_INTERACTIONS.put(BlockInteractionListWidget.this.parent.getSelectedItem(),deniedBlocks);
+            BlockInteractionListWidget.this.parent.updateItems();
+            updateEntries();
         }
 
         @Override
         public void drawBorder(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             int ref_y = y + entryHeight - 9 - 1;
-            context.drawBorder(x - 2, ref_y - 2, entryWidth, entryHeight * lines - 2, 0x0FBABABA);
-            context.fill(x - 1,ref_y - 1,x + entryWidth - 3,ref_y + entryHeight * lines - 4,0x10_AA_AA_AA);
+            context.drawBorder(x - 2, ref_y - 2, entryWidth, entryHeight * lines - 2, borderColor);
+            context.fill(x - 1,ref_y - 1,x + entryWidth - 3,ref_y + entryHeight * lines - 5,bgColor);
         }
 
     }
 
-    public class CategoryEntry extends Entry{
-
-        private final Text text;
-
-        public CategoryEntry(Text text){
-           this.text = text;
-        }
-
-        @Override
-        public List<? extends Selectable> selectableChildren() {
-            return List.of();
-        }
-
-        @Override
-        public List<? extends Element> children() {
-            return List.of();
-        }
-
-
-        @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            int text_width = BlockListWidget.this.client.textRenderer.getWidth(text);
-            context.drawTextWithShadow(BlockListWidget.this.client.textRenderer,text,x +entryWidth / 2- text_width / 2,y + entryHeight / 4 + 2,Colors.WHITE);
+    public class AllEntry extends SearchBlockEntry{
+        public AllEntry() {
+            super(Blocks.AIR);
+            this.block_name_text = Text.translatable("text.interactionmanager.deny_using_on_all_blocks.title");
+            this.block_id_text = Text.translatable("text.interactionmanager.deny_using_on_all_blocks.tooltip");
+            this.borderColor = 0xFC_AA_AA_AA;
+            this.bgColor = 0xCB_0F_0F_0F;
         }
     }
 }
