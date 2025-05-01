@@ -16,6 +16,9 @@ package com.bejker.interactionmanager.search;
  * limitations under the License.
  */
 
+import com.bejker.interactionmanager.InteractionManager;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -228,9 +231,8 @@ public class GeneralizedSuffixTree {
         Node s = ret.getFirst();
         String str = ret.getSecond();
 
-        if (!"".equals(str)) {
+        if (!str.isEmpty()) {
             Edge g = s.getEdge(str.charAt(0));
-
             String label = g.getLabel();
             // must see whether "str" is substring of the label of an edge
             if (label.length() > str.length() && label.charAt(str.length()) == t) {
@@ -295,9 +297,9 @@ public class GeneralizedSuffixTree {
      * a prefix of inputstr and remainder will be string that must be
      * appended to the concatenation of labels from s to n to get inpustr.
      */
-    private Pair<Node, String> canonize(final Node s, final String inputstr) {
-
-        if ("".equals(inputstr)) {
+    private Pair<Node, String> canonize(final Node s, String inputstr) {
+        inputstr = new String(inputstr.getBytes(), StandardCharsets.UTF_8);
+        if (inputstr.isEmpty()) {
             return new Pair<Node, String>(s, inputstr);
         } else {
             Node currentNode = s;
