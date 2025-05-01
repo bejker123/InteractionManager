@@ -21,21 +21,34 @@
   "button.interactionmanager.item_options": "Item Options",
   "button.interactionmanager.item_options.tooltip": "",
 
-  "screen.interactionmanager.block_blacklist": "Block Blacklist",
-  "screen.interactionmanager.entity_blacklist": "Entity Blacklist",
+  "screen.interactionmanager.block_deny_list": "Block Deny List",
+  "screen.interactionmanager.entity_deny_list": "Entity Deny List",
 
-  "button.interactionmanager.block_blacklist": "Block Blacklist",
-  "button.interactionmanager.block_blacklist.tooltip": "Manage block blacklist\nBlacklisted blocks can't be broken.",
-  "category.interactionmanager.blacklisted_blocks": "Blacklisted Blocks",
+  "button.interactionmanager.item_block_interaction_deny_list": "Item-Block Interactions",
+  "button.interactionmanager.item_block_interaction_deny_list.tooltip": "Manage Item-Block interactions\nFirst select an item, then add blocks. That item can't be used on these blocks.",
 
-  "button.interactionmanager.entity_blacklist": "Entity Blacklist",
-  "button.interactionmanager.entity_blacklist.tooltip": "Manage entity blacklist\nBlacklisted entities can't be attacked.",
-  "category.interactionmanager.blacklisted_entities": "Blacklisted Entities",
+  "button.interactionmanager.item_deny_list": "Item Deny List",
+  "button.interactionmanager.item_deny_list.tooltip": "Manage Item Deny List\nDenied items can't be used, only applies to items that can be used by not clicking a block",
+
+  "screen.interactionmanager.item_deny_list": "Item Deny List",
+  "category.interactionmanager.denied_items": "Deny Listed Items",
+
+  "screen.interactionmanager.item_block_interaction_deny_list": "Item-Block Interactions",
+
+  "search.interactionmanager.block_search.tooltip.inactive": "Please select a block first",
+
+  "button.interactionmanager.block_deny_list": "Block Deny List",
+  "button.interactionmanager.block_deny_list.tooltip": "Manage block deny list\nDeny Listed blocks can't be broken.",
+  "category.interactionmanager.denied_blocks": "Deny Listed Blocks",
+
+  "button.interactionmanager.entity_deny_list": "Entity Deny List",
+  "button.interactionmanager.entity_deny_list.tooltip": "Manage entity deny list\nDeny Listed entities can't be attacked.",
+  "category.interactionmanager.deny_listed_entities": "Denied Entities",
 
   "button.interactionmanager.restore_defaults": "Restore Defaults",
   "button.interactionmanager.restore_defaults.active.tooltip": "Restore vanilla minecraft behaviour",
   "screen.interactionmanager.restore_defaults": "Are you sure you'd like to restore default options?",
-  "confirm.interactionmanager.restore_defaults": "The current options will not be saved!\nYour current block and entity blacklists won't be cleared.",
+  "confirm.interactionmanager.restore_defaults": "The current options will not be saved!\nYour current block and entity denylists won't be cleared.",
 
   "option.interactionmanager.allow_shovel_create_paths": "Shovel Paths",
   "option.interactionmanager.allow_shovel_create_paths.tooltip": "Toggle shovels creating paths when used on dirt-like blocks",
@@ -84,8 +97,8 @@
   "option.interactionmanager.allow_attacking_villagers.tooltip": "Toggle the ability to attack and damage villagers.\nIf Attack Passive Mobs is OFF this will have no effect.",
   "option.interactionmanager.allow_attacking_vehicles": "Attack Vehicles",
   "option.interactionmanager.allow_attacking_vehicles.tooltip": "Toggle the ability to attack and damage vehicles. (Boats, minecarts)",
-  "option.interactionmanager.render_items_in_block_blacklist": "Render Icons In Block Blacklist",
-  "option.interactionmanager.render_items_in_block_blacklist.tooltip": "Should render block icons in the block blacklist",
+  "option.interactionmanager.render_items_in_block_deny_list": "Render Items",
+  "option.interactionmanager.render_items_in_block_deny_list.tooltip": "Toggle rendering item icons in the options",
   "option.interactionmanager.pet_attack_mode": "Attack Pets",
   "option.interactionmanager.pet_attack_mode.all": "All",
   "option.interactionmanager.pet_attack_mode.only_other": "Only Not Yours",
@@ -113,25 +126,34 @@
   "option.interactionmanager.render_protected_blocks": "Draw Protected Blocks",
   "option.interactionmanager.render_protected_blocks.tooltip": "When looking at a protected block a red outline will be drawn",
 
+  "option.interactionmanager.render_denied_block_placement": "Draw Denied Block Placement",
+  "option.interactionmanager.render_denied_block_placement.tooltip": "When looking at a block you can't place the current block on an orange outline will be drawn",
+
   "option.interactionmanager.allow_breaking_blocks": "Break Blocks",
   "option.interactionmanager.allow_breaking_blocks.tooltip": "Toggle the ability to break blocks",
 
   "option.interactionmanager.allow_placing_blocks": "Place Blocks",
   "option.interactionmanager.allow_placing_blocks.tooltip": "Toggle the ability to place blocks",
 
-  "option.interactionmanager.allow_opening_blocks": "Open Blocks",
-  "option.interactionmanager.allow_opening_blocks.tooltip": "Toggle the ability to open blocks, such as crafting tables and furnaces\nDoes not affect doors",
+  "option.interactionmanager.allow_opening_blocks": "Open GUIs",
+  "option.interactionmanager.allow_opening_blocks.tooltip": "Toggle the ability to open block GUIs, such as crafting tables and furnaces\nDoes not affect doors",
 
   "option.interactionmanager.allow_opening_doors": "Open Doors",
   "option.interactionmanager.allow_opening_doors.tooltip": "Toggle the ability to open doors",
 
-  "option.interactionmanager.enable_block_blacklist": "Block Blacklist",
-  "option.interactionmanager.enable_block_blacklist.enabled":"Enabled",
-  "option.interactionmanager.enable_block_blacklist.disabled": "Disabled",
-  "option.interactionmanager.enable_block_blacklist.tooltip": "Enabled - You can't break blacklisted blocks\nDisabled - You can break blacklisted blocks, unless the 'Break Blocks' option is OFF",
+  "option.interactionmanager.enable_block_deny_list": "Block Deny List",
+  "option.interactionmanager.enable_block_deny_list.enabled":"Enabled",
+  "option.interactionmanager.enable_block_deny_list.disabled": "Disabled",
+  "option.interactionmanager.enable_block_deny_list.tooltip": "Enabled - You can't break denied blocks\nDisabled - You can break denied blocks, unless the 'Break Blocks' option is OFF",
 
-  "option.interactionmanager.enable_entity_blacklist": "Entity Blacklist",
-  "option.interactionmanager.enable_entity_blacklist.enabled":"Enabled",
-  "option.interactionmanager.enable_entity_blacklist.disabled": "Disabled",
-  "option.interactionmanager.enable_entity_blacklist.tooltip": "Enabled - You can't attack blacklisted entities\nDisabled - You can attack blacklisted entities, unless they are protected by another option"
+  "option.interactionmanager.enable_entity_deny_list": "Entity Deny List",
+  "option.interactionmanager.enable_entity_deny_list.enabled":"Enabled",
+  "option.interactionmanager.enable_entity_deny_list.disabled": "Disabled",
+  "option.interactionmanager.enable_entity_deny_list.tooltip": "Enabled - You can't attack denied entities\nDisabled - You can attack denied entities, unless they are protected by another option",
+
+  "text.interactionmanager.deny_using_on_all_blocks.title": "All",
+  "text.interactionmanager.deny_using_on_all_blocks.tooltip":"Deny using on all blocks",
+
+  "text.interactionmanager.deny_using_all_items.title": "All",
+  "text.interactionmanager.deny_using_all_items.tooltip":"Deny using all items"
 }

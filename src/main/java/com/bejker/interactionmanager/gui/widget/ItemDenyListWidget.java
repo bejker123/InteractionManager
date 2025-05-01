@@ -1,8 +1,9 @@
 package com.bejker.interactionmanager.gui.widget;
 
 import com.bejker.interactionmanager.config.Config;
-import com.bejker.interactionmanager.gui.options.denylist.EntityDenyListScreen;
+import com.bejker.interactionmanager.gui.options.denylist.ItemDenyListScreen;
 import com.bejker.interactionmanager.search.SearchUtil;
+import com.bejker.interactionmanager.util.Util;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
@@ -11,7 +12,9 @@ import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
-import net.minecraft.entity.EntityType;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
@@ -22,11 +25,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> {
-    private final EntityDenyListScreen parent;
+public class ItemDenyListWidget extends ElementListWidget<ItemDenyListWidget.Entry> {
+    private final ItemDenyListScreen parent;
     private String last_search = "";
 
-    public EntityListWidget(EntityDenyListScreen parent, MinecraftClient client) {
+    public ItemDenyListWidget(ItemDenyListScreen parent, MinecraftClient client) {
 	    //(MinecraftClient client, int width, int height, int y, int itemHeight)
         super(client, parent.width, parent.layout.getContentHeight(), parent.layout.getHeaderHeight(), 23);
         this.parent = parent;
@@ -37,13 +40,20 @@ public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> 
     private void updateEntries() {
        this.clearEntries();
        if(last_search != null && !last_search.isBlank()){
-           SearchUtil.searchEntities(last_search,-1,(x) -> !Config.DENIED_ENTITIES.contains(x)).stream()
-           .map(SearchEntityEntry::new)
+           SearchUtil.searchItems(last_search,-1,(Item item) -> {
+                       try {
+                           return Util.doesOverrideMethod(item.getClass(),"use",Item.class) && !BlockItem.class.isAssignableFrom(item.getClass());
+                       } catch (NoSuchMethodException e) {
+                           e.printStackTrace();
+                       }
+                       return false;
+                   }).stream()
+            .filter((x) -> !Config.DENIED_ITEMS.contains(x))
+           .map(SearchItemEntry::new)
            .forEach(this::addEntry);
        }
-       this.addEntry(new CategoryEntry(Text.translatable("category.interactionmanager.deny_listed_entities")));
-       for (EntityType<?> i : Config.DENIED_ENTITIES){
-          this.addEntry(new EntityEntry(i));
+       for (Item i : Config.DENIED_ITEMS){
+          this.addEntry(new ItemEntry(i));
        }
 
        //It should be impossible, but better add this check now then debug this in the future,
@@ -55,6 +65,7 @@ public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> 
        //    this.setScrollY(this.getRowBottom(this.getEntryCount() - 1));
        //}
     }
+
 
     @Override
     protected void renderList(DrawContext context, int mouseX, int mouseY, float delta) {
@@ -89,31 +100,37 @@ public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> 
 
         return Optional.empty();
     }
-    public abstract class Entry extends ElementListWidget.Entry<EntityListWidget.Entry> {
+    public abstract class Entry extends ElementListWidget.Entry<ItemDenyListWidget.Entry> {
         @Override
         public boolean isMouseOver(double mouseX, double mouseY) {
-            return Objects.equals(EntityListWidget.this.getEntryAtPosition(mouseX, mouseY), this);
+            return Objects.equals(ItemDenyListWidget.this.getEntryAtPosition(mouseX, mouseY), this);
         }
     }
 
-    public class EntityEntry extends EntityListWidget.Entry {
-        public final Text block_name_text;
-        public final Text block_id_text;
+    public class ItemEntry extends ItemDenyListWidget.Entry {
+        public final Text item_name_text;
+        public final Text item_id_text;
         private final ButtonWidget button;
+        private final Item item;
+
+        private static final int MAX_CHARS = 30;
+
         static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(
                 Identifier.ofVanilla("pending_invite/accept"),
                 Identifier.ofVanilla("pending_invite/accept_highlighted")
         );
 
-        public EntityEntry(EntityType<?> type){
-           RegistryEntry<EntityType<?>> entry = Registries.ENTITY_TYPE.getEntry(type);
-           this.block_name_text = type.getName();
-           this.block_id_text = Text.of(entry.getIdAsString()).copy().withColor(Colors.GRAY);
-           this.button = this.createButton(type);
+        public ItemEntry(Item item){
+           RegistryEntry<Item> entry = Registries.ITEM.getEntry(item);
+           this.item_name_text = Text.of(item.getName().asTruncatedString(MAX_CHARS));
+           String id = entry.getIdAsString();
+           this.item_id_text = Text.literal(id.substring(0,Math.min(id.length(),MAX_CHARS))).withColor(Colors.GRAY);
+           this.button = this.createButton(item);
+           this.item = item;
         }
-        ButtonWidget createButton(EntityType<?> type){
+        ButtonWidget createButton(Item item){
             return new TexturedButtonWidget(20,20, BUTTON_TEXTURES,(button)->{
-                Config.DENIED_ENTITIES.remove(type);
+                Config.DENIED_ITEMS.remove(item);
                 updateEntries();
             },Text.translatable("button.interactionmanager.remove"));
         }
@@ -131,24 +148,30 @@ public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> 
         @Override
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             int ref_x = x + entryWidth / 32;
+            if(Config.RENDER_ITEMS_IN_BLOCK_DENY_LIST.getValue()){
+               ref_x += 14;
+            }
             int ref_y = y + entryHeight - 9;
 
-            context.drawTextWithShadow(EntityListWidget.this.client.textRenderer, this.block_name_text,ref_x,ref_y , Colors.WHITE);
+            context.drawTextWithShadow(ItemDenyListWidget.this.client.textRenderer, this.item_name_text,ref_x,ref_y , Colors.WHITE);
 
-            context.drawTextWithShadow(EntityListWidget.this.client.textRenderer, this.block_id_text, ref_x, ref_y + 10, Colors.GRAY);
+            context.drawTextWithShadow(ItemDenyListWidget.this.client.textRenderer, this.item_id_text, ref_x, ref_y + 10, Colors.GRAY);
             this.button.setX(x + entryWidth - this.button.getWidth() - 3);
             this.button.setY(ref_y - 1);
             this.button.render(context,mouseX,mouseY,tickDelta);
+            if(Config.RENDER_ITEMS_IN_BLOCK_DENY_LIST.getValue()){
+                context.drawItemWithoutEntity(new ItemStack(item),ref_x - 20,ref_y);
+            }
         }
 
     }
 
-    public class SearchEntityEntry extends EntityEntry{
+    public class SearchItemEntry extends ItemEntry{
 
         private static final int lines = 2;
 
-        public SearchEntityEntry(EntityType<?> type){
-            super(type);
+        public SearchItemEntry(Item item){
+            super(item);
         }
 
         static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(
@@ -156,9 +179,9 @@ public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> 
                 Identifier.ofVanilla("pending_invite/reject_highlighted")
         );
         @Override
-        ButtonWidget createButton(EntityType<?> type){
+        ButtonWidget createButton(Item item){
             return new TexturedButtonWidget(20,20, BUTTON_TEXTURES,(button)->{
-                Config.DENIED_ENTITIES.add(type);
+                Config.DENIED_ITEMS.add(item);
                 updateEntries();
             },Text.translatable("button.interactionmanager.remove"));
         }
@@ -170,31 +193,5 @@ public class EntityListWidget extends ElementListWidget<EntityListWidget.Entry> 
             context.fill(x - 1,ref_y - 1,x + entryWidth - 3,ref_y + entryHeight * lines - 4,0x10_AA_AA_AA);
         }
 
-    }
-
-    public class CategoryEntry extends Entry{
-
-        private final Text text;
-
-        public CategoryEntry(Text text){
-           this.text = text;
-        }
-
-        @Override
-        public List<? extends Selectable> selectableChildren() {
-            return List.of();
-        }
-
-        @Override
-        public List<? extends Element> children() {
-            return List.of();
-        }
-
-
-        @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            int text_width = EntityListWidget.this.client.textRenderer.getWidth(text);
-            context.drawTextWithShadow(EntityListWidget.this.client.textRenderer,text,x +entryWidth / 2- text_width / 2,y + entryHeight / 4 + 2,Colors.WHITE);
-        }
     }
 }
