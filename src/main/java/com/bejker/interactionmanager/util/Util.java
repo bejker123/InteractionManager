@@ -13,17 +13,21 @@ public class Util {
         return translationKeyOf(type,key) + ".tooltip";
     }
 
-    public static boolean doesOverrideMethod(Class<?> clazz,String methodName) throws NoSuchMethodException {
+    public static boolean doesOverrideMethod(Class<?> clazz,String methodName) {
         return doesOverrideMethod(clazz,methodName,clazz.getSuperclass());
     }
 
-    public static boolean doesOverrideMethod(Class<?> clazz,String methodName,Class<?> superClass) throws NoSuchMethodException {
+    public static boolean doesOverrideMethod(Class<?> clazz,String methodName,Class<?> superClass) {
         if(superClass == Object.class||clazz == superClass){
             return false;
         }
-        Method method = Util.getMethod(clazz,methodName);
-        Method method1 = Util.getMethod(superClass,methodName);
-        return !method.getDeclaringClass().equals(method1.getDeclaringClass());
+        try{
+            Method method = Util.getMethod(clazz,methodName);
+            Method method1 = Util.getMethod(superClass,methodName);
+            return !method.getDeclaringClass().equals(method1.getDeclaringClass());
+        }catch (NoSuchMethodException e){
+            return false;
+        }
     }
 
     public static Method getMethod(Class<?> clazz, String methodName)

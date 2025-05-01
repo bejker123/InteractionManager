@@ -2,8 +2,7 @@ package com.bejker.interactionmanager.gui.options;
 
 import com.bejker.interactionmanager.config.Config;
 import com.bejker.interactionmanager.config.option.interfaces.IItemOption;
-import com.bejker.interactionmanager.gui.options.denylist.ItemBlockInteractionsScreen;
-import com.bejker.interactionmanager.gui.options.denylist.ItemDenyListScreen;
+import com.bejker.interactionmanager.gui.options.denylist.ItemInteractionsScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -17,8 +16,7 @@ import java.util.List;
 public class ItemOptionsScreen extends OptionsScreen {
     private static final Text TITLE_TEXT = Text.translatable("screen.interactionmanager.item_options");
 
-    private ButtonWidget itemBlockInteractionDenyList;
-    private ButtonWidget itemDenyList;
+    private ButtonWidget itemInteractionDenyList;
 
     public ItemOptionsScreen(Screen parent) {
         super(parent,TITLE_TEXT);
@@ -32,25 +30,15 @@ public class ItemOptionsScreen extends OptionsScreen {
                     .map((x) -> x.createWidget(gameOptions)).toList();
             ArrayList<ClickableWidget> widgets = new ArrayList<>(option_widgets);
 
-            itemDenyList = ButtonWidget.builder(Text.translatable("button.interactionmanager.item_deny_list"),(button)->{
+            itemInteractionDenyList = ButtonWidget.builder(Text.translatable("button.interactionmanager.item_interaction_deny_list"),(button)->{
                         if(client == null){
                             return;
                         }
-                        client.setScreen(new ItemDenyListScreen(this));
+                        client.setScreen(new ItemInteractionsScreen(this));
                     })
-                    .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.item_deny_list.tooltip")))
+                    .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.item_interaction_deny_list.tooltip")))
                     .build();
-            widgets.add(itemDenyList);
-
-            itemBlockInteractionDenyList = ButtonWidget.builder(Text.translatable("button.interactionmanager.item_block_interaction_deny_list"),(button)->{
-                        if(client == null){
-                            return;
-                        }
-                        client.setScreen(new ItemBlockInteractionsScreen(this));
-                    })
-                    .tooltip(Tooltip.of(Text.translatable("button.interactionmanager.item_block_interaction_deny_list.tooltip")))
-                    .build();
-            widgets.add(itemBlockInteractionDenyList);
+            widgets.add(itemInteractionDenyList);
 
             this.body.addAll(widgets);
         }

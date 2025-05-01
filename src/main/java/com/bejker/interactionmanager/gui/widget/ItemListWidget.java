@@ -1,7 +1,7 @@
 package com.bejker.interactionmanager.gui.widget;
 
 import com.bejker.interactionmanager.config.Config;
-import com.bejker.interactionmanager.gui.options.denylist.ItemBlockInteractionsScreen;
+import com.bejker.interactionmanager.gui.options.denylist.ItemInteractionsScreen;
 import com.bejker.interactionmanager.search.SearchUtil;
 import com.bejker.interactionmanager.util.Util;
 import net.minecraft.block.Block;
@@ -27,13 +27,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
-    private final ItemBlockInteractionsScreen parent;
-    private String last_search = "";
-    private Item selectedItem = null;
+    private final ItemInteractionsScreen parent;
+    private String lastSearch = "";
+    private static Item selectedItem = null;
 
     private final HashSet<Item> searchEntryItems = new HashSet<>();
 
-    public ItemListWidget(ItemBlockInteractionsScreen parent, MinecraftClient client) {
+    public ItemListWidget(ItemInteractionsScreen parent, MinecraftClient client) {
         super(client, parent.width / 2 - 5, parent.layout.getContentHeight(), parent.layout.getHeaderHeight(), 23);
         this.parent = parent;
 
@@ -46,44 +46,46 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
 
     public void updateEntries() {
        this.clearEntries();
-       if(last_search != null && !last_search.isBlank()) {
-           SearchUtil.searchItems(last_search,-1,(Item item) -> {
-                       try {
-                           //TODO: add config option for blocks
-                           return Util.doesOverrideMethod(item.getClass(),"useOnBlock",Item.class) || BlockItem.class.isAssignableFrom(item.getClass());
-                       } catch (NoSuchMethodException e) {
-                           e.printStackTrace();
-                       }
-                       return false;
+       HashSet<Item> blockEntryItems = new HashSet<>();
+       HashSet<Item> deniedEntryItems = new HashSet<>();
+       if(lastSearch != null && !lastSearch.isBlank()) {
+           SearchUtil.searchItems(lastSearch,-1,(Item item) -> {
+                       //TODO: add config option for blocks
+                       return Util.doesOverrideMethod(item.getClass(),"use",Item.class)||
+                               Util.doesOverrideMethod(item.getClass(),"useOnBlock",Item.class)||
+                               BlockItem.class.isAssignableFrom(item.getClass());
                    }).stream()
                    .distinct()
-                   //.filter((x) -> !Config.BLACKLISTED_BLOCKS.contains(x))
-                   //.sorted(Comparator.comparing((x) -> x.getName().getContent().visit(Optional::of).get().length()))
                    .map(SearchItemEntry::new)
                    .forEach(this::addSearchEntry);
-       }
-       else {
+       }else {
            this.addEntry(new AllEntry());
            for (Map.Entry<Item, HashSet<Block>> mapEntry : Config.DENIED_ITEM_INTERACTIONS.entrySet()) {
-               if (mapEntry.getKey() != this.selectedItem) {
-                   if (mapEntry.getValue() == null || mapEntry.getValue().isEmpty()) {
-                       continue;
-                   }
+               Item item = mapEntry.getKey();
+               HashSet<Block> blocks = mapEntry.getValue();
+
+               if (item != selectedItem && (blocks == null || blocks.isEmpty())) {
+                   continue;
                }
-               if (!searchEntryItems.contains(mapEntry.getKey())&&mapEntry.getKey() != Items.AIR) {
-                   this.addEntry(new ItemEntry(mapEntry.getKey()));
+               if (item != Items.AIR) {
+                   this.addEntry(new ItemEntry(item));
+                   blockEntryItems.add(item);
+               }
+           }
+           for (Item item : Config.DENIED_ITEMS){
+               if (item != selectedItem&&item == null) {
+                   continue;
+               }
+               if (item != Items.AIR&&!blockEntryItems.contains(item)) {
+                   this.addEntry(new ItemEntry(item));
+                   deniedEntryItems.add(item);
                }
            }
        }
-
-       //It should be impossible, but better add this check now then debug this in the future,
-       //when it could be possible
-       if(this.getEntryCount() == 0){
-           return;
+       if(!blockEntryItems.contains(selectedItem)&&!deniedEntryItems.contains(selectedItem)&&
+               this.searchEntryItems.isEmpty()&&selectedItem != null&&selectedItem != Items.AIR){
+               this.addEntry(new ItemEntry(selectedItem));
        }
-       //if(this.getScrollY() > this.getRowBottom(this.getEntryCount() - 1)){
-       //    this.setScrollY(this.getRowBottom(this.getEntryCount() - 1));
-       //}
     }
 
     private void addSearchEntry(SearchItemEntry searchItemEntry) {
@@ -94,8 +96,8 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
     @Override
     protected void renderList(DrawContext context, int mouseX, int mouseY, float delta) {
         String search = parent.getSearch();
-        if(!search.equals(last_search)){
-            last_search = search;
+        if(!search.equals(lastSearch)){
+            lastSearch = search;
             this.updateEntries();
         }
 
@@ -141,48 +143,35 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
     public class ItemEntry extends ItemListWidget.Entry {
         public Text item_name_text;
         public Text item_id_text;
-        private final ButtonWidget button;
         final Item item;
 
         private static final int MAX_CHARS = 30;
 
-        static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(
-                Identifier.ofVanilla("pending_invite/accept"),
-                Identifier.ofVanilla("pending_invite/accept_highlighted")
-        );
-
+        // Path: C:\Users\\user\code\InteractionManager\.gradle\loom-cache\minecraftMaven\net\minecraft\minecraft-merged-3344e8d46b\1.21-net.fabricmc.yarn.1_21.1.21+build.9-v2\minecraft-merged-3344e8d46b-1.21-net.fabricmc.yarn.1_21.1.21+build.9-v2.jar!\assets\minecraft\textures\gui\sprites
         public ItemEntry(Item item){
            RegistryEntry<Item> entry = Registries.ITEM.getEntry(item);
            this.item_name_text = Text.of(item.getName().asTruncatedString(MAX_CHARS));
            String id = entry.getIdAsString();
            this.item_id_text = Text.literal(id.substring(0,Math.min(id.length(),MAX_CHARS)));
-           this.button = this.createButton(item);
            this.item = item;
         }
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            ItemListWidget.this.selectedItem = ItemListWidget.this.selectedItem == this.item ? null : this.item;
+            selectedItem = selectedItem == this.item ? null : this.item;
             ItemListWidget.this.updateEntries();
             ItemListWidget.this.parent.updateBlacklistedBlocks();
-            return super.mouseClicked(mouseX, mouseY, button);
-        }
-
-        ButtonWidget createButton(Item item){
-            return new TexturedButtonWidget(20,20, BUTTON_TEXTURES,(button)->{
-                Config.DENIED_ITEMS.remove(item);
-                updateEntries();
-            },Text.translatable("button.interactionmanager.remove"));
+            return true;
         }
 
         @Override
         public List<? extends Selectable> selectableChildren() {
-            return List.of(button);
+            return List.of();
         }
 
         @Override
         public List<? extends Element> children() {
-            return List.of(button);
+            return List.of();
         }
 
         @Override
@@ -193,10 +182,8 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
             }
             int ref_y = y + entryHeight - 9;
 
-            boolean isSelected = ItemListWidget.this.selectedItem == this.item;
-
+            boolean isSelected = selectedItem == this.item;
             context.drawTextWithShadow(ItemListWidget.this.client.textRenderer, this.item_name_text,ref_x,ref_y ,isSelected ? 0xFF_FA_82_0A : Colors.WHITE);
-
             context.drawTextWithShadow(ItemListWidget.this.client.textRenderer, this.item_id_text, ref_x, ref_y + 10, Colors.GRAY);
             if(Config.RENDER_ITEMS_IN_BLOCK_DENY_LIST.getValue()){
                 context.drawItemWithoutEntity(new ItemStack(item),ref_x - 20,ref_y);
@@ -217,22 +204,10 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
             super(item);
         }
 
-        static final ButtonTextures BUTTON_TEXTURES = new ButtonTextures(
-                Identifier.ofVanilla("pending_invite/reject"),
-                Identifier.ofVanilla("pending_invite/reject_highlighted")
-        );
-        @Override
-        ButtonWidget createButton(Item item){
-            return new TexturedButtonWidget(20,20, BUTTON_TEXTURES,(button)->{
-                Config.DENIED_ITEM_INTERACTIONS.put(item, new HashSet<>());
-                updateEntries();
-            },Text.translatable("button.interactionmanager.remove"));
-        }
-
         @Override
         public void drawBorder(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             int ref_y = y + entryHeight - 9 - 1;
-            boolean isSelected = ItemListWidget.this.selectedItem == this.item;
+            boolean isSelected = selectedItem == this.item;
             if(!isSelected){
                 context.drawBorder(x - 2, ref_y - 2, entryWidth, entryHeight * lines - 2, 0x0FBABABA);
             }
