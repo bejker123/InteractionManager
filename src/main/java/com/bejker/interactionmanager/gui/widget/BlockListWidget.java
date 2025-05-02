@@ -10,7 +10,6 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -20,25 +19,18 @@ import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
-public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
-    private final BlockDenylistScreen parent;
-    private String last_search = "";
+public class BlockListWidget extends SearchableListWidget<BlockDenylistScreen>{
 
     public BlockListWidget(BlockDenylistScreen parent, MinecraftClient client) {
-	    //(MinecraftClient client, int width, int height, int y, int itemHeight)
-        super(client, parent.width, parent.layout.getContentHeight(), parent.layout.getHeaderHeight(), 23);
-        this.parent = parent;
-
-        this.updateEntries();
+        super(parent,client);
     }
 
-    private void updateEntries() {
-       this.clearEntries();
-       if(last_search != null && !last_search.isBlank()){
-           SearchUtil.searchBlocks(last_search,-1,(x) -> !Config.DENIED_BLOCKS.contains(x)).stream()
+    @Override
+    protected void updateEntries() {
+       super.updateEntries();
+       if(lastSearch != null && !lastSearch.isBlank()){
+           SearchUtil.searchBlocks(lastSearch,-1,(x) -> !Config.DENIED_BLOCKS.contains(x)).stream()
            .map(SearchBlockEntry::new)
            .forEach(this::addEntry);
        }
@@ -46,55 +38,6 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
        for (Block i : Config.DENIED_BLOCKS){
           this.addEntry(new BlockEntry(i));
        }
-
-       //It should be impossible, but better add this check now then debug this in the future,
-       //when it could be possible
-       if(this.getEntryCount() == 0){
-           return;
-       }
-       //if(this.getScrollY() > this.getRowBottom(this.getEntryCount() - 1)){
-       //    this.setScrollY(this.getRowBottom(this.getEntryCount() - 1));
-       //}
-    }
-
-    @Override
-    protected void renderList(DrawContext context, int mouseX, int mouseY, float delta) {
-        String search = parent.getSearch();
-        if(!search.equals(last_search)){
-            last_search = search;
-            this.updateEntries();
-        }
-
-        //Render search entries
-        int rowLeft = this.getRowLeft();
-        int rowWidth = this.getRowWidth();
-        int itemHeight = this.itemHeight - 9 - 1;
-        int entryCount = this.getEntryCount();
-
-        //Render regular entries
-        for (int i = 0; i < entryCount; i++) {
-            int rowTop = this.getRowTop(i);
-            int rowBottom = this.getRowBottom(i);
-            if (rowBottom >= this.getY() && rowTop <= this.getBottom()) {
-                this.renderEntry(context, mouseX, mouseY, delta, i, rowLeft, rowTop, rowWidth, itemHeight);
-            }
-        }
-    }
-
-    public Optional<Element> hoveredElement(double mouseX, double mouseY) {
-        for (Element element : this.children()) {
-            if (element.isMouseOver(mouseX, mouseY)) {
-                return Optional.of(element);
-            }
-        }
-
-        return Optional.empty();
-    }
-    public abstract class Entry extends ElementListWidget.Entry<BlockListWidget.Entry> {
-        @Override
-        public boolean isMouseOver(double mouseX, double mouseY) {
-            return Objects.equals(BlockListWidget.this.getEntryAtPosition(mouseX, mouseY), this);
-        }
     }
 
     public class BlockEntry extends BlockListWidget.Entry {

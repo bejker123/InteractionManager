@@ -9,10 +9,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
-import net.minecraft.client.gui.screen.ButtonTextures;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ElementListWidget;
-import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,23 +17,19 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
-public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
-    private final ItemInteractionsScreen parent;
-    private String lastSearch = "";
+public class ItemListWidget extends SearchableListWidget<ItemInteractionsScreen>{
     private static Item selectedItem = null;
 
-    private final HashSet<Item> searchEntryItems = new HashSet<>();
+    private HashSet<Item> searchEntryItems = new HashSet<>();
 
     public ItemListWidget(ItemInteractionsScreen parent, MinecraftClient client) {
-        super(client, parent.width / 2 - 5, parent.layout.getContentHeight(), parent.layout.getHeaderHeight(), 23);
-        this.parent = parent;
-
-        this.updateEntries();
+        super(parent,client, parent.width / 2 - 5, parent.layout.getContentHeight(), parent.layout.getHeaderHeight(), 23);
     }
 
     public @Nullable Item getSelectedItemOrNull(){
@@ -45,7 +37,7 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
     }
 
     public void updateEntries() {
-       this.clearEntries();
+       super.updateEntries();
        HashSet<Item> blockEntryItems = new HashSet<>();
        HashSet<Item> deniedEntryItems = new HashSet<>();
        if(lastSearch != null && !lastSearch.isBlank()) {
@@ -89,55 +81,20 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
     }
 
     private void addSearchEntry(SearchItemEntry searchItemEntry) {
+        if(this.searchEntryItems == null){
+            this.searchEntryItems = new HashSet<>();
+        }
         this.searchEntryItems.add(searchItemEntry.item);
         this.addEntry(searchItemEntry);
     }
 
     @Override
-    protected void renderList(DrawContext context, int mouseX, int mouseY, float delta) {
-        String search = parent.getSearch();
-        if(!search.equals(lastSearch)){
-            lastSearch = search;
-            this.updateEntries();
-        }
-
-        //Render search entries
-        int rowLeft = this.getRowLeft();
-        int rowWidth = this.getRowWidth();
-        int itemHeight = this.itemHeight - 9 - 1;
-        int entryCount = this.getEntryCount();
-
-        //Render regular entries
-        for (int i = 0; i < entryCount; i++) {
-            int rowTop = this.getRowTop(i);
-            int rowBottom = this.getRowBottom(i);
-            if (rowBottom >= this.getY() && rowTop <= this.getBottom()) {
-                this.renderEntry(context, mouseX, mouseY, delta, i, rowLeft, rowTop, rowWidth, itemHeight);
-            }
-        }
-    }
-
-    public Optional<Element> hoveredElement(double mouseX, double mouseY) {
-        for (Element element : this.children()) {
-            if (element.isMouseOver(mouseX, mouseY)) {
-                return Optional.of(element);
-            }
-        }
-
-        return Optional.empty();
-    }
-
-    @Override
     protected void clearEntries() {
         super.clearEntries();
-        this.searchEntryItems.clear();
-    }
-
-    public abstract class Entry extends ElementListWidget.Entry<ItemListWidget.Entry> {
-        @Override
-        public boolean isMouseOver(double mouseX, double mouseY) {
-            return Objects.equals(ItemListWidget.this.getEntryAtPosition(mouseX, mouseY), this);
+        if(this.searchEntryItems == null){
+            this.searchEntryItems = new HashSet<>();
         }
+        this.searchEntryItems.clear();
     }
 
     public class ItemEntry extends ItemListWidget.Entry {

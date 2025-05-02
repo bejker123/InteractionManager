@@ -12,7 +12,6 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,21 +22,17 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
 
-public class ItemInteractionListWidget extends ElementListWidget<ItemInteractionListWidget.Entry> {
-    private final ItemInteractionsScreen parent;
-    private String last_search = "";
+public class ItemInteractionListWidget extends SearchableListWidget<ItemInteractionsScreen> {
 
     public ItemInteractionListWidget(ItemInteractionsScreen parent, MinecraftClient client) {
-        super(client, parent.width / 2 - 5, parent.layout.getContentHeight(), parent.layout.getHeaderHeight(), 23);
-        this.parent = parent;
-
-        this.updateEntries();
+        super(parent,client, parent.width / 2 - 5, parent.layout.getContentHeight(), parent.layout.getHeaderHeight(), 23);
     }
 
     public void updateEntries() {
-       this.clearEntries();
+       super.updateEntries();
        if(this.parent.getSelectedItem() == null){
            return;
        }
@@ -45,8 +40,8 @@ public class ItemInteractionListWidget extends ElementListWidget<ItemInteraction
        boolean overridesUseOnBlock = isAllSelected || Util.doesOverrideMethod(this.parent.getSelectedItem().getClass(),"useOnBlock", Item.class);
        boolean overridesUse = isAllSelected || Util.doesOverrideMethod(this.parent.getSelectedItem().getClass(),"use", Item.class);
 
-       if(overridesUseOnBlock&& last_search != null&& !last_search.isBlank()){
-           SearchUtil.searchBlocks(last_search,-1,x -> !x.equals(Blocks.AIR)).stream()
+       if(overridesUseOnBlock&& lastSearch != null&& !lastSearch.isBlank()){
+           SearchUtil.searchBlocks(lastSearch,-1, x -> !x.equals(Blocks.AIR)).stream()
            .distinct()
            //.filter((x) -> !Config.DENIED_ITEM_INTERACTIONS.getOrDefault(parent.getSelectedItem(),new HashSet<>()).contains(x))
            //.sorted(Comparator.comparing((x) -> x.getName().getContent().visit(Optional::of).get().length()))
@@ -69,54 +64,14 @@ public class ItemInteractionListWidget extends ElementListWidget<ItemInteraction
                }
            }
        }
-
-       //It should be impossible, but better add this check now then debug this in the future,
-       //when it could be possible
-       if(this.getEntryCount() == 0){
-           return;
-       }
-       //if(this.getScrollY() > this.getRowBottom(this.getEntryCount() - 1)){
-       //    this.setScrollY(this.getRowBottom(this.getEntryCount() - 1));
-       //}
     }
 
     @Override
-    protected void renderList(DrawContext context, int mouseX, int mouseY, float delta) {
+    protected void updateSearch() {
         String search = parent.getBlockSearch();
-        if(!search.equals(last_search)){
-            last_search = search;
+        if(!search.equals(lastSearch)){
+            lastSearch = search;
             this.updateEntries();
-        }
-
-        //Render search entries
-        int rowLeft = this.getRowLeft();
-        int rowWidth = this.getRowWidth();
-        int itemHeight = this.itemHeight - 9 - 1;
-        int entryCount = this.getEntryCount();
-
-        //Render regular entries
-        for (int i = 0; i < entryCount; i++) {
-            int rowTop = this.getRowTop(i);
-            int rowBottom = this.getRowBottom(i);
-            if (rowBottom >= this.getY() && rowTop <= this.getBottom()) {
-                this.renderEntry(context, mouseX, mouseY, delta, i, rowLeft, rowTop, rowWidth, itemHeight);
-            }
-        }
-    }
-
-    public Optional<Element> hoveredElement(double mouseX, double mouseY) {
-        for (Element element : this.children()) {
-            if (element.isMouseOver(mouseX, mouseY)) {
-                return Optional.of(element);
-            }
-        }
-
-        return Optional.empty();
-    }
-    public abstract class Entry extends ElementListWidget.Entry<ItemInteractionListWidget.Entry> {
-        @Override
-        public boolean isMouseOver(double mouseX, double mouseY) {
-            return Objects.equals(ItemInteractionListWidget.this.getEntryAtPosition(mouseX, mouseY), this);
         }
     }
 
