@@ -155,5 +155,5 @@
   "text.interactionmanager.deny_using_all_items.title": "All",
   "text.interactionmanager.deny_using_all_items.tooltip":"Deny using all items",
   "text.interactionmanager.deny_using_item.title": "Using",
-  "text.interactionmanager.deny_using_item.tooltip": "Deny using not on blocks"
+  "text.interactionmanager.deny_using_item.tooltip": "Deny using, doesn't apply to blocks"
 }
