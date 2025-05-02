@@ -123,7 +123,7 @@ public class SearchUtil {
             return "";
         }
         String namespaceString = idString.substring(0,idx);
-        InteractionManager.LOGGER.info("{}, {}",namespaceString,entry.getKey());
+        //InteractionManager.LOGGER.info("{}, {}",namespaceString,entry.getKey());
         return namespaceString.toLowerCase(Locale.ROOT);
     }
 
