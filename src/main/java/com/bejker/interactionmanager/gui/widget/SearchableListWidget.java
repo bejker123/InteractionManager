@@ -16,8 +16,8 @@ public abstract class SearchableListWidget<P extends DenyListScreen> extends Ele
         this(parent,client, parent.width, parent.layout.getContentHeight(), parent.layout.getHeaderHeight(), 23);
     }
 
-    public SearchableListWidget(P parent,MinecraftClient minecraftClient, int i, int j, int k, int l) {
-        super(minecraftClient, i, j, k, l);
+    public SearchableListWidget(P parent,MinecraftClient client, int width, int height, int y, int itemHeight) {
+        super(client, width, height, y, itemHeight);
         this.parent = parent;
 
         this.updateEntries();
