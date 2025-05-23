@@ -10,6 +10,7 @@ import com.google.gson.*;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
+import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -24,10 +25,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 // Use this class to save, load, and init runtime config
 // To access and set config options use Config.
@@ -86,7 +84,7 @@ public class ConfigManager {
                         }
                     }
                 }else if(Set.class.isAssignableFrom(field.getType())){
-                    if(field.getName().equals("BLACKLISTED_BLOCKS")){
+                    if(field.getName().equals("DENIED_BLOCKS")){
                         JsonArray jsonArray = json.getAsJsonArray(field.getName()
                                 .toLowerCase(Locale.ROOT));
                         if(jsonArray == null||jsonArray.isEmpty()){
@@ -98,9 +96,9 @@ public class ConfigManager {
                                 continue;
                             }
                             Block block = Registries.BLOCK.get(id);
-                            Config.BLACKLISTED_BLOCKS.add(block);
+                            Config.DENIED_BLOCKS.add(block);
                         }
-                    }else if(field.getName().equals("BLACKLISTED_ENTITIES")){
+                    }else if(field.getName().equals("DENIED_ENTITIES")){
                         JsonArray jsonArray = json.getAsJsonArray(field.getName()
                                 .toLowerCase(Locale.ROOT));
                         if(jsonArray == null||jsonArray.isEmpty()){
@@ -112,9 +110,41 @@ public class ConfigManager {
                                 continue;
                             }
                             EntityType<?> entityType = Registries.ENTITY_TYPE.get(id);
-                            Config.BLACKLISTED_ENTITIES.add(entityType);
+                            Config.DENIED_ENTITIES.add(entityType);
+                        }
+                    }else if(field.getName().equals("DENIED_ITEMS")){
+                        JsonArray jsonArray = json.getAsJsonArray(field.getName()
+                                .toLowerCase(Locale.ROOT));
+                        if(jsonArray == null||jsonArray.isEmpty()){
+                            continue;
+                        }
+                        for(JsonElement element : jsonArray) {
+                            Identifier id = elem2Id(element);
+                            if(id == null){
+                                continue;
+                            }
+                            Item item = Registries.ITEM.get(id);
+                            Config.DENIED_ITEMS.add(item);
                         }
                     }
+                }
+                else if(HashMap.class.isAssignableFrom(field.getType())){
+                   if(field.getName().equals("DENIED_ITEM_INTERACTIONS")){
+                      JsonObject jsonObject = json.getAsJsonObject(field.getName().toLowerCase(Locale.ROOT));
+                      if(jsonObject == null){
+                          continue;
+                      }
+                      for(Map.Entry<String, JsonElement> mapEntry : jsonObject.asMap().entrySet()){
+                         Item item = Registries.ITEM.get(Identifier.of(mapEntry.getKey()));
+                         HashSet<Block> set = new HashSet<>();
+                         JsonArray jsonArray = mapEntry.getValue().getAsJsonArray();
+                         for(JsonElement blockName : jsonArray){
+                             Block block = Registries.BLOCK.get(Identifier.of(blockName.getAsString()));
+                            set.add(block);
+                         }
+                         Config.DENIED_ITEM_INTERACTIONS.put(item,set);
+                      }
+                   }
                 }
             }
             if(found_invalid){
@@ -150,33 +180,68 @@ public class ConfigManager {
                 if(field.isAnnotationPresent(IRuntimeInternalOnlyOption.class)){
                     continue;
                 }
-                String field_name = field.getName().toLowerCase(Locale.ROOT);
+                String fieldName = field.getName().toLowerCase(Locale.ROOT);
                 if (BooleanOption.class.isAssignableFrom(field.getType())) {
                     BooleanOption option = (BooleanOption) field.get(null) ;
-                    config.addProperty(field_name, option.getValue());
+                    if(option.getValue() != option.getDefaultValue()){
+                        config.addProperty(fieldName, option.getValue());
+                    }
                 }else if (EnumOption.class.isAssignableFrom(field.getType()) && field.getGenericType() instanceof ParameterizedType) {
                     Type generic = ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
                     if (generic instanceof Class<?>) {
                         EnumOption<?> option = (EnumOption<?>) field.get(null);
-                        config.addProperty(field.getName().toLowerCase(Locale.ROOT),
-                                OptionStorage.getEnumRaw(option.getKey(), (Class<Enum<?>>) generic)
-                                        .name()
-                                        .toLowerCase(Locale.ROOT)
-                        );
+                        if(option.getValue() != option.getDefaultValue()) {
+                            config.addProperty(field.getName().toLowerCase(Locale.ROOT),
+                                    OptionStorage.getEnumRaw(option.getKey(), (Class<Enum<?>>) generic)
+                                            .name()
+                                            .toLowerCase(Locale.ROOT)
+                            );
+                        }
                     }
                 }else if(Set.class.isAssignableFrom(field.getType())){
-                    if(field.getName().equals("BLACKLISTED_BLOCKS")){
+                    if(field.getName().equals("DENIED_BLOCKS")){
                         JsonArray array = new JsonArray();
-                        for(var block : Config.BLACKLISTED_BLOCKS){
+                        for(var block : Config.DENIED_BLOCKS){
                             array.add(Registries.BLOCK.getId(block).toString());
                         }
-                        config.add(field_name,array);
-                    } else if(field.getName().equals("BLACKLISTED_ENTITIES")){
+                        if(!array.isEmpty()) {
+                            config.add(fieldName, array);
+                        }
+                    } else if(field.getName().equals("DENIED_ENTITIES")){
                         JsonArray array = new JsonArray();
-                        for(var entityType : Config.BLACKLISTED_ENTITIES){
+                        for(var entityType : Config.DENIED_ENTITIES){
                             array.add(Registries.ENTITY_TYPE.getId(entityType).toString());
                         }
-                        config.add(field_name,array);
+                        if(!array.isEmpty()) {
+                            config.add(fieldName, array);
+                        }
+                    }else if(field.getName().equals("DENIED_ITEMS")){
+                        JsonArray array = new JsonArray();
+                        for(var item : Config.DENIED_ITEMS){
+                            array.add(Registries.ITEM.getId(item).toString());
+                        }
+                        if(!array.isEmpty()) {
+                            config.add(fieldName, array);
+                        }
+                    }
+                }else if(HashMap.class.isAssignableFrom(field.getType())){
+                    if(field.getName().equals("DENIED_ITEM_INTERACTIONS")){
+                        JsonObject jsonObject = new JsonObject();
+                        boolean shouldSave = false;
+                        for(var entry : Config.DENIED_ITEM_INTERACTIONS.entrySet()){
+                            if(entry.getValue() == null || entry.getValue().isEmpty()){
+                                continue;
+                            }
+                            JsonArray jsonArray = new JsonArray();
+                            entry.getValue().forEach((block) -> jsonArray.add(Registries.BLOCK.getId(block).toString()));
+                            jsonObject.add(Registries.ITEM.getId(entry.getKey()).toString(),jsonArray);
+                            if(!jsonArray.isEmpty()){
+                                shouldSave = true;
+                            }
+                        }
+                        if(shouldSave){
+                            config.add(fieldName,jsonObject);
+                        }
                     }
                 }
             }

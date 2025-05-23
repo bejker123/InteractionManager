@@ -1,7 +1,7 @@
 package com.bejker.interactionmanager.gui.widget;
 
 import com.bejker.interactionmanager.config.Config;
-import com.bejker.interactionmanager.gui.options.blacklist.BlockBlacklistScreen;
+import com.bejker.interactionmanager.gui.options.denylist.BlockDenylistScreen;
 import com.bejker.interactionmanager.search.SearchUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
@@ -10,7 +10,6 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -20,83 +19,25 @@ import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
-public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
-    private final BlockBlacklistScreen parent;
-    private String last_search = "";
+public class BlockListWidget extends SearchableListWidget<BlockDenylistScreen>{
 
-    public BlockListWidget(BlockBlacklistScreen parent,MinecraftClient client) {
-	    //(MinecraftClient client, int width, int height, int y, int itemHeight)
-        super(client, parent.width, parent.layout.getContentHeight(), parent.layout.getHeaderHeight(), 23);
-        this.parent = parent;
-
-        this.updateEntries();
-    }
-
-    private void updateEntries() {
-       this.clearEntries();
-       if(last_search != null && !last_search.isBlank()){
-           SearchUtil.searchBlocks(last_search).stream()
-           .distinct()
-           .filter((x) -> !Config.BLACKLISTED_BLOCKS.contains(x))
-           .map(SearchBlockEntry::new)
-           .forEach(this::addEntry);
-       }
-       this.addEntry(new CategoryEntry(Text.translatable("category.interactionmanager.blacklisted_blocks")));
-       for (Block i : Config.BLACKLISTED_BLOCKS){
-          this.addEntry(new BlockEntry(i));
-       }
-
-       //It should be impossible, but better add this check now then debug this in the future,
-       //when it could be possible
-       if(this.getEntryCount() == 0){
-           return;
-       }
-       //if(this.getScrollY() > this.getRowBottom(this.getEntryCount() - 1)){
-       //    this.setScrollY(this.getRowBottom(this.getEntryCount() - 1));
-       //}
+    public BlockListWidget(BlockDenylistScreen parent, MinecraftClient client) {
+        super(parent,client);
     }
 
     @Override
-    protected void renderList(DrawContext context, int mouseX, int mouseY, float delta) {
-        String search = parent.getSearch();
-        if(!search.equals(last_search)){
-            last_search = search;
-            this.updateEntries();
-        }
-
-        //Render search entries
-        int rowLeft = this.getRowLeft();
-        int rowWidth = this.getRowWidth();
-        int itemHeight = this.itemHeight - 9 - 1;
-        int entryCount = this.getEntryCount();
-
-        //Render regular entries
-        for (int i = 0; i < entryCount; i++) {
-            int rowTop = this.getRowTop(i);
-            int rowBottom = this.getRowBottom(i);
-            if (rowBottom >= this.getY() && rowTop <= this.getBottom()) {
-                this.renderEntry(context, mouseX, mouseY, delta, i, rowLeft, rowTop, rowWidth, itemHeight);
-            }
-        }
-    }
-
-    public Optional<Element> hoveredElement(double mouseX, double mouseY) {
-        for (Element element : this.children()) {
-            if (element.isMouseOver(mouseX, mouseY)) {
-                return Optional.of(element);
-            }
-        }
-
-        return Optional.empty();
-    }
-    public abstract class Entry extends ElementListWidget.Entry<BlockListWidget.Entry> {
-        @Override
-        public boolean isMouseOver(double mouseX, double mouseY) {
-            return Objects.equals(BlockListWidget.this.getEntryAtPosition(mouseX, mouseY), this);
-        }
+    protected void updateEntries() {
+       super.updateEntries();
+       if(lastSearch != null && !lastSearch.isBlank()){
+           SearchUtil.searchBlocks(lastSearch,-1,(x) -> !Config.DENIED_BLOCKS.contains(x)).stream()
+           .map(SearchBlockEntry::new)
+           .forEach(this::addEntry);
+       }
+       this.addEntry(new CategoryEntry(Text.translatable("category.interactionmanager.denied_blocks")));
+       for (Block i : Config.DENIED_BLOCKS){
+          this.addEntry(new BlockEntry(i));
+       }
     }
 
     public class BlockEntry extends BlockListWidget.Entry {
@@ -122,7 +63,7 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
         }
         ButtonWidget createButton(Block block){
             return new TexturedButtonWidget(20,20, BUTTON_TEXTURES,(button)->{
-                Config.BLACKLISTED_BLOCKS.remove(block);
+                Config.DENIED_BLOCKS.remove(block);
                 updateEntries();
             },Text.translatable("button.interactionmanager.remove"));
         }
@@ -140,7 +81,7 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
         @Override
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             int ref_x = x + entryWidth / 32;
-            if(Config.RENDER_ITEMS_IN_BLOCK_BLACKLIST.getValue()){
+            if(Config.RENDER_ITEMS_IN_BLOCK_DENY_LIST.getValue()){
                ref_x += 14;
             }
             int ref_y = y + entryHeight - 9;
@@ -151,7 +92,7 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
             this.button.setX(x + entryWidth - this.button.getWidth() - 3);
             this.button.setY(ref_y - 1);
             this.button.render(context,mouseX,mouseY,tickDelta);
-            if(Config.RENDER_ITEMS_IN_BLOCK_BLACKLIST.getValue()){
+            if(Config.RENDER_ITEMS_IN_BLOCK_DENY_LIST.getValue()){
                 context.drawItemWithoutEntity(new ItemStack(block),ref_x - 20,ref_y);
             }
         }
@@ -173,7 +114,7 @@ public class BlockListWidget extends ElementListWidget<BlockListWidget.Entry> {
         @Override
         ButtonWidget createButton(Block block){
             return new TexturedButtonWidget(20,20, BUTTON_TEXTURES,(button)->{
-                Config.BLACKLISTED_BLOCKS.add(block);
+                Config.DENIED_BLOCKS.add(block);
                 updateEntries();
             },Text.translatable("button.interactionmanager.remove"));
         }
