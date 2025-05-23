@@ -7,6 +7,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Pair;
 
@@ -14,6 +15,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 //TODO: add searching by id
 public class SearchUtil {
@@ -89,28 +91,40 @@ public class SearchUtil {
 
     private static void internalInit(HashSet<String> builtSearchTrees){
         for(var block : Registries.BLOCK){
-            blockSearchTree.put(getLocalizedName(block.getName()),block);
+            RegistryEntry<Block> entry = Registries.BLOCK.getEntry(block);
+            blockSearchTree.put(getNamespace(entry),getLocalizedName(block.getName()),block);
 
-            //RegistryEntry<Block> entry = Registries.BLOCK.getEntry(block);
             //blockSearchTree.put(entry.getIdAsString(),block);
         }
         builtSearchTrees.add("block");
 
         for(var entity_type : Registries.ENTITY_TYPE){
-            entitySearchTree.put(getLocalizedName(entity_type.getName()),entity_type);
+            RegistryEntry<EntityType<?>> entry = Registries.ENTITY_TYPE.getEntry(entity_type);
+            entitySearchTree.put(getNamespace(entry),getLocalizedName(entity_type.getName()),entity_type);
 
-            //RegistryEntry<EntityType<?>> entry = Registries.ENTITY_TYPE.getEntry(entity_type);
             //entitySearchTree.put(entry.getIdAsString(),entity_type);
         }
         builtSearchTrees.add("entity");
 
         for(var item : Registries.ITEM){
-            itemSearchTree.put(getLocalizedName(item.getName()),item);
+            RegistryEntry<Item> entry = Registries.ITEM.getEntry(item);
+            itemSearchTree.put(getNamespace(entry),getLocalizedName(item.getName()),item);
 
-            //RegistryEntry<Item> entry = Registries.ITEM.getEntry(item);
             //itemSearchTree.put(entry.getIdAsString(),item);
         }
         builtSearchTrees.add("item");
+    }
+
+    private static String getNamespace(RegistryEntry<?> entry){
+        String idString = entry.getIdAsString();
+        int idx = idString.lastIndexOf(':');
+        if(idx == -1){
+            InteractionManager.LOGGER.warn("{} doesn't have a namespace!",entry.getKey());
+            return "";
+        }
+        String namespaceString = idString.substring(0,idx);
+        //InteractionManager.LOGGER.info("{}, {}",namespaceString,entry.getKey());
+        return namespaceString.toLowerCase(Locale.ROOT);
     }
 
 
@@ -192,27 +206,23 @@ public class SearchUtil {
 
     private static class SearchTree<T>{
         GeneralizedSuffixTree tree;
-        ArrayList<T> list;
-
-        //Used to map
-        HashMap<Integer,Integer> remap;
+        final ArrayList<T> list = new ArrayList<>();
+        final ArrayList<String> namespaceList = new ArrayList<>();
 
         private int idx;
 
         public SearchTree(){
-            list = new ArrayList<>();
-            remap = new HashMap<>();
             this.clear();
         }
 
         public void clear(){
             tree = new GeneralizedSuffixTree();
             list.clear();
-            remap.clear();
+            namespaceList.clear();
             idx = 0;
         }
 
-        public void put(String word,final T entry){
+        public void put(String namespace,String word,final T entry){
             word = word.toLowerCase(Locale.ROOT);
             try {
                 tree.put(word,idx);
@@ -226,23 +236,61 @@ public class SearchUtil {
                         stringWriter
                 );
             }
-
-            int remap_idx = list.indexOf(entry);
-            remap.put(idx++,list.size());
-
-            if(remap_idx == -1){
-                list.add(entry);
-            }
+            list.add(entry);
+            namespaceList.add(namespace);
+            // Increment the index last to prevent accidental use of the next index
+            idx++;
         }
 
         private T mapIndexToEntry(int i){
-            return list.get(
-                    Objects.requireNonNullElse(remap.get(i), i)
-            );
+            return list.get(i);
+            //return list.get(
+            //        Objects.requireNonNullElse(remap.get(i), i)
+            //);
+        }
+
+        private Stream<Integer> rawSearch(String word,int results){
+           return tree.search(word.toLowerCase(Locale.ROOT),results).stream();
         }
 
         public Collection<T> search(String word,int results){
-            return tree.search(word.toLowerCase(Locale.ROOT),results).stream().map(this::mapIndexToEntry).toList();
+            word = word.toLowerCase(Locale.ROOT);
+
+            int startNamespaceIdx = word.indexOf('@') + 1;
+            if(startNamespaceIdx != 0&&startNamespaceIdx < word.length()){
+               int endNamespaceIdx = word.substring(startNamespaceIdx,word.length() - 1).indexOf(" ");
+               if(endNamespaceIdx == -1){
+                   endNamespaceIdx = word.length();
+               }else{
+                   endNamespaceIdx += startNamespaceIdx;
+               }
+               String namespace = word.substring(startNamespaceIdx,endNamespaceIdx);
+               word = (word.substring(0,startNamespaceIdx - 1) + word.substring(endNamespaceIdx)).trim();
+               return search(namespace,word,results);
+            }
+            if(word.length() > 1 && startNamespaceIdx == word.length()){
+                word = word.substring(0,word.length() - 2).trim();
+            }
+            return rawSearch(word,results).map(this::mapIndexToEntry).toList();
+        }
+
+        public Collection<T> search(String namespace,String word,int results){
+            return rawSearch(word, results)
+                    .filter((idx)->this.filterByNamespace(namespace,idx))
+                    .map(this::mapIndexToEntry).toList();
+        }
+
+        private boolean filterByNamespace(String namespace, Integer idx) {
+            if(idx == null) {
+                return false;
+            }
+            String foundNamespace = namespaceList.get(idx);
+            if(foundNamespace == null){
+                return false;
+            }
+            int matchIdx = foundNamespace.indexOf(namespace);
+            // Change to >= to allow partial matches
+            return matchIdx == 0;
         }
     }
 

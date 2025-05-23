@@ -94,7 +94,7 @@ public class Config {
 
     public static final HashMap<Item,HashSet<Block>> DENIED_ITEM_INTERACTIONS = new HashMap<>();
 
-    public static final HashSet<Item> DENIED_ITEMS = new HashSet<>();
+    public static final Set<Item> DENIED_ITEMS = new HashSet<>();
 
     @IEntityOption
     public static final BooleanOption ENABLE_ENTITY_DENY_LIST = new BooleanOption("enable_entity_deny_list",true,"enabled","disabled");

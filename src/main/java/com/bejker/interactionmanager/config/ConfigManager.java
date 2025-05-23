@@ -127,7 +127,8 @@ public class ConfigManager {
                             Config.DENIED_ITEMS.add(item);
                         }
                     }
-                } else if(HashMap.class.isAssignableFrom(field.getType())){
+                }
+                else if(HashMap.class.isAssignableFrom(field.getType())){
                    if(field.getName().equals("DENIED_ITEM_INTERACTIONS")){
                       JsonObject jsonObject = json.getAsJsonObject(field.getName().toLowerCase(Locale.ROOT));
                       if(jsonObject == null){
@@ -179,11 +180,11 @@ public class ConfigManager {
                 if(field.isAnnotationPresent(IRuntimeInternalOnlyOption.class)){
                     continue;
                 }
-                String field_name = field.getName().toLowerCase(Locale.ROOT);
+                String fieldName = field.getName().toLowerCase(Locale.ROOT);
                 if (BooleanOption.class.isAssignableFrom(field.getType())) {
                     BooleanOption option = (BooleanOption) field.get(null) ;
                     if(option.getValue() != option.getDefaultValue()){
-                        config.addProperty(field_name, option.getValue());
+                        config.addProperty(fieldName, option.getValue());
                     }
                 }else if (EnumOption.class.isAssignableFrom(field.getType()) && field.getGenericType() instanceof ParameterizedType) {
                     Type generic = ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
@@ -204,7 +205,7 @@ public class ConfigManager {
                             array.add(Registries.BLOCK.getId(block).toString());
                         }
                         if(!array.isEmpty()) {
-                            config.add(field_name, array);
+                            config.add(fieldName, array);
                         }
                     } else if(field.getName().equals("DENIED_ENTITIES")){
                         JsonArray array = new JsonArray();
@@ -212,7 +213,7 @@ public class ConfigManager {
                             array.add(Registries.ENTITY_TYPE.getId(entityType).toString());
                         }
                         if(!array.isEmpty()) {
-                            config.add(field_name, array);
+                            config.add(fieldName, array);
                         }
                     }else if(field.getName().equals("DENIED_ITEMS")){
                         JsonArray array = new JsonArray();
@@ -220,7 +221,7 @@ public class ConfigManager {
                             array.add(Registries.ITEM.getId(item).toString());
                         }
                         if(!array.isEmpty()) {
-                            config.add(field_name, array);
+                            config.add(fieldName, array);
                         }
                     }
                 }else if(HashMap.class.isAssignableFrom(field.getType())){
@@ -239,7 +240,7 @@ public class ConfigManager {
                             }
                         }
                         if(shouldSave){
-                            config.add(field_name,jsonObject);
+                            config.add(fieldName,jsonObject);
                         }
                     }
                 }
