@@ -1,4 +1,25 @@
 # Change Log
+# 1.8.0
+### Changed 
+- Overhauled the GUI
+- Improved search
+- Changed 'blacklist' to 'deny list'
+- internal APIs
+- refactored and cleaned up code
+
+### Added
+- Optimising config file size (options that aren't changed won't be saved)
+- Item and block interactions menu that allows for more fine-grained control over interactions
+- Drawing the outline of denied block placement
+- Searching by namespace (mod id)
+
+### Removed
+- Options for specific item interactions, as they are now handled by the more general item interactions menu
+- Searching by id, planned to be added in the future. This change was required as the internal search API has been overhauled
+
+### Fixed
+- Minor logic bugs
+
 # 1.7.2
 ### Fixed
 - Using fireworks on blocks would prevent from using the block, when Use Fireworks on Blocks option is OFF
