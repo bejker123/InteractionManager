@@ -43,17 +43,14 @@ public abstract class WorldRendererMixin {
         Interactions.restrictBlockBreaking(state.getBlock(),cir);
         if(cir.getReturnValue()){
             ci.cancel();
-            drawCuboidShapeOutline(
+            VertexRendering.drawOutline(
                     matrices,
                     vertexConsumer,
                     state.getOutlineShape(this.world, pos, ShapeContext.of(entity)),
                     (double)pos.getX() - cameraX,
                     (double)pos.getY() - cameraY,
                     (double)pos.getZ() - cameraZ,
-                    0.85F,
-                    0.3F,
-                    0.3F,
-                    0.4F
+                    ColorHelper.fromFloats(0.4F,0.85F,0.3F,0.3F)
             );
         }
         if(Config.RENDER_DENIED_BLOCK_PLACEMENT.getValue()&&MinecraftClient.getInstance().crosshairTarget instanceof BlockHitResult bhr){
@@ -72,17 +69,19 @@ public abstract class WorldRendererMixin {
                     CallbackInfoReturnable<ActionResult> actionResult = new CallbackInfoReturnable<>("allowAction",true);
                     Interactions.onInteractBlock(stack,state.getBlock(),actionResult);
                     if(actionResult.getReturnValue() == ActionResult.PASS){
-                        drawCuboidShapeOutline(
+                        VertexRendering.drawOutline(
                                 matrices,
                                 vertexConsumer,
                                 newState.getOutlineShape(this.world, newBlockPos),
                                 newBlockPos.getX() - cameraX,
                                 newBlockPos.getY() - cameraY,
                                 newBlockPos.getZ() - cameraZ,
-                                0.9F,
-                                0.51F,
-                                0.2F,
-                                0.5F
+                                ColorHelper.fromFloats(
+                                    0.5F,
+                                    0.9F,
+                                    0.51F,
+                                    0.2F
+                                )
                         );
                     }
                     break;
@@ -90,7 +89,6 @@ public abstract class WorldRendererMixin {
 
             }
         }
-<<<<<<< HEAD
         ci.cancel();
         VertexRendering.drawOutline(
                 matrices,
@@ -101,21 +99,5 @@ public abstract class WorldRendererMixin {
                 (double)pos.getZ() - cameraZ,
                 ColorHelper.fromFloats(0.4F,0.85F,0.3F,0.4F)
         );
-||||||| c71bcf4
-        ci.cancel();
-        drawCuboidShapeOutline(
-                matrices,
-                vertexConsumer,
-                state.getOutlineShape(this.world, pos, ShapeContext.of(entity)),
-                (double)pos.getX() - cameraX,
-                (double)pos.getY() - cameraY,
-                (double)pos.getZ() - cameraZ,
-                0.85F,
-                0.3F,
-                0.3F,
-                0.4F
-        );
-=======
->>>>>>> 1.21.1
     }
 }
