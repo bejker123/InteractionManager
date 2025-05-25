@@ -6,11 +6,13 @@ import com.bejker.interactionmanager.config.option.interfaces.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.option.SimpleOption;
 import net.minecraft.entity.EntityType;
+import net.minecraft.item.Item;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,9 +27,6 @@ public class Config {
 
     @IItemOption
     public static final BooleanOption ALLOW_AXE_STRIP_BLOCKS = new BooleanOption("allow_axe_strip_blocks");
-
-    @IItemOption
-    public static final BooleanOption ALLOW_USE_FIREWORK_ON_BLOCK = new BooleanOption("allow_use_firework_on_block");
 
     @IEntityOption
     public static final BooleanOption ALLOW_ATTACKING_PLAYERS = new BooleanOption("allow_attacking_players");
@@ -87,35 +86,27 @@ public class Config {
     public static final BooleanOption SHOULD_REPLACE_WITH_SAME_BLOCK = new BooleanOption("should_replace_with_same_block",false);
 
     @IBlockOption
-    public static final BooleanOption ENABLE_BLOCK_BLACKLIST = new BooleanOption("enable_block_blacklist",true,"enabled","disabled");
+    public static final BooleanOption ENABLE_BLOCK_DENY_LIST = new BooleanOption("enable_block_deny_list",true,"enabled","disabled");
 
-    public static final Set<Block> BLACKLISTED_BLOCKS = new HashSet<>();
+    public static final Set<Block> DENIED_BLOCKS = new HashSet<>();
 
-    public static final Set<EntityType<?>> BLACKLISTED_ENTITIES = new HashSet<>();
+    public static final Set<EntityType<?>> DENIED_ENTITIES = new HashSet<>();
+
+    public static final HashMap<Item,HashSet<Block>> DENIED_ITEM_INTERACTIONS = new HashMap<>();
+
+    public static final Set<Item> DENIED_ITEMS = new HashSet<>();
 
     @IEntityOption
-    public static final BooleanOption ENABLE_ENTITY_BLACKLIST = new BooleanOption("enable_entity_blacklist",true,"enabled","disabled");
+    public static final BooleanOption ENABLE_ENTITY_DENY_LIST = new BooleanOption("enable_entity_deny_list",true,"enabled","disabled");
 
     @IRenderOption
-    public static final BooleanOption RENDER_ITEMS_IN_BLOCK_BLACKLIST = new BooleanOption("render_items_in_block_blacklist");
+    public static final BooleanOption RENDER_ITEMS_IN_BLOCK_DENY_LIST = new BooleanOption("render_items_in_block_deny_list");
 
     @IItemOption
     public static final BooleanOption ALLOW_EATING = new BooleanOption("allow_eating");
 
     @IItemOption
     public static final BooleanOption ALLOW_DRINKING_POTIONS = new BooleanOption("allow_drinking_potions");
-
-    @IItemOption
-    public static final BooleanOption ALLOW_USING_ENDER_PEARL = new BooleanOption("allow_using_ender_pearl");
-
-    @IItemOption
-    public static final BooleanOption ALLOW_USING_ENDER_EYE = new BooleanOption("allow_using_ender_eye");
-
-    @IItemOption
-    public static final BooleanOption ALLOW_USING_BOWS = new BooleanOption("allow_using_bows");
-
-    @IItemOption
-    public static final BooleanOption ALLOW_USING_CROSSBOWS = new BooleanOption("allow_using_crossbows");
 
     @IItemOption
     public static final BooleanOption ALLOW_DROPPING_ITEMS = new BooleanOption("allow_dropping_items");
@@ -125,6 +116,9 @@ public class Config {
 
     @IRenderOption
     public static final BooleanOption ANIMATE_REPLACE_BLOCKS = new BooleanOption("animate_replace_blocks");
+
+    @IRenderOption
+    public static final BooleanOption RENDER_DENIED_BLOCK_PLACEMENT = new BooleanOption("render_denied_block_placement");
 
     public enum PetAttackMode{
         ALL,

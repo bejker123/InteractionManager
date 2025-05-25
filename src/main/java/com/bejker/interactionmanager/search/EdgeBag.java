@@ -27,19 +27,19 @@ import java.util.Set;
  * Implements only the operations that are needed within the suffix tree context.
  */
 class EdgeBag implements Map<Character, Edge> {
-    private short[] chars;
+    private int[] chars;
     private Edge[] values;
     private static final int BSEARCH_THRESHOLD = 6;
 
     @Override
     public Edge put(Character character, Edge e) {
         char c = character.charValue();
-        //if (c != (char) (short) c) {
+        //if (c != (char) (int) c) {
         //    throw new IllegalArgumentException("Illegal input character " + c + ".");
         //}
 
         if (chars == null) {
-            chars = new short[0];
+            chars = new int[0];
             values = new Edge[0];
         }
         int idx = search(c);
@@ -47,13 +47,13 @@ class EdgeBag implements Map<Character, Edge> {
 
         if (idx < 0) {
             int currsize = chars.length;
-            short[] copy = new short[currsize + 1];
+            int[] copy = new int[currsize + 1];
             System.arraycopy(chars, 0, copy, 0, currsize);
             chars = copy;
             Edge[] copy1 = new Edge[currsize + 1];
             System.arraycopy(values, 0, copy1, 0, currsize);
             values = copy1;
-            chars[currsize] = (short) c;
+            chars[currsize] = (int) c;
             values[currsize] = e;
             currsize++;
             if (currsize > BSEARCH_THRESHOLD) {
@@ -72,7 +72,7 @@ class EdgeBag implements Map<Character, Edge> {
     }
 
     public Edge get(char c) {
-        //if (c != (char) (short) c) {
+        //if (c != (char) (int) c) {
         //    throw new IllegalArgumentException("Illegal input character " + c + ".");
         //}
 
@@ -88,7 +88,7 @@ class EdgeBag implements Map<Character, Edge> {
             return -1;
 
         if (chars.length > BSEARCH_THRESHOLD) {
-            return java.util.Arrays.binarySearch(chars, (short) c);
+            return java.util.Arrays.binarySearch(chars, (int) c);
         }
 
         for (int i = 0; i < chars.length; i++) {
@@ -113,7 +113,7 @@ class EdgeBag implements Map<Character, Edge> {
         for (int i = 0; i < chars.length; i++) {
             for (int j = i; j > 0; j--) {
                 if (chars[j-1] > chars[j]) {
-                    short swap = chars[j];
+                    int swap = chars[j];
                     chars[j] = chars[j-1];
                     chars[j-1] = swap;
 
