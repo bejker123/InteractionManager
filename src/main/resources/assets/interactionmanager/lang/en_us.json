@@ -24,18 +24,15 @@
   "screen.interactionmanager.block_deny_list": "Block Deny List",
   "screen.interactionmanager.entity_deny_list": "Entity Deny List",
 
-  "button.interactionmanager.item_block_interaction_deny_list": "Item-Block Interactions",
-  "button.interactionmanager.item_block_interaction_deny_list.tooltip": "Manage Item-Block interactions\nFirst select an item, then add blocks. That item can't be used on these blocks.",
+  "button.interactionmanager.item_interaction_deny_list": "Item Interactions",
+  "button.interactionmanager.item_interaction_deny_list.tooltip": "Manage Item interactions\nTODO! inspo below:",
 
-  "button.interactionmanager.item_deny_list": "Item Deny List",
-  "button.interactionmanager.item_deny_list.tooltip": "Manage Item Deny List\nDenied items can't be used, only applies to items that can be used by not clicking a block",
+  "": "First select an item, then add blocks. That item can't be used on these blocks.",
+  "item_deny_list.tooltip": "TODO: merge this tooltip with the one above in the lang file.Manage Item Deny List\nDenied items can't be used, only applies to items that can be used by not clicking a block",
 
-  "screen.interactionmanager.item_deny_list": "Item Deny List",
-  "category.interactionmanager.denied_items": "Deny Listed Items",
+  "screen.interactionmanager.item_interaction_deny_list": "Item Interactions",
 
-  "screen.interactionmanager.item_block_interaction_deny_list": "Item-Block Interactions",
-
-  "search.interactionmanager.block_search.tooltip.inactive": "Please select a block first",
+  "search.interactionmanager.block_search.tooltip.inactive": "Please select an item first",
 
   "button.interactionmanager.block_deny_list": "Block Deny List",
   "button.interactionmanager.block_deny_list.tooltip": "Manage block deny list\nDeny Listed blocks can't be broken.",
@@ -151,9 +148,12 @@
   "option.interactionmanager.enable_entity_deny_list.disabled": "Disabled",
   "option.interactionmanager.enable_entity_deny_list.tooltip": "Enabled - You can't attack denied entities\nDisabled - You can attack denied entities, unless they are protected by another option",
 
-  "text.interactionmanager.deny_using_on_all_blocks.title": "All",
+
+  "text.interactionmanager.deny_using_on_all_blocks.title": "All Blocks",
   "text.interactionmanager.deny_using_on_all_blocks.tooltip":"Deny using on all blocks",
 
   "text.interactionmanager.deny_using_all_items.title": "All",
-  "text.interactionmanager.deny_using_all_items.tooltip":"Deny using all items"
+  "text.interactionmanager.deny_using_all_items.tooltip":"Deny using all items",
+  "text.interactionmanager.deny_using_item.title": "Using",
+  "text.interactionmanager.deny_using_item.tooltip": "Deny using, doesn't apply to blocks"
 }

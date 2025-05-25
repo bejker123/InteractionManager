@@ -1,6 +1,6 @@
 package com.bejker.interactionmanager.gui.options.denylist;
 
-import com.bejker.interactionmanager.gui.widget.BlockInteractionListWidget;
+import com.bejker.interactionmanager.gui.widget.ItemInteractionListWidget;
 import com.bejker.interactionmanager.gui.widget.ItemListWidget;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.Tooltip;
@@ -13,16 +13,16 @@ import net.minecraft.util.Colors;
 
 import java.util.Locale;
 
-public class ItemBlockInteractionsScreen extends DenyListScreen {
+public class ItemInteractionsScreen extends DenyListScreen {
 
-    private static final Text TITLE_TEXT = Text.translatable("screen.interactionmanager.item_block_interaction_deny_list");
+    private static final Text TITLE_TEXT = Text.translatable("screen.interactionmanager.item_interaction_deny_list");
 
     private ItemListWidget itemListWidget;
-    private BlockInteractionListWidget blockInteractionListWidget;
+    private ItemInteractionListWidget itemInteractionListWidget;
 
-    private TextFieldWidget blockSearch;
+    private static TextFieldWidget blockSearch = null;
 
-    public ItemBlockInteractionsScreen(Screen parent) {
+    public ItemInteractionsScreen(Screen parent) {
         super(parent, TITLE_TEXT);
         // We have 2 searchbars, if one would be focused on a key-press, then the other one couldn't be used at all.
         this.focusSearchOnKeyPress = false;
@@ -44,11 +44,15 @@ public class ItemBlockInteractionsScreen extends DenyListScreen {
         DirectionalLayoutWidget searchBarsWidget = new DirectionalLayoutWidget(0,0, DirectionalLayoutWidget.DisplayAxis.HORIZONTAL);
         searchBarsWidget.spacing(100);
 
-        search = new TextFieldWidget(textRenderer,150,20,Text.empty());
+        if(search == null){
+            search = new TextFieldWidget(textRenderer,150,20,Text.empty());
+        }
         search.setPlaceholder(Text.literal("item..."));
         searchBarsWidget.add(search);
 
-        blockSearch = new TextFieldWidget(textRenderer,150,20,Text.empty());
+        if(blockSearch == null){
+            blockSearch = new TextFieldWidget(textRenderer,150,20,Text.empty());
+        }
         blockSearch.setPlaceholder(Text.literal("block..."));
         blockSearch.setUneditableColor(Colors.GRAY);
         searchBarsWidget.add(blockSearch);
@@ -64,7 +68,7 @@ public class ItemBlockInteractionsScreen extends DenyListScreen {
         DirectionalLayoutWidget widget = new DirectionalLayoutWidget(0,0, DirectionalLayoutWidget.DisplayAxis.HORIZONTAL);
 
         itemListWidget = widget.add(new ItemListWidget(this, this.client));
-        blockInteractionListWidget = widget.add(new BlockInteractionListWidget(this, this.client));
+        itemInteractionListWidget = widget.add(new ItemInteractionListWidget(this, this.client));
 
         this.layout.addBody(widget);
     }
@@ -73,18 +77,18 @@ public class ItemBlockInteractionsScreen extends DenyListScreen {
     public void tick() {
         super.tick();
 
-        this.blockSearch.active = this.getSelectedItem() != null;
-        this.blockInteractionListWidget.active = this.getSelectedItem() != null;
+        blockSearch.active = this.getSelectedItem() != null;
+        this.itemInteractionListWidget.active = this.getSelectedItem() != null;
 
-        if(!this.blockSearch.active){
-            this.blockSearch.setTooltip(Tooltip.of(Text.translatable("search.interactionmanager.block_search.tooltip.inactive")));
-            this.blockSearch.setFocused(false);
+        if(!blockSearch.active){
+            blockSearch.setTooltip(Tooltip.of(Text.translatable("search.interactionmanager.block_search.tooltip.inactive")));
+            blockSearch.setFocused(false);
 
-            this.blockInteractionListWidget.setTooltip(Tooltip.of(Text.translatable("search.interactionmanager.block_search.tooltip.inactive")));
-            this.blockInteractionListWidget.setFocused(false);
+            this.itemInteractionListWidget.setTooltip(Tooltip.of(Text.translatable("search.interactionmanager.block_search.tooltip.inactive")));
+            this.itemInteractionListWidget.setFocused(false);
         }else{
-            this.blockSearch.setTooltip(Tooltip.of(Text.empty()));
-            this.blockInteractionListWidget.setTooltip(Tooltip.of(Text.empty()));
+            blockSearch.setTooltip(Tooltip.of(Text.empty()));
+            this.itemInteractionListWidget.setTooltip(Tooltip.of(Text.empty()));
         }
         refreshWidgetPositions();
     }
@@ -96,13 +100,13 @@ public class ItemBlockInteractionsScreen extends DenyListScreen {
         this.itemListWidget.position(this.width / 2 - 5, this.layout);
         this.itemListWidget.setX(2);
 
-        this.blockInteractionListWidget.position(this.width / 2 - 5, this.layout);
-        this.blockInteractionListWidget.setX(this.width / 2);
+        this.itemInteractionListWidget.position(this.width / 2 - 5, this.layout);
+        this.itemInteractionListWidget.setX(this.width / 2);
 
     }
 
     public String getBlockSearch() {
-        return this.blockSearch.getText().strip().toLowerCase(Locale.ROOT);
+        return blockSearch.getText().strip().toLowerCase(Locale.ROOT);
     }
 
     public Item getSelectedItem() {
@@ -110,7 +114,7 @@ public class ItemBlockInteractionsScreen extends DenyListScreen {
     }
 
     public void updateBlacklistedBlocks() {
-        this.blockInteractionListWidget.updateEntries();
+        this.itemInteractionListWidget.updateEntries();
     }
 
     public void updateItems() {
