@@ -31,22 +31,8 @@ public class IMReloadListener implements IdentifiableResourceReloadListener {
         return InteractionManager.id("search_utils_resource_reload_listener");
     }
 
-    /*
-        For 1.21.5
     @Override
     public CompletableFuture<Void> reload(Synchronizer synchronizer, ResourceManager manager, Executor prepareExecutor, Executor applyExecutor) {
-        // We don't need to prepare any data
-        CompletableFuture<Void> prepData = CompletableFuture.runAsync(() -> {}, prepareExecutor);
-
-        CompletableFuture<Void> applyStart = prepData.thenComposeAsync(synchronizer::whenPrepared);
-
-        return applyStart.thenRunAsync(IMReloadListener::onReload, applyExecutor);
-    }
-
-     */
-
-    @Override
-    public CompletableFuture<Void> reload(Synchronizer synchronizer, ResourceManager manager, Profiler prepareProfiler, Profiler applyProfiler, Executor prepareExecutor, Executor applyExecutor) {
         // We don't need to prepare any data
         CompletableFuture<Void> prepData = CompletableFuture.runAsync(() -> {}, prepareExecutor);
 
