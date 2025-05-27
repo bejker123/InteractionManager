@@ -17,7 +17,6 @@ public class BlockDenylistScreen extends DenyListScreen {
 
     @Override
     protected void initBody() {
-        super.initBody();
         blockList = layout.addBody(new BlockListWidget(this, this.client));
         this.refreshWidgetPositions();
     }
