@@ -1,4 +1,7 @@
 # Change Log
+# 1.8.1
+### Fixed
+- Adding/removing block and entities from their deny lists
 # 1.8.0
 ### Changed 
 - Overhauled the GUI
