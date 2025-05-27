@@ -17,8 +17,8 @@ public class EntityDenyListScreen extends DenyListScreen {
 
     @Override
     protected void initBody() {
-        super.initBody();
         entityList = layout.addBody(new EntityListWidget(this, this.client));
+        this.refreshWidgetPositions();
     }
 
     @Override
