@@ -1,10 +1,9 @@
 # Change Log
-<<<<<<< HEAD
-# 1.7.3+1.21.5
+
+# 1.8.1
 ### Fixed
-- Instantaneous game crash on launch
-||||||| merged common ancestors
-=======
+- Adding/removing block and entities from their deny lists
+ 
 # 1.8.0
 ### Changed 
 - Overhauled the GUI
@@ -26,7 +25,11 @@
 ### Fixed
 - Minor logic bugs
 
->>>>>>> 1.21.4
+
+# 1.7.3+1.21.5
+### Fixed
+- Instantaneous game crash on launch
+ 
 # 1.7.2
 ### Fixed
 - Using fireworks on blocks would prevent from using the block, when Use Fireworks on Blocks option is OFF
