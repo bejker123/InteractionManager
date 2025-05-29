@@ -2,25 +2,51 @@
 
 ![Screenshot of the Interactions Menu, showing the available options.](res/interactions_menu.png)
 
-Interaction Manager is a client side mod allowing you to toggle certain block and mob interactions.
+Interaction Manager is a client side mod allowing you to toggle certain block, item and mob interactions.
 This mod aims to streamline the player experience, as some may find many vanilla features annoying or unnecessary.
-By default, vanilla behaviour is preserved.
+By default, vanilla behavior is preserved.
 
-### Simply Enable or Disable
-- Shovels creating paths
-- Axes stripping blocks
-- Fireworks working on blocks
-- Attacking hostile mobs (zombies skeletons)
-- Attacking passive mobs (cows, pigs)
-- Attacking villagers 
-- Attacking vehicles (boats, minecarts)
+### Entity Options
+- Attacking players
+- Attacking hostile mobs
+- Attacking passive mobs
+- Attacking villagers
+- Attacking vehicles
+- Attacking pets
+- Sweeping-edge protection
+- Interacting with mobs
+- Villager trading
+- Entity deny list (Deny listed entities can't be attacked)
+ 
+### Block Options
 - Breaking blocks
+- Placing blocks
+- Opening (block) GUIs
+- Opening doors
+- Replacing blocks (with offhand)
+- Block deny list (Deny listed blocks can't be broken)
 
-It also gives you the option to stop the player from attacking your pets, others' pets or all tamable mobs.
-You can blacklist blocks, so that you can't break them. And blacklist entities, so that you can't attack them.
+### Item Options
+- Shovels creating paths
+- Axes striping
+- Allow eating
+- Allow drinking potions
+- Dropping items
+- Locking hot bar
+- Item interactions
+   - Search for an item and select it
+   - Toggle interacting with it on blocks or 'in the air,' as in not on blocks
+
+### Rendering Options/Misc
+- Drawing Protected Mobs
+- Draw Protected Blocks
+- Add (`Interactions`) Button
+- Render items, in mod options
+- Animate block replace
+- Draw denied block placement
 
 These options are easily found in the in game `Interactions` menu.
-To access them go to `Options`>`Interactions`
+To access them, go to `Options`>`Interactions`
 
 If Mod Menu is installed, by default the `Interactions` button is hidden. And the settings can be accessed using Mod Menu.
 To show the `Interacions` button if Mod Menu is installed see the [Config Section](#config).
@@ -35,22 +61,13 @@ To show the `Interacions` button if Mod Menu is installed see the [Config Sectio
 <details>
 <summary> Expand Configuration Information </summary>
 
-#### If you don't intend to change more advanced options feel free to skip this section.
-**Options related to player behaviour (block and mob interactions) are accessible in the in game options menu.**
+#### If you don't intend to change more advanced options, feel free to skip this section.
+**Options related to player behavior (block and mob interactions) are accessible in the in game options menu.**
 
 The configuration file allows for more fine-tuning and isn't strictly necessary to edit.
 It's located in `config/interactionmanager.json`.
-It's stored in JSON, which is easy to read and modify.
-
-### Options only available in the config file
-1. `should_add_interactions_button` - The mod settings can be opened using Mod Menu, as such this option controls if the button should be added.
-   - `always` - Always show the `Interactions` button.
-   - *default* `only_if_mod_menu_is_not_installed` - Hide the `Interactions` button if mod menu is installed.
-   - `never` - Hide the `Interactions` button.
-2. `render_items_in_block_blacklist` - Change if block icons should be rendered in the blacklist menu.
-   - *default* `true` - Will render block icons in the block blacklist.
-   -  `false` - Won't render block icons in the block blacklist.
-
+It's stored in JSON, which is straightforward to read and modify.
+Currently, all config options are accessible through the in-game menu.
 </details>
 
 ### [See Change Log](CHANGELOG.md)
