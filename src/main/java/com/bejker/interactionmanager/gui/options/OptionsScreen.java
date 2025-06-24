@@ -127,8 +127,6 @@ public class OptionsScreen extends GameOptionsScreen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderBackground(context, mouseX, mouseY, delta);
-
         this.restore_defaults.active = this.isRestoreDefaultsActive();
         if(this.restore_defaults.active){
            this.restore_defaults.setTooltip(Tooltip.of(Text.translatable("button.interactionmanager.restore_defaults.active.tooltip")));
