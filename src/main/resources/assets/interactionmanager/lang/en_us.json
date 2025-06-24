@@ -143,11 +143,14 @@
   "option.interactionmanager.enable_block_deny_list.disabled": "Disabled",
   "option.interactionmanager.enable_block_deny_list.tooltip": "Enabled - You can't break denied blocks\nDisabled - You can break denied blocks, unless the 'Break Blocks' option is OFF",
 
+  "option.interactionmanager.invert_block_deny_list": "Invert Block Deny List",
+
   "option.interactionmanager.enable_entity_deny_list": "Entity Deny List",
   "option.interactionmanager.enable_entity_deny_list.enabled":"Enabled",
   "option.interactionmanager.enable_entity_deny_list.disabled": "Disabled",
   "option.interactionmanager.enable_entity_deny_list.tooltip": "Enabled - You can't attack denied entities\nDisabled - You can attack denied entities, unless they are protected by another option",
 
+  "option.interactionmanager.invert_entity_deny_list": "Invert Entity Deny List",
 
   "text.interactionmanager.deny_using_on_all_blocks.title": "All Blocks",
   "text.interactionmanager.deny_using_on_all_blocks.tooltip":"Deny using on all blocks",

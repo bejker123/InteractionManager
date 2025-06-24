@@ -92,12 +92,18 @@ public class Config {
 
     public static final Set<EntityType<?>> DENIED_ENTITIES = new HashSet<>();
 
+    @IEntityOption
+    public static final BooleanOption ENABLE_ENTITY_DENY_LIST = new BooleanOption("enable_entity_deny_list",true,"enabled","disabled");
+
+    @IBlockOption
+    public static final BooleanOption INVERT_BLOCK_DENY_LIST = new BooleanOption("invert_block_deny_list",false);
+
+    @IEntityOption
+    public static final BooleanOption INVERT_ENTITY_DENY_LIST = new BooleanOption("invert_entity_deny_list",false);
+
     public static final HashMap<Item,HashSet<Block>> DENIED_ITEM_INTERACTIONS = new HashMap<>();
 
     public static final Set<Item> DENIED_ITEMS = new HashSet<>();
-
-    @IEntityOption
-    public static final BooleanOption ENABLE_ENTITY_DENY_LIST = new BooleanOption("enable_entity_deny_list",true,"enabled","disabled");
 
     @IRenderOption
     public static final BooleanOption RENDER_ITEMS_IN_BLOCK_DENY_LIST = new BooleanOption("render_items_in_block_deny_list");
