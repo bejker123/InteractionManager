@@ -32,7 +32,7 @@ public class IMReloadListener implements IdentifiableResourceReloadListener {
     }
 
     @Override
-    public CompletableFuture<Void> reload(Synchronizer synchronizer, ResourceManager manager, Profiler prepareProfiler, Profiler applyProfiler, Executor prepareExecutor, Executor applyExecutor) {
+    public CompletableFuture<Void> reload(Synchronizer synchronizer, ResourceManager manager, Executor prepareExecutor, Executor applyExecutor) {
         // We don't need to prepare any data
         CompletableFuture<Void> prepData = CompletableFuture.runAsync(() -> {}, prepareExecutor);
 
