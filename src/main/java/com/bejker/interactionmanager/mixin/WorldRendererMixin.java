@@ -89,15 +89,5 @@ public abstract class WorldRendererMixin {
 
             }
         }
-        ci.cancel();
-        VertexRendering.drawOutline(
-                matrices,
-                vertexConsumer,
-                state.getOutlineShape(this.world, pos, ShapeContext.of(entity)),
-                (double)pos.getX() - cameraX,
-                (double)pos.getY() - cameraY,
-                (double)pos.getZ() - cameraZ,
-                ColorHelper.fromFloats(0.4F,0.85F,0.3F,0.4F)
-        );
     }
 }
