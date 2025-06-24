@@ -1,4 +1,10 @@
 # Change Log
+
+# 1.8.2
+### Added
+- Inverting entity and block deny lists
+### Fixed
+- For `1.21.2+`: target blocks would always be highlighted as if they were protected
 # 1.8.1
 ### Fixed
 - Adding/removing block and entities from their deny lists
