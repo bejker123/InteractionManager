@@ -1,6 +1,6 @@
 # Interaction Manager
 
-![Screenshot of the Interactions Menu, showing the available options.](res/interactions_menu.png)
+![Screenshot of the Interactions Menu, showing the available options.](https://cdn.modrinth.com/data/5N1n8jD7/images/a4c2459eb3a31e5db5cee0ce46b03a8af90d3315.png)
 
 Interaction Manager is a client side mod allowing you to toggle certain block, item and mob interactions.
 This mod aims to streamline the player experience, as some may find many vanilla features annoying or unnecessary.
@@ -53,7 +53,7 @@ To show the `Interacions` button if Mod Menu is installed see the [Config Sectio
 <details>
 <summary>Show Image</summary>
 
-![Screenshot of the in game options menu, showing the 'Interactions' button.](res/interactions_button.png)
+![Screenshot of the in game options menu, showing the 'Interactions' button.](https://cdn.modrinth.com/data/5N1n8jD7/images/af905b86c6341b203eccb4769984b106a328f2c4.png)
 
 </details>
 
