@@ -148,6 +148,14 @@ public class Interactions {
      * @return true if a given entity should be protected from being dealt damage, otherwise false
      */
     private static boolean isProtected(UUID player_uuid,Entity target){
+        boolean ret = isProtectedInternal(player_uuid,target);
+        if(Config.INVERT_ENTITY_DENY_LIST.getValue()){
+           ret = !ret;
+        }
+        return ret;
+    }
+
+    private static boolean isProtectedInternal(UUID player_uuid,Entity target){
         if(Config.ENABLE_ENTITY_DENY_LIST.getValue() && Config.DENIED_ENTITIES.contains(target.getType())){
             return true;
         }
@@ -246,6 +254,17 @@ public class Interactions {
      * @see PlayerInteractionManagerMixin#updateBlockBreakingProgress(BlockPos, Direction, CallbackInfoReturnable)
      */
     public static void restrictBlockBreaking(Block block, CallbackInfoReturnable<Boolean> cir) {
+        restrictBlockBreakingInternal(block,cir);
+        if(Config.INVERT_BLOCK_DENY_LIST.getValue()){
+            Boolean value = cir.getReturnValue();
+            if(value == null){
+                value = false;
+            }
+            cir.setReturnValue(!value);
+        }
+    }
+
+    private static void restrictBlockBreakingInternal(Block block,CallbackInfoReturnable<Boolean> cir){
         if(!Config.ALLOW_BREAKING_BLOCKS.getValue()){
             cir.setReturnValue(true);
         }
