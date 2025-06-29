@@ -4,7 +4,10 @@
   "version": "${version}",
   "name": "InteractionManager",
   "description": "Customize how you interact with blocks and mobs to prevent accidents and improve your Minecraft experience.",
-  "authors": ["bejker123"],
+  "authors": [
+    "bejker123",
+    "EvarikaArkana"
+  ],
   "contact": {
     "homepage": "https://modrinth.com/mod/interaction-manager",
     "sources": "https://github.com/bejker123/InteractionManager",
