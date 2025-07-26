@@ -30,12 +30,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
-<<<<<<< HEAD
 import net.minecraft.util.math.MathHelper;
-||||||| ea7fb85
-=======
 import net.minecraft.util.math.Direction;
->>>>>>> 1.21.1
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
