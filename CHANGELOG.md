@@ -1,8 +1,15 @@
 # Change Log
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ||||||| 32f16ec
 =======
+||||||| f15cc9d
+=======
+# 1.8.3
+### Fixed
+- Searching item interactions
+>>>>>>> 1.21.4
 # 1.8.2
 ### Added
 - Inverting entity and block deny lists

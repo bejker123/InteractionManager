@@ -74,3 +74,9 @@ Currently, all config options are accessible through the in-game menu.
 
 ### Suggestions and Issues
 If you have any **suggestions** or run into some **issues** please create a new ticket on the **[Issue Tracker](https://github.com/bejker123/InteractionManager/issues)**. If the issue is a bug or a crash please include game logs alongside a description of how to reproduce the issue.
+
+### Credits and Attribution
+Special thanks to [EvarikaArkana](https://github.com/EvarikaArkana) for a lot of feedback and ideas.
+Checkout [their Mod](https://github.com/EvarikaArkana/Simply-Dual-Wielding), it's fully compatible with Interaction Manager. <br>
+Config inspired by [Mod Menu](https://github.com/TerraformersMC/ModMenu) <br>
+Search inspired by [JustEnoughItems](https://github.com/mezz/JustEnoughItems) and Alessandro Bahgat Shehata
