@@ -1,5 +1,8 @@
 # Change Log
 
+# 1.8.3
+### Fixed
+- Searching item interactions
 # 1.8.2
 ### Added
 - Inverting entity and block deny lists

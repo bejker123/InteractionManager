@@ -25,7 +25,7 @@
   "screen.interactionmanager.entity_deny_list": "Entity Deny List",
 
   "button.interactionmanager.item_interaction_deny_list": "Item Interactions",
-  "button.interactionmanager.item_interaction_deny_list.tooltip": "Manage Item interactions\nTODO! inspo below:",
+  "button.interactionmanager.item_interaction_deny_list.tooltip": "Manage Item interactions",
 
   "": "First select an item, then add blocks. That item can't be used on these blocks.",
   "item_deny_list.tooltip": "TODO: merge this tooltip with the one above in the lang file.Manage Item Deny List\nDenied items can't be used, only applies to items that can be used by not clicking a block",
