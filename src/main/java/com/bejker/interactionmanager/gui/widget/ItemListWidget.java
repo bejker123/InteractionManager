@@ -9,7 +9,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -43,9 +42,8 @@ public class ItemListWidget extends SearchableListWidget<ItemInteractionsScreen>
        if(lastSearch != null && !lastSearch.isBlank()) {
            SearchUtil.searchItems(lastSearch,-1,(Item item) -> {
                        //TODO: add config option for blocks
-                       return Util.doesOverrideMethod(item.getClass(),"use",Item.class)||
-                               Util.doesOverrideMethod(item.getClass(),"useOnBlock",Item.class)||
-                               BlockItem.class.isAssignableFrom(item.getClass());
+                       return  Util.doesOverrideUseOnBlock(item.getClass()) ||
+                               Util.doesOverrideUse(item.getClass());
                    }).stream()
                    .distinct()
                    .map(SearchItemEntry::new)
