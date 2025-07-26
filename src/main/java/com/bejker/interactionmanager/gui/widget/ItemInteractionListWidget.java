@@ -13,7 +13,6 @@ import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
@@ -37,8 +36,8 @@ public class ItemInteractionListWidget extends SearchableListWidget<ItemInteract
            return;
        }
        boolean isAllSelected = Items.AIR == this.parent.getSelectedItem();
-       boolean overridesUseOnBlock = isAllSelected || Util.doesOverrideMethod(this.parent.getSelectedItem().getClass(),"useOnBlock", Item.class);
-       boolean overridesUse = isAllSelected || Util.doesOverrideMethod(this.parent.getSelectedItem().getClass(),"use", Item.class);
+       boolean overridesUseOnBlock = isAllSelected || Util.doesOverrideUseOnBlock(this.parent.getSelectedItem().getClass());
+       boolean overridesUse = isAllSelected || Util.doesOverrideUse(this.parent.getSelectedItem().getClass());
 
        if(overridesUseOnBlock&& lastSearch != null&& !lastSearch.isBlank()){
            SearchUtil.searchBlocks(lastSearch,-1, x -> !x.equals(Blocks.AIR)).stream()
