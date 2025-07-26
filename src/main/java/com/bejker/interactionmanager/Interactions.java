@@ -1,6 +1,8 @@
 package com.bejker.interactionmanager;
 
 import com.bejker.interactionmanager.config.Config;
+import com.bejker.interactionmanager.mixin.PlayerEntityMixin;
+import com.bejker.interactionmanager.mixin.PlayerInteractionManagerMixin;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.*;
@@ -26,9 +28,12 @@ import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -36,6 +41,10 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Class handling player-environment interactions.
+ * Unless otherwise noted functions can be freely used as an API to determine if an action will complete successfully.
+ */
 @Environment(EnvType.CLIENT)
 public class Interactions {
     public static int should_place_off_hand_in = -1;
@@ -43,6 +52,14 @@ public class Interactions {
 
     private static BlockHitResult cached_blockhr = null;
 
+    /**
+     * Handles block interactions. Specifically for a given item(item stack) on a given block.
+     * Think right-clicking a block with a hoe/axe/shovel.
+     * @param stack The item stack, the actual stack data isn't check, only the item class is relevant
+     * @param block The block, relevant especially if a given block implements a right-click interaction
+     * @param cir Functionally the return of the function
+     * @see PlayerInteractionManagerMixin#onInteractBlock(net.minecraft.client.network.ClientPlayerEntity, net.minecraft.util.Hand, net.minecraft.util.hit.BlockHitResult, org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable)
+     */
     public static void onInteractBlock(ItemStack stack, Block block, CallbackInfoReturnable<ActionResult> cir) {
         if(block instanceof DoorBlock){
             if(!Config.ALLOW_OPENING_DOORS.getValue()){
@@ -93,6 +110,12 @@ public class Interactions {
         }
     }
 
+    /**
+     * An internal utility function to check if a given target should be protected from sweeping edge damage
+     * @param player_uuid The attacking player's uuid, relevant if pets are protected, but should always be well-formed. If not the return will always be false
+     * @param target The target entity, really just relevant for the entity type, if the entity isn't a pet(tamable entity)
+     * @return true if a given entity should be protected from sweeping edge damage otherwise false
+     */
     private static boolean protectFromSweepingEdge(UUID player_uuid,Entity target){
         World world = MinecraftClient.getInstance().world;
         if(world == null){
@@ -120,6 +143,12 @@ public class Interactions {
         return ret;
     }
 
+    /**
+     * An internal utility function to check if a given entity should be protected from being dealt damage.
+     * @param player_uuid The attacking player's uuid
+     * @param target The target entity, relevant only for the type unless the given entity is tamable. Then also the uuid and tamed status is.
+     * @return true if a given entity should be protected from being dealt damage, otherwise false
+     */
     private static boolean isProtected(UUID player_uuid,Entity target){
         boolean ret = isProtectedInternal(player_uuid,target);
         if(Config.INVERT_ENTITY_DENY_LIST.getValue()){
@@ -164,6 +193,14 @@ public class Interactions {
         return !Config.ALLOW_ATTACKING_VEHICLES.getValue() && target instanceof VehicleEntity;
     }
 
+    /**
+     * A function to check the result of attacking an entity.
+     * @param player_uuid The attacking player's uuid, mostly relevant if tamable entities(pets) are protected
+     * @param target The attacked entity, mostly relevant for its type. UUID and tamed status relevant if the entity is tameable(a pet).
+     * @param ci Functionally the return of the function. If cancelled the action should not be performed. As the entity is protected.
+     *           Or is sweeping damage would be dealt to a protected entity the ci will also be cancelled.
+     * @see PlayerInteractionManagerMixin#onAttackEntity(PlayerEntity, Entity, CallbackInfo)
+     */
     public static void onAttackEntity(UUID player_uuid, Entity target, CallbackInfo ci) {
         if(MinecraftClient.getInstance().world == null || MinecraftClient.getInstance().player == null){
             return;
@@ -210,6 +247,12 @@ public class Interactions {
         return bl4;
     }
 
+    /**
+     * A function to check if a given block should be broken.
+     * @param block The block, mostly relevant for its type.
+     * @param cir Functionally the return of the function, if the value is true the block should not be broken.
+     * @see PlayerInteractionManagerMixin#updateBlockBreakingProgress(BlockPos, Direction, CallbackInfoReturnable)
+     */
     public static void restrictBlockBreaking(Block block, CallbackInfoReturnable<Boolean> cir) {
         restrictBlockBreakingInternal(block,cir);
         if(Config.INVERT_BLOCK_DENY_LIST.getValue()){
@@ -230,6 +273,13 @@ public class Interactions {
         }
     }
 
+    /**
+     * A function to check if a given item interaction should be performed, only applicable to using the item while not targeting a block. Ie "in the air"
+     * @param player The player performing the interaction
+     * @param hand The hand used to perform the action
+     * @param cir Functionally the return of the function. If the value is ActionResult.FAIL the interaction should not be performed.
+     * @see PlayerInteractionManagerMixin#onInteractItem(PlayerEntity, Hand, CallbackInfoReturnable)
+     */
     public static void onUseItem(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         ItemStack itemStack = player.getStackInHand(hand);
         FoodComponent foodComponent = itemStack.get(DataComponentTypes.FOOD);
@@ -250,6 +300,15 @@ public class Interactions {
         }
     }
 
+    /**
+     * A function to check if a given entity interaction should be performed.
+     * @param player The player performing the interaction
+     * @param entity The entity affected
+     * @param hand The hand used to perform the action
+     * @param cir Functionally the return of the function. If the value is ActionResult.FAIL the interaction should not be performed.
+     * @see PlayerInteractionManagerMixin#onInteractEntity(PlayerEntity, Entity, Hand, CallbackInfoReturnable)
+     * @see PlayerInteractionManagerMixin#interactEntityAtLocation(PlayerEntity, Entity, EntityHitResult, Hand, CallbackInfoReturnable)
+     */
     public static void onInteractEntity(PlayerEntity player, Entity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         if(!Config.ALLOW_ENTITY_INTERACTION.getValue()){
             cir.setReturnValue(ActionResult.FAIL);
@@ -261,6 +320,15 @@ public class Interactions {
         }
     }
 
+    /**
+     * A function to check the result of a slot click.
+     * @param syncId Not relevant
+     * @param slotId ID(index) of the clicked slot
+     * @param actionType Type of action performed (left-click/right-click)
+     * @param player The player performing the action
+     * @param ci Functionally the return of the function. If cancelled the action should not be performed.
+     * @see PlayerInteractionManagerMixin#onSlotClick(int, int, int, net.minecraft.screen.slot.SlotActionType, net.minecraft.entity.player.PlayerEntity, org.spongepowered.asm.mixin.injection.callback.CallbackInfo)
+     */
     public static void onSlotClick(int syncId, int slotId, SlotActionType actionType, PlayerEntity player, CallbackInfo ci) {
         if(!Config.ALLOW_DROPPING_ITEMS.getValue()&&(actionType.equals(SlotActionType.THROW) || slotId < 0)){
             ci.cancel();
@@ -276,7 +344,14 @@ public class Interactions {
         }
     }
 
-    public static void onBreakBlock(ClientPlayerInteractionManager manager, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+    /**
+     * A function to update block replacing functionality. Should not be called as an API function.
+     * @param manager the instance of ClientPlayerInteractionManager, can be null
+     * @param pos The position of the block being broken
+     * @param cir Functionally the return of the function, if value is true the block should be broken.
+     * @see PlayerInteractionManagerMixin#onBreakBlock(net.minecraft.util.math.BlockPos, org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable)
+     */
+    public static void onBreakBlock(@Nullable ClientPlayerInteractionManager manager, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if(player == null){
             return;
@@ -304,6 +379,13 @@ public class Interactions {
         }
     }
 
+    /**
+     * A function called every ClientPlayerEntity.tick. Should not be called as an API function.
+     * Mostly relevant for replacing blocks.
+     * @param player The player ticking
+     * @param ci Functionally the return of the function if cancelled the tick should not be performed.
+     * @see PlayerEntityMixin#onTick(org.spongepowered.asm.mixin.injection.callback.CallbackInfo)
+     */
     public static void onTick(ClientPlayerEntity player,CallbackInfo ci) {
         if(Interactions.should_place_off_hand_in >= 0){
             Interactions.should_place_off_hand_in -= 1;
